@@ -1,0 +1,66 @@
+\chapter{Numerical first derivatives}
+
+The following is a simple Taylor's series-based derivation
+for numerically determined first derviatives.
+We start with data on a finite grid of $\tau$-points,
+\textit{i.e.} $\tau = 0^+, \Delta \tau, 2 \Delta \tau, \cdots$.
+Assuming the $\tau \to 0^+$ first and second derivatives
+are well-defined we have
+\begin{eqnarray}
+\label{dtau}
+A(\Delta \tau) & = & A(0^+) + 
+\Delta \tau \frac{\partial 
+A(\tau)}{\partial \tau}{\bigg\vert}_{\tau \to 0^+} +
+\frac{1}{2}(\Delta \tau)^2 
+\frac{\partial^2 A(\tau)}{\partial \tau^2} {\bigg\vert}_{\tau \to 0^+} \\
+\label{dtau2}
+A(2\, \Delta \tau) & = &  A(0^+) + 
+2 \Delta \tau 
+\frac{\partial A(\tau)}{\partial \tau} {\bigg\vert}_{\tau \to 0^+} +
+2 (\Delta \tau)^2 
+\frac{\partial^2 A(\tau)}{\partial \tau^2} {\bigg\vert}_{\tau \to 0^+}
+\end{eqnarray}
+If we mutliply Eq.~(\ref{dtau}) by 4 and subtract Eq.~(\ref{dtau2}),
+we get
+\begin{equation}
+4 A(\Delta \tau) - A(2 \Delta \tau) = 3 A(0^+) + 
+2 \Delta \tau 
+\frac{\partial A(\tau)}{\partial \tau} {\bigg\vert}_{\tau \to 0^+}
+\end{equation}
+Rearranging yields the final result
+\begin{equation}
+\frac{\partial A(\tau)}{\partial \tau} {\bigg\vert}_{\tau \to 0^+}
+= \frac{2 A(\Delta\tau) - \frac{1}{2} A(2\,\Delta\tau)
+- \frac{3}{2} A(0^+)}{\Delta \tau}.
+\end{equation}
+
+We are also interested in the $\tau \to 0^-$ limit.  In this
+case the Taylor's series expansion yields
+\begin{eqnarray}
+\label{mdtau}
+A(-\Delta \tau) & = & A(0^-) -
+\Delta \tau \frac{\partial 
+A(\tau)}{\partial \tau}{\bigg\vert}_{\tau \to 0^-} +
+\frac{1}{2}(\Delta \tau)^2 
+\frac{\partial^2 A(\tau)}{\partial \tau^2} {\bigg\vert}_{\tau \to 0^-} \\
+\label{mdtau2}
+A(-2\, \Delta \tau) & = &  A(0^-) -
+2 \Delta \tau 
+\frac{\partial A(\tau)}{\partial \tau} {\bigg\vert}_{\tau \to 0^-} +
+2 (\Delta \tau)^2 
+\frac{\partial^2 A(\tau)}{\partial \tau^2} {\bigg\vert}_{\tau \to 0^-}
+\end{eqnarray}
+As before, we mutliply Eq.~(\ref{mdtau}) by 4 and subtract 
+Eq.~(\ref{mdtau2}),
+to get
+\begin{equation}
+4 A(-\Delta \tau) - A(-2 \Delta \tau) = 3 A(0^-) - 
+2 \Delta \tau 
+\frac{\partial A(\tau)}{\partial \tau} {\bigg\vert}_{\tau \to 0^-}
+\end{equation}
+Rearranging yields the final result
+\begin{equation}
+\frac{\partial A(\tau)}{\partial \tau} {\bigg\vert}_{\tau \to 0^-}
+= \frac{-2 A(-\Delta\tau) + \frac{1}{2} A(-2\,\Delta\tau)
++ \frac{3}{2} A(0^-)}{\Delta \tau}.
+\end{equation}

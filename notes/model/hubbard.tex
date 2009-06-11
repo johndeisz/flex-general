@@ -1,0 +1,356 @@
+\chapter{Hubbard Hamiltonian}
+\label{chapter:hubbard}
+
+\section{Normal terms}
+\label{section:hubbard-normal}
+The Hamiltonian for the Hubbard model is defined as 
+\begin{equation}
+\begin{split}
+H - \mu N &= -\sum_{<\mathbf{r},\mathbf{r}^{\prime}>,\nu\nu^{\prime}\sigma}  
+\left(t_{\nu\nu^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
+e^{i \vec{\chi}\cdot (\mathbf{r}-\mathbf{r}^{\prime})}  
+c^{\dagger}_{\vec{r}\nu\sigma}c_{\vec{r}^{\prime}\nu^{\prime}\sigma} + 
+\mathrm{h.c.} \right) \\
+& - \sum_{\mathbf{r}\nu\sigma} \mu \; c^{\dagger}_{\mathbf{r}\nu\sigma}c_{\vec{r}\nu\sigma} 
+ -\sum_{\mathbf{r}\nu\sigma\sigma^{\prime}} \mathbf{h}\cdot 
+\vec{\sigma}_{\sigma\sigma^{\prime}} 
+\, c^{\dagger}_{\vec{r}\nu\sigma} c_{\vec{r}\nu\sigma^{\prime}} \\
+& + \sum_{\mathbf{r}\nu\nu^{\prime}\sigma\sigma^{\prime}} U_{\nu\nu^{\prime}} 
+c^{\dagger}_{\mathbf{r}\nu\sigma}c_{\mathbf{r}\nu\sigma}
+c^{\dagger}_{\mathbf{r}\nu^{\prime}\sigma^{\prime}}c_{\mathbf{r}\nu^{\prime}\sigma^{\prime}} 
++ \sum_{\mathbf{r}\nu\nu^{\prime}\sigma\sigma^{\prime}} J_{\nu\nu^{\prime}}
+c^{\dagger}_{\mathbf{r}\nu\sigma}c_{\mathbf{r}\nu^{\prime}\sigma^{\prime}}
+c^{\dagger}_{\mathbf{r}\nu^{\prime}\sigma^{\prime}}c_{\mathbf{r}\nu\sigma}
+\end{split}
+\end{equation}
+Along with the hopping amplitude, 
+$t_{\nu\nu^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})$, 
+we include a phase factor with a term
+$\vec{\chi}\cdot(\mathbf{r}-\mathbf{r}^{\prime}) 
+\equiv 2 \pi (\phi_{B,x} / \phi_o)( (x-x^{\prime})/ L_x)$
++ similar terms for the $y$ and $z$ directions.
+This phase factor characterizes the Aharanov-Bohm
+phase acqured when an electron makes one complete revolution
+around the lattice in the $x$, $y$ or
+$z$ directions and, in doing
+so, completes a circuit that encloses a magnetic
+flux, $\phi_{B,x}$, $\phi_{B,y}$ and/or $\phi_{B,z}$. 
+
+The chemical potential, $\mu$, regulates the number of
+electrons in the system.  A uniform magnetic field, $\mathbf{h}$,
+polarizes the electron spin.
+Direct coulomb, $U$, and exchange terms, $J$, characterize the 
+effective interaction between electrons on the same atomic site.
+
+The transformation from ${\mathbf k}$-space to ${\mathbf r}$-space
+is made by subsituting 
+\begin{eqnarray}
+\label{c-forward}
+c^{\dagger}_{{\mathbf k}\nu\sigma} & = & \frac{1}{\sqrt{N}}
+\sum_{{\mathbf r}} \exp(i \mathbf{k}\cdot\mathbf{r}) \; 
+c^{\dagger}_{{\mathbf r}\nu\sigma} \\
+\label{c-backwards}
+c^{\dagger}_{{\mathbf r}\nu\sigma} & = & \frac{1}{\sqrt{N}}
+\sum_{{\mathbf k}} \exp(-i \mathbf{k}\cdot\mathbf{r}) \; 
+c^{\dagger}_{{\mathbf k}\nu\sigma} 
+\end{eqnarray}
+with equivalent relations for the annihilation operators
+obtained by taking the 
+Hermetian conjugates of Eqs~(\ref{c-forward}) and (\ref{c-backwards}).
+Local terms transform as follows:
+\begin{eqnarray}
+\sum_{\mathbf{r}} c^{\dagger}_{\mathbf{r}\nu\sigma} c_{\mathbf{r}\nu\sigma} & = &
+\frac{1}{N} \sum_{\mathbf{r}} \sum_{\mathbf{k},\mathbf{k}^{\prime}}
+e^{-i \mathbf{k}\cdot\mathbf{r}} e^{i \mathbf{k}^{\prime}\cdot\mathbf{r}}
+c^{\dagger}_{\mathbf{k}\nu\sigma} c_{\mathbf{k}^{\prime}\nu\sigma} \\
+& = & \sum_{\mathbf{k},\mathbf{k}^{\prime}} 
+\delta_{\mathbf{k},\mathbf{k}^{\prime}}
+c^{\dagger}_{\mathbf{k}\nu\sigma} c_{\mathbf{k}^{\prime}\nu\sigma} \\
+& = & \sum_{\mathbf{k}} c^{\dagger}_{\mathbf{k}\nu\sigma} c_{\mathbf{k}\nu\sigma}
+\end{eqnarray}  
+Likewise we obtain a simple form for the kinetic energy terms
+when they are expressed in momentum space:
+\begin{eqnarray}
+\mathrm{KE} & = &
+-\sum_{<\mathbf{r}\mathbf{r}^{\prime}>\nu\nu^{\prime}\sigma} 
+t_{\nu\nu^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
+e^{i\vec{\chi}\cdot(\mathbf{r}-\mathbf{r}^{\prime})}
+c^{\dagger}_{\mathbf{r}\nu\sigma}c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma} + 
+ t_{\nu\nu^{\prime}}^*(\mathbf{r},\mathbf{r}^{\prime}) 
+e^{-i\vec{\chi}\cdot (\mathbf{r}-\mathbf{r}^{\prime})}
+c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma}c_{\mathbf{r}\nu\sigma} \\
+& = & -\sum_{<\mathbf{r}\mathbf{r}^{\prime}>\nu\nu^{\prime}\sigma} 
+t_{\nu\nu^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
+e^{i\vec{\chi}\cdot(\mathbf{r}-\mathbf{r}^{\prime})}
+c^{\dagger}_{\mathbf{r}\nu\sigma}c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma} +
+ t_{\nu^{\prime}\nu}^*(\mathbf{r}^{\prime},\mathbf{r})
+e^{-i\vec{\chi}\cdot(\mathbf{r}^{\prime}-\mathbf{r})}
+c^{\dagger}_{\mathbf{r}\nu\sigma}c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma} \\
+& = & -\frac{1}{2} \sum_{\mathbf{r}^{\prime}\vec{\delta}\nu\nu^{\prime}\sigma} 
+t_{\nu\nu^{\prime}}(\vec{\delta}) e^{i\vec{\chi}\cdot \vec{\delta}} 
+c^{\dagger}_{\mathbf{r}^{\prime}+\vec{\delta}\nu\sigma} c_{\vec{r}^{\prime}\nu^{\prime}\sigma}
++ t_{\nu^{\prime}\nu}^*(-\vec{\delta}) e^{ i \vec{\chi} \cdot \vec{\delta}} 
+c^{\dagger}_{\mathbf{r}^{\prime}+ \vec{\delta}\nu\sigma} c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma} \\
+& = & - \sum_{\mathbf{r}^{\prime}\vec{\delta}} t_{\nu\nu^{\prime}}(\vec{\delta}) 
+e^{i \vec{\chi}\cdot \vec{\delta}} 
+c^{\dagger}_{\mathbf{r}^{\prime}+\vec{\delta}\nu\sigma} c_{\vec{r}^{\prime}\nu^{\prime}\sigma}
+\end{eqnarray}
+since $t_{\nu^{\prime}\nu}^*(-\vec{\delta}) = t_{\nu\nu^{\prime}}(\vec{\delta})$.
+Substituation of Eq.~(\ref{c-backwards}) gives
+\begin{eqnarray}
+& = &-\frac{1}{N}
+\sum_{\mathbf{r}\vec{\delta}\nu\nu^{\prime}\sigma \mathbf{k}\mathbf{k}^{\prime}}
+t_{\nu\nu^{\prime}}(\vec{\delta})e^{i\vec{\chi}\cdot \vec{\delta}} 
+e^{-i \mathbf{k}\cdot (\mathbf{r} + \vec{\delta})}
+e^{i \mathbf{k}^{\prime} \cdot \mathbf{r}}
+     c^{\dagger}_{\mathbf{k}\nu\sigma}
+  c_{\mathbf{k}^{\prime}\nu^{\prime}\sigma} \\
+& = & - \sum_{\vec{\delta}\nu\nu^{\prime}\mathbf{k},\mathbf{k}^{\prime}}
+t_{\nu\nu^{\prime}}(\vec{\delta})e^{i \vec{\chi}\cdot \vec{\delta}} 
+ e^{-i \mathbf{k}\cdot \vec{\delta}} \delta_{\mathbf{k},\mathbf{k}^{\prime}}
+     c^{\dagger}_{\mathbf{k}\nu\sigma}
+  c_{\mathbf{k}^{\prime}\nu^{\prime}\sigma} \\
+& = & - \sum_{\mathbf{k}\vec{\delta}\nu\nu^{\prime}}  
+e^{-i \mathbf{k}\cdot \vec{\delta}} 
+t_{\nu\nu^{\prime}}(\vec{\delta})e^{i \vec{\chi}\cdot\vec{\delta}} 
+  c^{\dagger}_{\mathbf{k}\nu\sigma}
+  c_{\mathbf{k}\nu^{\prime}\sigma} \\
+& = & \sum_{\mathbf{k}\nu\nu^{\prime}} \epsilon_{\nu\nu^{\prime}}(\mathbf{k})
+  c^{\dagger}_{\mathbf{k}\nu\sigma}
+  c_{\mathbf{k}\nu^{\prime}\sigma}
+ \end{eqnarray}
+where
+\begin{equation}
+\epsilon_{\nu\nu^{\prime}}(\mathbf{k}) = - \sum_{\vec{\delta}} 
+e^{-i \mathbf{k}\cdot\vec{\delta}} e^{i \vec{\chi}\cdot\vec{\delta}}  
+t_{\nu\nu^{\prime}}(\vec{\delta})
+\end{equation}
+is the Fourier transform of the hopping integrals.
+Thus, if we write all the one-electron terms in $\mathbf{k}$-space
+the Hamiltonian becomes
+\begin{equation}
+H_0 - \mu N =  \sum_{\mathbf{k}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+((\epsilon_{\nu\nu^{\prime}}(\mathbf{k}) - \mu\delta_{\nu\nu^{\prime}})
+\delta_{\sigma\sigma^{\prime}} -
+ \mathbf{h}\cdot\vec{\sigma}_{\sigma\sigma^{\prime}}\delta_{\nu\nu^{\prime}}) 
+c^{\dagger}_{\mathbf{k}\nu\sigma}
+ c_{\mathbf{k}\nu^{\prime}\sigma^{\prime}} 
+\end{equation} 
+
+\section{External pair-field coupling terms}
+\label{section:pair-field}
+
+Let
+\begin{eqnarray}
+H_{p} & = & - \frac{1}{2} 
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+h_p \left( \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
+c_{\mathbf{r}\nu\sigma}
+c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} + \mathrm{h.c.}\right) \\
+ &  = & - \frac{1}{2} \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+h_p \left(\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})  
+c_{\mathbf{r}\nu\sigma}
+c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} + 
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}^*(\mathbf{r},\mathbf{r}^{\prime}) 
+c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}
+ c^{\dagger}_{\mathbf{r}\nu\sigma}\right) \\
+& = &  - \frac{1}{2} 
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+h_p \left(\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})  
+c_{\mathbf{r}\nu\sigma}
+c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} + 
+\Psi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\mathbf{r}^{\prime},\mathbf{r}) 
+ c^{\dagger}_{\mathbf{r}\nu\sigma}c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}
+  \right)
+\end{eqnarray}
+Here $\Psi$ is the normalized pairing wave function
+where the normalization is given by
+\begin{equation}
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} | 
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) |^2 = N_{sites}
+\end{equation}
+and the real constant $h_p$ describes the strength of the
+pairing field.
+
+Since 
+$\{c_{\mathbf{r}\nu\sigma},c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}\}=0$ by the Fermi
+commutation relations, only the antisymmetric part of
+$\Psi$ effectively contributes to this term.
+Forcing $\Psi$ to be antisymmetric gives us
+$\Psi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}(\mathbf{r}^{\prime},\mathbf{r}) =
+- \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})$.
+Other than this,
+the functional dependence of $\Psi$ may be arbitary, but we
+will be interested in forms for $\Psi$ that represent
+the dominant pairing symmetry for this model.  When there is
+translational invariance we expect that
+\begin{equation}
+ | \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r}+\vec{\delta},
+\mathbf{r}^{\prime}+\vec{\delta}) | =
+|\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})|
+\end{equation}
+so that
+\begin{equation}
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r}+\vec{\delta},
+\mathbf{r}^{\prime}+\vec{\delta}) = 
+e^{i\theta(\vec{\delta})} 
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}).
+\end{equation}
+(\textbf{Note: does $\theta$ need to have band and spin indices?'})
+Since the pairing field must be single valued we require 
+$\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{r} + L_x\hat{x}, \vec{r}^{\prime} + L_x \hat{x}) = 
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{r}, \vec{r}^{\prime})$
+with similar relations for center-of-mass displacements in the 
+$y$ and $z$ directions.
+We assume also that the spatial variation of the phase will
+be as smooth as possible.  This leads to
+\begin{equation}
+\theta(\vec{\delta}) = 2 \pi (n_{p,x} \delta_x / L_x + n_{p,y} 
+\delta_y / L_y
++ n_{p,z} \delta_z / L_z).
+\end{equation}
+$n_{p,x}$ is an integer that describes the number times
+the phase rotates for each $\delta_x = L_x$ of displacement
+and has only $L_x$ unique values which we take to be
+given by $n_{p,x} = -L_x/2 + 1, -L_x/2 + 2, \cdots -1, 0, 1, \cdots L_x/2$.
+
+Based on these considerations we write
+\begin{equation}
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) = 
+\psi\left(\mathbf{r}_{cm}\right) 
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r} - \mathbf{r}^{\prime}).
+\end{equation}
+where the center of mass part, $\psi(\mathbf{r}_{cm})$, is given
+by
+\begin{equation}
+\psi(\mathbf{r}_{cm}) = e^{i 2 \pi ( n_{p,x} x_{cm} / L_x + n_{p,y} y_{cm}/L_y + 
+n_{p,z} z_{cm}/L_z)}
+\end{equation}
+and the normalization of $\phi$ is given by
+\begin{eqnarray}
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+|\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})|^2 
+& = & N_{sites} \\
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+|\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r} - \mathbf{r}^{\prime}) |^2 
+& = & N_{sites} \\
+N_{sites} \sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+|\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta})|^2 & = & 
+N_{sites} \\
+\sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+|\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta}) |^2 & = & 1.
+\end{eqnarray}
+Thus, the final real-space form for $H_p$ is given (in conventional
+notation) by
+\begin{equation}
+\label{H_p_real}
+H_p = -\frac{1}{2}
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+ h_p \left(e^{i 2 \pi \vec{n_p}\cdot \vec{r}_{cm}/L} 
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r} -
+\mathbf{r}^{\prime}) c_{\mathbf{r}\nu\sigma} c_{\mathbf{r}\nu^{\prime}\sigma^{\prime}}
++e^{-i 2 \pi \vec{n_p}\cdot \vec{r}_{cm}/L} 
+\phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\mathbf{r}^{\prime} -
+\mathbf{r})c^{\dagger}_{\mathbf{r}\nu\sigma}
+c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} \right).
+\end{equation}
+
+Next we convert $H_p$ to $\mathbf{k}$-space.  After substituting
+using Eq.~(\ref{c-backwards}) we get
+\begin{equation}
+\begin{split}
+H_p = & - \frac{h_p}{2N} \sum_{\mathbf{r}\mathbf{r}^{\prime}\sigma\sigma^{\prime}} 
+\sum_{\mathbf{k},\mathbf{k}^{\prime}}
+e^{i 2 \pi \vec{n_p}\cdot \vec{r}_{cm}/L}
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r} - \mathbf{r}^{\prime})
+c_{\mathbf{k}\nu\sigma} c_{\mathbf{k}^{\prime}\nu^{\prime}\sigma^{\prime}}
+e^{i \mathbf{k}\cdot\mathbf{r}} e^{i \mathbf{k}^{\prime}\cdot
+\mathbf{r}^{\prime}} 
+\\
+& + e^{-i 2 \pi \vec{n_p}\cdot \vec{r}_{cm}/L} 
+\phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\mathbf{r}^{\prime} - \mathbf{r})
+ c^{\dagger}_{\mathbf{k}^{\prime}\nu\sigma}
+ c^{\dagger}_{\mathbf{k}\nu^{\prime}\sigma^{\prime}} 
+e^{-i\mathbf{k}^{\prime}\cdot\mathbf{r}}
+ e^{-i \mathbf{k}\cdot \mathbf{r}^{\prime}}  \\
+ = & -\frac{h_p}{2N} 
+ \sum_{\mathbf{k}\mathbf{k}^{\prime}}
+ \sum_{\mathbf{r}_{cm} \vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}}
+e^{i 2 \pi \vec{n_p}\cdot \vec{r}_{cm}/L} 
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta})\,
+ c_{\mathbf{k}\nu\sigma} c_{\mathbf{k}^{\prime}\nu^{\prime}\sigma^{\prime}}
+ e^{i(\mathbf{k}-\mathbf{k}^{\prime})/\cdot \vec{\delta}/2} 
+ e^{i (\mathbf{k}^{\prime}+\mathbf{k})\cdot \mathbf{r}_{cm}}  \\
+ & 
+ -\frac{h_p}{2N} 
+ \sum_{\mathbf{k}\mathbf{k}^{\prime}}
+ \sum_{\mathbf{r}_{cm}\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+  e^{-i 2 \pi \vec{n_p}\cdot \vec{r}_{cm}/L}
+\phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\vec{\delta})
+ c^{\dagger}_{\mathbf{k}^{\prime}\nu\sigma}
+ c^{\dagger}_{\mathbf{k}\nu^{\prime}\sigma^{\prime}}
+ e^{-i(\mathbf{k}+\mathbf{k}^{\prime})\cdot \mathbf{r}_{cm}}
+ e^{-i(\mathbf{k}-\mathbf{k}^{\prime})\cdot\vec{\delta}/2}  \\
+= & -\frac{h_p}{2}
+\sum_{\mathbf{k}\mathbf{k}^{\prime}\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}}
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta}) c_{\mathbf{k}\nu\sigma}
+c_{\mathbf{k}^{\prime}\nu^{\prime}\sigma^{\prime}} 
+e^{i(\mathbf{k}-\mathbf{k}^{\prime})\cdot\vec{\delta}}
+\delta_{\mathbf{k}^{\prime},-\mathbf{k}- 2 \pi \vec{n}_p /L} \\
+& + \phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\vec{\delta})
+c^{\dagger}_{\mathbf{k}^{\prime}\nu\sigma}
+c_{\mathbf{k}\nu^{\prime}\sigma^{\prime}} 
+e^{-i (\mathbf{k}-\mathbf{k}^{\prime})\cdot\vec{\delta}}
+\delta_{\mathbf{k}^{\prime},-\mathbf{k} - 2\pi \vec{n}_p /L_x}  \\
+= & - \frac{h_p}{2} \sum_{\mathbf{k}\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}}
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta})
+e^{i (\mathbf{k}+ \pi\vec{n}_p/L)\cdot \vec{\delta}}
+c_{\mathbf{k}\nu\sigma} 
+c_{-\mathbf{k} - 2 \pi \vec{n}_p / L,\nu^{\prime}\sigma^{\prime}} \\
+& + \phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\vec{\delta})
+e^{-i (\mathbf{k}+ \pi\vec{n}_p/L)\cdot \vec{\delta}}  
+c^{\dagger}_{-\mathbf{k} -2 \pi \vec{n}_p / L,\nu\sigma}
+c^{\dagger}_{\mathbf{k}\nu^{\prime}\sigma^{\prime}}.
+\end{split}
+\end{equation}
+If we set
+\begin{equation}
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{k}) \equiv \sum_{\vec{\delta}}
+e^{-i \mathbf{k}\cdot\vec{\delta}}
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta}), 
+\end{equation}
+then we get
+\begin{equation}
+H_p = - \frac{h_p}{2} \sum_{\mathbf{k}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(-\mathbf{k}-\pi\vec{n}_p/L)
+c_{\mathbf{k}\nu\sigma} 
+c_{-\mathbf{k} - 2\pi \vec{n}_p/L,\nu^{\prime}\sigma^{\prime}}
++  \phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(-\mathbf{k}-\pi\vec{n}_p/L)     
+c^{\dagger}_{-\mathbf{k} - 2\pi\vec{n_p}/L\nu\sigma}
+c_{\mathbf{k}\nu^{\prime}\sigma^{\prime}}.
+\end{equation}
+
+Thus, if $\vec{n}_p \neq 0$, then the electron pairs are
+coupled such that their $x$-momenta differ by an amount equal
+to $\pi \vec{n}_p/L$.  
+For $|\phi_B| < \phi_o / 2$,
+we expect $\vec{n}_p$ to be zero.  In that case, we
+can write the final form of $H_p$ as
+\begin{eqnarray}
+H_p & = & - \frac{h_p}{2} \sum_{\mathbf{k}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(-\mathbf{k})
+  c_{\mathbf{k}\nu\sigma}
+  c_{-\mathbf{k}\nu^{\prime}\sigma^{\prime}}
++ \phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(-\mathbf{k}) 
+  c^{\dagger}_{-\mathbf{k}\nu\sigma}
+  c^{\dagger}_{\mathbf{k}\nu^{\prime}\sigma^{\prime}}\\
+ & = & - \frac{h_p}{2} \sum_{\mathbf{k}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(-\mathbf{k})
+  c_{\mathbf{k}\nu\sigma}
+  c_{-\mathbf{k}\nu^{\prime}\sigma^{\prime}}
++ \phi_{\nu^{\prime}\sigma^{\prime}\nu\sigma}^*(\mathbf{k}) 
+  c^{\dagger}_{\mathbf{k}\nu\sigma}
+  c^{\dagger}_{-\mathbf{k}\nu^{\prime}\sigma^{\prime}}
+\end{eqnarray}
+
+

@@ -1,0 +1,197 @@
+\chapter{Analytic Bose functions}
+\label{chapter:bose-functions}
+
+\section{Bose frequency sums}
+Consider a Bose Green's function with a simple pole,
+\begin{equation}
+G(i \omega_n) =  \frac{1}{i \omega_n - y},
+\end{equation}
+and its Fourier transform to the $\tau$-domain,
+\begin{equation}
+G(\tau)  =  T \sum_n e^{-i\omega_n \tau} G(\omega_n).
+\end{equation}
+To proceed towards evaluation of the frequency sum, consider
+$(\exp(\beta z) - 1)^{-1}$ in the limit
+$z \to 0$:
+\begin{equation}
+(e^{\beta z} - 1)^{-1} \simeq (\beta z)^{-1}.
+\end{equation}
+By the residue theorem we have
+\begin{equation}
+\frac{1}{2 \pi i} \oint_{|z|=\delta}\; dz \frac{F(z)}{z} 
+ = F(z = 0).
+\end{equation}
+This can be rewitten as
+\begin{equation}
+\frac{1}{2 \pi i} \oint dz \; \frac{\beta}{e^{\beta z}-1} 
+F(z) = F(z = 0)
+\end{equation}
+or, finally, 
+\begin{equation}
+\frac{1}{2 \pi i} \oint dz \; \frac{1}{e^{\beta z}-1} 
+F(z) = T \, F(z = 0)
+\end{equation}
+If the contour encloses all the poles of
+$(\exp(\beta z)-1)^{-1}$ at $z = i\omega_n$
+where $\omega_n = 2 n \pi T$, then
+\begin{equation}
+\frac{1}{2 \pi i} \oint dz \; \frac{1}{e^{\beta z}-1} 
+F(z) = T \sum_n F(i\omega_n)
+\end{equation}
+Assuming that $F(z) / (\exp(\beta z) - 1)$
+decreases \textit{at least} like $|z|^{-1 - \epsilon}$
+as $|z| \to \infty$, then we can redefine the
+contour enclosing the  complex axis (\textit{i.e.} Re $z$ = 0)
+to two semi-circular contours covering the complex plane
+except for Re $z$ = 0.
+
+With this we have
+\begin{equation}
+T \sum_n F(i\omega_n) = -\mathrm{Res}
+\left( \frac{F(z)}{e^{\beta z}-1}\right)
+\end{equation}
+with the minus sign resulting from the contour integrations being
+taken in the clockwise directions.
+
+By the same reasoning we can show that
+\begin{equation}
+\frac{-1}{2 \pi i} \oint dz \frac{F(z)}{e^{-\beta z}-1}
+= T \sum_n F(i \omega_n)
+\end{equation}
+so that
+\begin{equation}
+T \sum_n F(i\omega_n) = \mathrm{Res}\left(\frac{F(z)}
+{e^{-\beta z}-1}\right).
+\end{equation}
+
+We note that in these derivations we have assumed that
+there are no poles in $F(z)$ for $\mathrm{Re}\;z = 0$.
+If there is such a pole, the above proofs must be modified and
+an extra term will result.
+
+\section{Fourier transforms of simple-pole functions}
+
+Consider
+\begin{eqnarray}
+G(\tau > 0) & = & T \sum_n e^{-i \omega_n \tau} \frac{1}{i \omega_n - y} \\
+& = & \frac{-1}{2 \pi i} \oint dz\;\frac{e^{-z \tau}}{(e^{-z \beta} - 1)
+(z - y)} \\
+& = & \frac{e^{-y \tau}}{e^{-y \beta} - 1}  \\
+& = & \frac{-1}{1 - e^{-y \beta}} e^{-y \tau} \\
+& = & - \frac{e^{y\beta}}{e^{y\beta} - 1} e^{- y \tau} \\
+& = & - (1 + n_y) e^{-y \tau} 
+\end{eqnarray}
+
+For $\tau < 0$
+\begin{eqnarray}
+G(\tau) & = & T \sum_n \frac{e^{-i \omega_n \tau}}{i\omega_n - y} \\
+& = & \frac{1}{2 \pi i} \oint dz\; \frac{e^{-z \tau}}{(e^{\beta z} - 1)
+(z - y)} \\
+& = & - \frac{e^{-y \tau}}{e^{\beta y} - 1} \\
+& = & - n_y e^{-y \tau}
+\end{eqnarray}
+
+These results agree with AGD.  Also, we have
+\begin{eqnarray}
+G(\tau \to 0^+) - G(\tau \to 0^-) & = & - (1 + n_y) - (- n_y) \\
+& = & -1
+\end{eqnarray}
+as required.
+
+\section{$R$-functions}
+
+We define $R_o$ in frequency space where it has the form
+\begin{equation}
+R_o(i \omega_m, y_o) = \frac{1}{2} \left[ \frac{1}{i \omega_m - y_o}
+             + \frac{1}{i \omega_m + y_o} \right] 
+\end{equation}
+Using the results from the previous sections, we obtain
+the $\tau$-dependence of this function:
+\begin{equation}
+R_o(\tau > 0, y_o)  =  \frac{-1}{2}( 1 - n_{y_o})e^{-y_o \tau} +
+ \frac{-1}{2}( 1 - n_{-y_o})e^{y_o \tau}
+\end{equation}	
+Note that $n_{y_o}$ may be negative.  This  does not pose any
+difficult since in this case  $n_{y_o}$ does not represent
+the number density of a real particle; it is simply a mathematical
+function that is used in various manipulations.
+Simplifying the above we get
+\begin{eqnarray}
+R_o(\tau > 0, y_o) & = & \frac{-1}{2} \left[
+  \frac{e^{\beta y_o}}{e^{\beta y_o} - 1} e^{-y_o \tau}
++ \frac{e^{-\beta y_o}}{e^{-\beta y_o} -1} e^{y_o \tau} \right] \\
+& = & \frac{-1}{2}\left[ \frac{e^{y_o(\beta/2 - \tau)}}
+{e^{\beta y_o / 2} - e^{-\beta y_o / 2}} +
+\frac{e^{-y_o(\beta /2 - \tau)}}
+{e^{-\beta y_o /2} - e^{\beta y_o / 2}} \right] \\
+& = & \frac{-1}{2}\left[ \frac{ e^{y_o(\beta/2 - \tau)} -
+e^{-y_o(\beta_2 - \tau)}}{e^{\beta y_o /2} - e^{-\beta y_o / 2}} \right] \\
+& = & \frac{-1}{2} \frac{\sinh(y_o (\beta/2 - \tau))}
+{\sinh(y_o \beta / 2)}
+\end{eqnarray}
+Also, we have
+\begin{eqnarray}
+R_o(\tau < 0) & = & R_o(\tau + \beta > 0) \\
+& = & \frac{-1}{2} \frac{\sinh(y_o (\beta / 2 - (\tau + \beta)))}
+{\sinh(y_o \beta / 2)} \\
+& = & \frac{-1}{2} \frac{\sinh(y_o(-\beta/2 - \tau))}
+{\sinh(y_o \beta / 2)} \\
+& = & \frac{1}{2} \frac{\sinh(y_o(\beta /2 + \tau))}
+{\sinh(y_o \beta / 2)}
+\end{eqnarray}
+
+The second analytic function, $R_1$, which has an
+$1 / (\omega_m)^2$ asymptotic frequency dependence, is
+given by
+\begin{equation}
+R_1(i\omega_m, y_1) = \frac{1}{2 y_1}
+\left[ \frac{1}{i \omega_m - y_1} - \frac{1}{i\omega_m + y_1} \right].
+\end{equation}
+In $\tau$-space we have
+\begin{eqnarray}
+R_1(\tau > 0, y_1) & = & 
+\frac{-1}{2 y_1} \left[ (1 + n_{y_1})e^{-y_1 \tau} -
+(1 + n_{-y_1})e^{y_1 \tau} \right] \\
+& = & \frac{-1}{2 y_1} 
+\left[ \frac{e^{y_1(\beta/2 - \tau)} + e^{-y_1(\beta/2 - \tau)}}
+{e^{y_1 \beta /2 } - e^{y_1 \beta / 2}} \right] \\
+& = & \frac{-1}{2 y_1} \frac{\cosh(y_1(\beta/2 - \tau))}
+{\sinh(y_1 \beta / 2)}
+\end{eqnarray}
+For $\tau < 0$ we have
+\begin{eqnarray}
+R_1(\tau < 0, y_1) & = & R_1(\tau + \beta > 0) \\
+& = & \frac{-1}{2 y_1} \frac{\cosh(y_1(-beta/2 - \tau))}
+{\sinh(y_1 \beta / 2)} \\
+& = & \frac{-1}{2 y_1} \frac{\cosh(y_1(\beta/2 + \tau))}
+{\sinh(y_1 \beta /2)}
+\end{eqnarray} 
+
+Finally, we also include some alternate expressions for $R_0$
+and $R_1$ that only depend on exponentials having negative
+arguments.
+\begin{eqnarray}
+R_o(\tau > 0, y_o) & = & \frac{-1}{2}
+\left[ \frac{e^{y_o \beta}}{e^{y_o \beta} - 1} e^{-y_o \tau}
++ \frac{e^{-y_o \beta}}{e^{-y_o \beta} - 1} e^{y_o \tau} \right] \\
+& = & \frac{-1}{2} \left[ \frac{e^{-y_o \tau}}{1 - e^{-y_o \beta}}
++ \frac{e^{-y_o(\beta - \tau)}}{e^{-y_o \beta} - 1} \right] \\
+& = & \frac{-1}{2} \left[ \frac{e^{-y_o \tau} -
+e^{-y_o(\beta - \tau)}}{1 - e^{-y_o \beta}} \right ]
+\end{eqnarray}
+and for $R_1$
+\begin{eqnarray}
+R_1(\tau >0, y_1) & = & \frac{-1}{2 y_1}
+\left[ \frac{e^{y_1 \beta}}{e^{y_1 \beta} - 1} e^{-y_1 \tau}
+- \frac{e^{-y_1 \beta}}{e^{-y_1 \beta} - 1} e^{y_1 \tau} \right] \\
+& = & \frac{-1}{2 y_1} 
+\left[ \frac{e^{-y_1 \tau}}{1 - e^{-y_1 \beta}} -
+\frac{e^{-y_1(\beta - \tau)}}{e^{-y_1 \beta} - 1} \right] \\
+& = & \frac{-1}{2 y_1} \left[ \frac{e^{-y_1 \tau} +
+e^{-y_1(\beta - \tau)}}{1 - e^{-\beta y_1}} \right]
+\end{eqnarray}
+
+
+
+
+

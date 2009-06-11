@@ -1,0 +1,3 @@
+# RedHat w/o MPI (single processor only)
+CC = mpif77 -O3 -f77=g77
+LIBRARIES= -lfftw3 -latlas -llapack

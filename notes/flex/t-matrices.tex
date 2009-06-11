@@ -1,0 +1,238 @@
+\chapter{$T$-matrices}
+
+\section{General reprentation}
+
+The particle-hole and particle-particle $T$-matrices
+are $4 \times 4$ matrices in spin-space, \textit{i.e.}
+the elements of the matrix $\mathbf{T}(\omega_m,\mathbf{r})$ are of the form
+\begin{equation}
+T_{\sigma_1 \sigma_2; \sigma_3 \sigma_4}(\omega_m,\mathbf{r})
+\end{equation}
+We write these matrices as the sum of analytic and
+numerical pieces, $\mathbf{t}$ and $\tilde{\mathbf{T}}$, such that
+\begin{equation}
+\mathbf{T}(\omega_m,\mathbf{r}) \equiv \mathbf{t}(\omega_m,\mathbf{r})
++ \tilde{\mathbf{T}}(\omega_m,\mathbf{r}).
+\end{equation}
+The full $T$-matrix has an asymptotic expansion
+\begin{equation}
+\lim_{|\omega_m| \to \infty}\mathbf{T}(\omega_m,\mathbf{r}) 
+=
+ - \frac{\Delta \mathbf{T}(\mathbf{r})}{i \omega_m} 
++ \frac{\Delta \mathbf{T}^{\prime}(\mathbf{r})}
+{(i \omega_m)^2} + O \left(\frac{1}{(i\omega_m)^3}\right).
+\end{equation}
+To ensure that the leading asymptotic dependence of $\mathbf{T}$
+to order $1/(i \omega_m)^2$ is described by 
+the analytic term, $\mathbf{t}$, we write
+\begin{equation}
+\begin{split}
+\label{t-mat-form}
+\mathbf{t}(\omega_m,\mathbf{r}) = & -(\Delta \mathbf{T}(\mathbf{r})
+- \mathbf{d}_0(\mathbf{r}))\,R_0(\omega_m, y_{00}) -
+ \mathbf{d}_0(\mathbf{r}) \,R_0(\omega_m, y_{01}) \\
+& + (\Delta \mathbf{T}^{\prime}(\mathbf{r}) - \mathbf{d}_1(\mathbf{r}))
+R_1(\omega_m, y_{10}) + \mathbf{d}_1(\mathbf{r}) R_1(\omega_m, y_{11})
+\end{split}
+\end{equation}
+Here, $\mathbf{d}_0(\mathbf{r})$ and 
+$\mathbf{d}_1(\mathbf{r})$ are matrices of the
+same rank as $\mathbf{T}$.  Since they are frequency independent
+and $R_0$ and $R_1$ have $1/(i\omega_m)$ and $1/(i \omega_m)^2$
+asymptotic dependencies respectively, 
+the above form guarantees that
+$\mathbf{t}$ accounts for the leading asymptotic frequency
+dependence of $\mathbf{T}$, irrespective of the
+values for $\mathbf{d}_0(\mathbf{r})$ and 
+$\mathbf{d}_1(\mathbf{r})$.
+We utilize the freedom to choose $\mathbf{d}_0(\mathbf{r})$ and 
+$\mathbf{d}_1(\mathbf{r})$
+such that
+\begin{eqnarray}
+\label{t-mat-tau0}
+\mathbf{t}(\tau \to 0^+, \mathbf{r}) & = & 
+\mathbf{T}(\tau \to 0^+, \mathbf{r}) \\
+\mathbf{t}^{\prime}(\tau \to 0^+, \mathbf{r}) & = & 
+\mathbf{T}^{\prime}(\tau \to 0^+, \mathbf{r})
+\end{eqnarray}
+This choice is useful
+for stabilizing the convolution of $T$-matrices and
+Greens functions that occur in the evaluation of the
+self-energy.  In particular, this choice guarantees that
+the leading frequency dependence of the convolution is
+described by the convolution of the analytic parts of
+the Green's function and $T$-matrices.
+
+Combining Eq.~(\ref{t-mat-form}) and Eq.~(\ref{t-mat-tau0}) yields
+\begin{equation}
+\begin{split}
+\mathbf{T}(\tau \to 0^+, \mathbf{r}) = &
+ -(\Delta \mathbf{T}(\mathbf{r})
+- \mathbf{d}_0(\mathbf{r}))\,R_0(\tau \to 0^+, y_{00}) -
+ \mathbf{d}_0(\mathbf{r}) \,R_0(\tau \to 0^+, y_{01}) \\
+& + (\Delta \mathbf{T}^{\prime}(\mathbf{r}) - \mathbf{d}_1(\mathbf{r}))
+R_1(\tau \to 0^+, y_{10}) + \mathbf{d}_1(\mathbf{r}) 
+R_1(\tau \to 0^+, y_{11})
+\end{split}
+\end{equation}
+Since we have
+\begin{eqnarray}
+R_0(\tau \to 0^+, y_{0j}) & = & \frac{-1}{2}\frac{\sinh(y_{0j} \beta/2)}
+{\sinh(y_{0j} \beta/2)} \\
+& = & \frac{-1}{2} \\
+R_1(\tau \to 0^+, y_{1j}) & = & \frac{-1}{2 y_{1j}}
+\frac{\cosh(y_{1j} \beta /2)}{\sinh(y_{1j} \beta /2)} \\
+& = & \frac{-1}{2 y_{1j}}\frac{1}{\tanh(y_{1j} \beta /2)}
+\end{eqnarray}
+\begin{equation}
+\begin{split}
+\mathbf{T}(\tau \to 0^+, \mathbf{r}) = &
+ -(\Delta \mathbf{T}(\mathbf{r})
+- \mathbf{d}_0(\mathbf{r}))\,\left(-\,\frac{1}{2}\right) -
+ \mathbf{d}_0(\mathbf{r}) \,\left(-\,\frac{1}{2}\right) \\
+& + (\Delta \mathbf{T}^{\prime}(\mathbf{r}) - \mathbf{d}_1(\mathbf{r}))
+\left(-\,\frac{1}{2 y_{10}} \frac{1}{\tanh(y_{10} \beta/2)}\right) \\
+& + \mathbf{d}_1(\mathbf{r}) 
+\left(-\,\frac{1}{2 y_{11}} \frac{1}{\tanh(y_{11} \beta/2)}\right)
+\end{split}
+\end{equation}
+which is rewritten as
+\begin{equation}
+\begin{split}
+\mathbf{T}(\tau \to 0^+, \mathbf{r})  &
+- \frac{1}{2} \Delta \mathbf{T}(\mathbf{r}) + 
+\frac{\Delta \mathbf{T}^{\prime}(\mathbf{r})}
+{2y_{10} \tanh(y_{10} \beta /2)} \\
+= & \left( \frac{1}{2y_{10} \tanh(y_{10} \beta /2)} -
+\frac{1}{2y_{11} \tanh(y_{11} \beta /2)} \right) \,\mathbf{d}_1(\mathbf{r}).
+\end{split}
+\end{equation}
+Finally, we solve for $\mathbf{d}_1(\mathbf{r})$ to get
+\begin{equation}
+\mathbf{d}_1(\mathbf{r}) = 
+\frac{
+\mathbf{T}(\tau \to 0^+, \mathbf{r}) 
+- \frac{1}{2} \Delta \mathbf{T}(\mathbf{r}) + 
+{\displaystyle \frac{\Delta \mathbf{T}^{\prime}(\mathbf{r})}
+{2y_{10} \tanh(y_{10} \beta /2)}}
+}
+{\displaystyle \left(
+ \frac{1}{2y_{10} \tanh(y_{10} \beta /2)} -
+\frac{1}{2y_{11} \tanh(y_{11} \beta /2)} \right)
+}
+\end{equation}
+
+We also have
+\begin{equation}
+\begin{split}
+\mathbf{T}^{\prime}(\tau \to 0^+, \mathbf{r}) = &
+ -(\Delta \mathbf{T}(\mathbf{r})
+- \mathbf{d}_0(\mathbf{r}))\,R_0^{\prime}(\tau \to 0^+, y_{00}) -
+ \mathbf{d}_0(\mathbf{r}) \,R_0^{\prime}(\tau \to 0^+, y_{01}) \\
+& + (\Delta \mathbf{T}^{\prime}(\mathbf{r}) - \mathbf{d}_1(\mathbf{r}))
+R_1^{\prime}(\tau \to 0^+, y_{10}) + \mathbf{d}_1(\mathbf{r}) 
+R_1^{\prime}(\tau \to 0^+, y_{11})
+\end{split}
+\end{equation}
+The derivatives of the $R$-functions are as follows
+\begin{eqnarray}
+\frac{\partial R_0(\tau)}{\partial \tau}\bigg\vert_{\tau \to 0^+} & = &
+-\frac{1}{2}\frac{1}{\sinh(y_{0j} \beta/2)} \;
+\frac{\partial}{\partial \tau}
+\sinh(y_{0j}(\beta/2 - \tau))\, \bigg\vert_{\tau \to 0^+} \\
+& = & -\frac{1}{2}\frac{1}{\sinh(y_{0j} \beta/2)} )(-y_{0j})
+\cosh(y_{0j}(\beta/2 - \tau))\, \bigg\vert_{\tau \to 0^+} \\
+& = & \frac{y_{0j}}{2 \tanh(y_{0j} \beta /2)} \\
+\frac{\partial R_1(\tau)}{\partial \tau}\bigg\vert_{\tau \to 0^+} & = &
+-\frac{1}{2 y_{1j}}\frac{1}{\sinh(y_{1j} \beta/2)} \;
+\frac{\partial}{\partial \tau}
+\cosh(y_{1j}(\beta/2 - \tau))\, \bigg\vert_{\tau \to 0^+} \\
+& = & -\frac{1}{2 y_{1j}}\frac{1}{\sinh(y_{1j} \beta/2)} )(-y_{1j})
+\sinh(y_{1j}(\beta/2 - \tau))\, \bigg\vert_{\tau \to 0^+} \\
+& = & \frac{1}{2}
+\end{eqnarray}
+Therefore
+\begin{equation}
+\begin{split}
+\mathbf{T}^{\prime}(\tau \to 0^+, \mathbf{r}) = &
+ -(\Delta \mathbf{T}(\mathbf{r})
+- \mathbf{d}_0(\mathbf{r}))\,\frac{y_{00}}{2 \tanh(y_{00} \beta/2)} -
+ \mathbf{d}_0(\mathbf{r}) \,\frac{y_{01}}{2 \tanh(y_{01} \beta/2)} \\
+& + (\Delta \mathbf{T}^{\prime}(\mathbf{r}) - \mathbf{d}_1(\mathbf{r}))
+\left( \frac{1}{2} \right) + \mathbf{d}_1(\mathbf{r}) 
+\left( \frac{1}{2} \right)
+\end{split}
+\end{equation}
+which is rewritten as
+\begin{equation}
+\begin{split}
+\mathbf{T}^{\prime}(\tau \to 0^+, \mathbf{r}) & + 
+\frac{
+y_{00}\;\Delta \mathbf{T}(\mathbf{r})}
+{2 \tanh(y_{00} \beta /2)}
+-
+\frac{1}{2}\,\Delta \mathbf{T}^{\prime}(\mathbf{r}) \\
+ & = \left( \frac{y_{00}}{2\tanh(y_{00}\beta /2)}
+ - \frac{y_{01}}{2 \tanh(y_{01}\beta /2)} \right) \mathbf{d}_0(\mathbf{r}).
+\end{split}
+\end{equation}
+Finally we solve for $\mathbf{d}_0(\mathbf{r})$ to get
+\begin{equation}
+ \mathbf{d}_0(\mathbf{r}) =
+\frac{
+\mathbf{T}^{\prime}(\tau \to 0^+, \mathbf{r}) + 
+{\displaystyle
+\frac{
+y_{00}\;\Delta \mathbf{T}(\mathbf{r})}
+{2 \tanh(y_{00} \beta /2)}}
+-
+\frac{1}{2}\,\Delta \mathbf{T}^{\prime}(\mathbf{r})}
+{\displaystyle
+\left(\frac{y_{00}}{2\tanh(y_{00}\beta /2)}
+- \frac{y_{01}}{2 \tanh(y_{01}\beta /2)} \right)
+}
+\end{equation}
+
+The notation we have used thus far is cumbersome for
+programming.  To simplify we adopt the following notation
+for $\mathbf{t}$:
+\begin{equation}
+\mathbf{t}(\omega_m,\mathbf{r}) = \sum_{ij} \mathbf{d}_{ij}(\mathbf{r})\,
+R_{ij}(\omega_m)
+\end{equation}
+where
+\begin{equation}
+R_{ij}(\omega_m) \equiv R_i(\omega_m,y_{ij})
+\end{equation}
+The coefficient matrices $\mathbf{d}_{ij}(\mathbf{r})$
+are given by
+\begin{eqnarray}
+\mathbf{d}_{01}(\mathbf{r}) & = &
+\frac{-\left(
+\mathbf{T}^{\prime}(\tau \to 0^+, \mathbf{r}) + 
+{\displaystyle
+\frac{
+y_{00}\;\Delta \mathbf{T}(\mathbf{r})}
+{2 \tanh(y_{00} \beta /2)}}
+-
+\frac{1}{2}\,\Delta \mathbf{T}^{\prime}(\mathbf{r})\right)}
+{\displaystyle
+\left(\frac{y_{00}}{2\tanh(y_{00}\beta /2)}
+- \frac{y_{01}}{2 \tanh(y_{01}\beta /2)} \right)
+} \\
+\mathbf{d}_{00}(\mathbf{r}) & = & -\Delta \mathbf{T}(\mathbf{r})
+ - \mathbf{d}_{01}(\mathbf{r}) \\
+\mathbf{d}_{11}(\mathbf{r}) & = &
+\frac{
+\mathbf{T}(\tau \to 0^+, \mathbf{r}) 
+- \frac{1}{2} \Delta \mathbf{T}(\mathbf{r}) + 
+{\displaystyle \frac{\Delta \mathbf{T}^{\prime}(\mathbf{r})}
+{2y_{10} \tanh(y_{10} \beta /2)}}
+}
+{\displaystyle \left(
+ \frac{1}{2y_{10} \tanh(y_{10} \beta /2)} -
+\frac{1}{2y_{11} \tanh(y_{11} \beta /2)} \right)
+} \\
+\mathbf{d}_{10}(\mathbf{r}) & = & \Delta \mathbf{T}^{\prime}(\mathbf{r})
+ - \mathbf{d}_{11}(\mathbf{r}) 
+\end{eqnarray}

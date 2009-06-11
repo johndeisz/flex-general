@@ -1,0 +1,18 @@
+#-------------- qsub.test2 -----------------
+#!/bin/sh
+#PBS -N p-wave
+#PBS -l nodes=2:ppn=2
+#PBS -l cput=0:10
+#PBS -m e
+#PBS -M john.deisz@uni.edu
+#PBS -o output_file
+#PBS -j oe
+#
+echo "The nodefile is ${PBS_NODEFILE} and it contains:"
+cat ${PBS_NODEFILE}
+#
+time mpiexec -machinefile ${PBS_NODEFILE} \
+        -np `wc -l ${PBS_NODEFILE} | awk '{print $1}'` ./flex-mpi-double < ./in.tmp 
+#-------------------------------------------
+
+

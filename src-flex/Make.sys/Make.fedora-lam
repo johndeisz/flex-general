@@ -1,0 +1,2 @@
+# RedHat w/o MPI (single processor only)
+CC = LAMMPIF77=gfortran lamf77-32 -O3 -I/usr/include 

@@ -1,0 +1,84 @@
+\chapter{Pade approximants}
+
+Consider a function $A(z)$ whose argument (frequency), 
+$z$, is complex. 
+If the high frequency behavior goes as $c/ z$
+where $c$ is a constant,
+then a possible fitting function for $A$ would be
+\begin{equation}
+\label{pade}
+A_{pade}(z) = \frac{p_0 + p_1 z +  ...  + p_n z^n}
+{  q_0 + q_1 z + ... + q_n z^n + z^{n+1}}
+\end{equation}
+where $\{p_i, q_i\}$ provide $2n + 2$ fitting constants
+and we will call $n$ the order of this Pade approximant.
+As $|z| \to \infty$, $A_{pade}(z) \to p_n / z$ as required.
+
+The function $A(z)$ is, generally, non-analytic across
+the real axis ($\textrm{Im } z = 0$).  Thus, if we wish to
+obtain a fit to $A(z)$ that is valid just above the real axis,
+\textit{i.e.} $z = \varepsilon + i\delta$, then we can
+only use data for $A(z)$ whose $z$ values have $\textrm{Im }z > 0$.
+In our case, we have data for $A(z)$ on the imaginary frequency axis,
+\textit{i.e.} $z = i \varepsilon_j$ where $\varepsilon_j = 
+(2 j + 1)\pi T$ where $j = 0, 1, 2, ...$ and $T$ is the temperature.
+To obtain a unique fit, we need $2n + 2$ constraints.  We get
+these by using results for
+$A(z = i\varepsilon_j)$ at the $2n + 2$
+lowest positive values of $\varepsilon_j$.
+
+This gives use a set of $2n +2$ linear equations for solving
+the unknown constants $\{p_i, q_i\}$.  For example, for the
+first frequency value, $\varepsilon_0 = \pi T$, we have
+\begin{equation}
+A(i\varepsilon_0)  =  
+\frac{p_0 + p_1 (i\varepsilon_0) + ... + p_n (i\varepsilon_0)^n}
+{q_0 + q_1 (i\varepsilon_0) + ... + q_n (i\varepsilon_0)^n +
+(i\varepsilon_0)^{n+1} }. 
+\end{equation}
+After multiplying the equation by the denominator of the
+right-hand side and doing some elementary algebra we get
+\begin{equation}
+A(i\varepsilon_0)\,q_0 +
+A(i\varepsilon_0)\,(i\varepsilon_0) q_1 + ... +
+A(i\varepsilon_0)^n\,(i\varepsilon_0)^n q_n -
+p_0 - 
+(i\varepsilon_0) p_1 - ... -(i\varepsilon_0)^n p_n 
+= -A(i\varepsilon_0) (i\varepsilon_0)^{n+1}
+\end{equation}
+Likewise, for the next frequency value, $\varepsilon_1 = 3 \pi T$
+we have
+\begin{equation}
+A(i\varepsilon_1)\,q_0 +
+A(i\varepsilon_1)\,(i\varepsilon_1) q_1 + ... +
+A(i\varepsilon_1)^n\,(i\varepsilon_1)^n q_n -
+p_0 - 
+(i\varepsilon_1) p_1 - ... -(i\varepsilon_1)^n p_n 
+= -A(i\varepsilon_1) (i\varepsilon_1)^{n+1}
+\end{equation}
+
+This set of $2n + 2$ equations in $2n + 2$ unknowns can be
+written as a linear matrix equation,
+\begin{equation}
+\mathbf{M} \mathbf{x} = \mathbf{b}.
+\end{equation}
+The constant vector $\mathbf{b}$ has 
+elements $b_j = -A(i\varepsilon_j) \,(i \varepsilon_j)^{n+1}$
+where $j = 0, 1, 2, ...., 2n + 1$. The column vector $\mathbf{x}$
+represents the coefficients $\{p_i,q_i\}$.  In particular,
+if we let $x_j = q_j$ for $j = 0, 1, ..., n$ and
+$x_j = p_{j - n - 1}$ for $j = n+1, n+2, ..., 2n+1$, then
+the constant matrix $\mathbf{M}$ has elements given by
+$M_{j,k} = A(i\varepsilon_j) z^k$ for $k = 0, 1, ..., n$
+and $M_{j,k} = -z^{k - n - 1}$ for $k = n+1, n+2, ..., 2n+1$.
+
+Thus, given $2n+2$ positive frequencies, $\varepsilon_j$, and 
+the values of $A(i\varepsilon_j)$ at those frequencies,
+we can simply define the coefficient matrix
+$\mathbf{M}$ and constant 
+vector $\mathbf{b}$ that can be input into a linear equation
+solver (such as from Lapack).  The solution vector
+of length $2n+2$ contains the values of $\{ p_i, q_i \}$
+that represent the constant coefficients in the 
+Pade approximant of Eq.~(\ref{pade}).
+
