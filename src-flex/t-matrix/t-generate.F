@@ -103,12 +103,6 @@ c     Calculate the discontinuities in T and T_prime
 
       enddo
 
-c     Multiply the t-matrix by (-1) to account for extra appearance
-c     of the vertex function.
-      delta_t = -delta_t
-      delta_t_prime = -delta_t_prime
-      t_mat = -t_mat
-
       return
       end
 
