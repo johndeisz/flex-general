@@ -81,7 +81,7 @@ c     Form sigma(tau, r)
 
               do j = 0, 4*nb-1
                 do k = 0, 4*nb-1
-                  temp_sum = temp_sum +
+                  temp_sum = temp_sum -
      $               g(k,j,l,ir) * 
      $               chi(4*nb*h+k,4*nb*i+j,l,ir)
                 enddo
@@ -111,7 +111,7 @@ c     Subtract analytic portion from Sigma(tau, r)
                     do j0 = 0, 1
                       do i1 = 0, 1
                         do j1 = 0, 1
-                          temp_sum = temp_sum +
+                          temp_sum = temp_sum -
      $                       c_r(i0,j0,k,j,ir) *
      $                       d(i1,j1,4*nb*h+k,4*nb*i+j,ir) *
      $                       q_tau(i0,j0,l) * r_tau(i1,j1,l)
@@ -148,7 +148,7 @@ c     Subtract analytic portion from Sigma(tau, r)
                       do i1 = 0, 1
                         do j1 = 0, 1
 
-                          temp_sum = temp_sum +
+                          temp_sum = temp_sum -
      $                       c_r(i0,j0,k,j,ir) *
      $                       d(i1,j1,4*nb*h+k,4*nb*i+j,ir) *
      $                       a_int(i0,j0,i1,j1,l)
