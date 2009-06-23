@@ -177,8 +177,8 @@ c     First, initialize the gamma array
           do na3 = 0, 4*nb-1
             do na4 = 0, 4*nb-1
 
-              gamma0_ph( 4*nb*na1+na4, 4*nb*na3+na2) = 
-     $           -gamma0(na1,na2,na3,na4)
+              gamma0_ph( 4*nb*na1+na3, 4*nb*na4+na2) = 
+     $           gamma0(na1,na2,na3,na4)
 
             enddo
           enddo
