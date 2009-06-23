@@ -54,7 +54,7 @@
             do na0 = 0, 4*nb-1
               do na1 = 0, 4*nb-1
 
-                gamma0 = -gamma0_ph(4*nb*na0+nap,4*nb*na1+na)
+                gamma0 = gamma0_ph(4*nb*na0+na1,4*nb*nap+na)
 
                 sigma1(na,nap) = sigma1(na,nap) +
      $             0.5d0 * gamma0 * g_tau0_local(na1,na0)
