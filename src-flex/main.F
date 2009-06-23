@@ -305,7 +305,7 @@ c     Prepare for self-consistency loop.
         write(6,*) 'Calculation parameters: '
         write(6,*) '-------------------------------------'
         write(6,*) 't (K) = ', t/kb
-        write(6,*) 'mu = ', mu
+        write(6,*) 'Final mu = ', mu
         write(6,*) 'flux_x = ', flux(1)
         write(6,*) 'flux_y = ', flux(2)
         write(6,*) 'flux_z = ', flux(3)
