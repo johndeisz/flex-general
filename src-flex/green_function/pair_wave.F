@@ -1,6 +1,6 @@
 #include "../convert.F"
 
-      subroutine pair_wave(psi, g_tau0, m_psi)
+      subroutine pair_wave(psi, g_tau0, alpha, m_psi)
 
 #include "../constants.F"
 
@@ -10,11 +10,14 @@
 
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
       COMPLEX g_tau0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
-      REAL m_psi
+      REAL m_psi, alpha
+
+      COMPLEX psi_old(0:2*nb-1,0:2*nb-1, 0:nl-1)
 
       INTEGER k, ib, ibp, is, isp
 
       INTEGER rank
+      REAL phase_old, phase_new
 
 #ifdef USE_MPI
       INTEGER ierr
@@ -25,6 +28,9 @@
 #else
       rank = 0
 #endif /* USE_MPI */
+
+      psi_old = psi
+      phase_old = atan2(imag(psi(0,1,1)),real(psi(0,1,1)))
 
       if (rank .eq. 0) then
 
@@ -82,6 +88,11 @@
         endif
         
       endif
+
+      psi = (1.0d0 - alpha)*psi_old + alpha*psi
+
+      phase_new = atan2(imag(psi(0,1,1)),real(psi(0,1,1)))
+      psi = psi*cexp(cmplx(0.0d0,phase_old-phase_new))
 
 #ifdef USE_MPI
       call MPI_Bcast(psi, 4*nb*nb*nl,
