@@ -172,7 +172,7 @@ c     Prepare for self-consistency loop.
      $       iteration)
 
           iteration = iteration + 1
-          call  pair_wave(psi, g_tau0, m_psi)
+          call  pair_wave(psi, g_tau0, alpha, m_psi)
 
           call cpu_time(this_it_time)
           if (rank .eq. 0) then
