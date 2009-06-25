@@ -73,13 +73,17 @@ and $\tau \to 0^+$ should be used for hole degrees of freedom
 
 Since the self-energy is local in time and space, its Fourier
 transform is independent of frequency and momentum.  We have
-\begin{equation}
+\begin{eqnarray}
 \Sigma^{(1)}_{\nu\alpha \nu^{\prime}\alpha^{\prime}}(\epsilon_n,\mathbf{k}) \equiv
-\Sigma^{(1)}_{\nu\alpha \nu^{\prime}\alpha^{\prime}} =
+\Sigma^{(1)}_{\nu\alpha \nu^{\prime}\alpha^{\prime}} &  = &
 \frac{1}{2} \sum_{\nu_0\alpha_0 \nu_1\alpha_1}
 \Gamma^{(0)}_{\nu_0\alpha_0\nu\alpha; \nu_1\alpha_1 \nu^{\prime}\alpha^{\prime}}
+G_{\nu_1\alpha_1 \nu_0\alpha_0}(\tau=0,\mathbf{r}=\mathbf{0}) \\
+& = & \frac{1}{2} \sum_{\nu_0\alpha_0 \nu_1\alpha_1}
+\Gamma^{(0)ph}_{\nu_0 \alpha_0 \nu_1 \alpha_1;
+\nu^{\prime}\alpha^{\prime} \nu \alpha}
 G_{\nu_1\alpha_1 \nu_0\alpha_0}(\tau=0,\mathbf{r}=\mathbf{0})
-\end{equation}
+\end{eqnarray}
 
 For concretness, consider the single band case to see how the above formula
 is able to reproduce well know results.
@@ -259,7 +263,7 @@ G_{\nu\sigma^{\prime}\nu\sigma}(\tau \to 0^-,\mathbf{r} = \mathbf{0})
 
 Recall that
 \begin{equation}
-H_{p}  = -\frac{h_p}{2} 
+H_{p}  = -h_p\frac{\sqrt{N_l}}{2} 
 \left( \sum_{\mathbf{r}\mathbf{r}^{\prime}
 \nu\nu^{\prime}\sigma\sigma^{\prime}}  
 \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
@@ -271,7 +275,7 @@ c^{\dagger}_{\mathbf{r}\nu\sigma}
 so that
 \begin{equation}
 E_p \equiv <H_p> 
-= -\frac{h_p}{2} 
+= -h_p\frac{\sqrt{N_l}}{2} 
 \left( \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}}  
 \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
 <c_{\mathbf{r}\nu\sigma}c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}> + 
@@ -287,16 +291,17 @@ and \textit{induced} pairing amplitude, $m_p $, by
 \begin{equation}
 <c_{\mathbf{r}\nu\sigma}c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}>  =  m_p 
 \left(\Psi^{\prime}_{\nu^{\prime}\sigma^{\prime}\mu\sigma}(\mathbf{r}^{\prime},
-\mathbf{r})\right)^* 
+\mathbf{r})\right)^* \sqrt{N_l}
 \end{equation}
 which implies that
 \begin{equation}
 <c^{\dagger}_{\mathbf{r}\nu\sigma} 
 c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}>  = 
-m_p \Psi^{\prime}_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}).
+m_p \Psi^{\prime}_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
+\sqrt{N_l}.
 \end{equation}
 \begin{eqnarray}
-E_p & =  & - \frac{h_p m_p}{2} 
+E_p & =  & - h_p m_p \frac{N_l}{2} 
 \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) 
 \left(\Psi^{\prime}_{\nu^{\prime}\sigma^{\prime}\nu\sigma}
@@ -306,7 +311,7 @@ E_p & =  & - \frac{h_p m_p}{2}
 \Psi^{\prime}_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
 \\
 & = &
-- h_p m_p \;\textrm{Re }
+- h_p m_p N_l \;\textrm{Re }
 \left(\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 \Psi_{\nu\sigma\nu\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) 
 \left(\Psi^{\prime}_{\nu^{\prime}\sigma^{\prime}\nu\sigma}
@@ -314,7 +319,7 @@ E_p & =  & - \frac{h_p m_p}{2}
 \end{eqnarray} 
 For a translationally invariant system this reduces to
 \begin{equation}
-\frac{<E_p>}{N_L}  =  - 
+\frac{<E_p>}{N_l}  =  - 
 h_p m_p\;\textrm{Re } \sum_{\mathbf{r}\nu\nu^{\prime}\sigma\sigma^{\prime}}
     \phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r}) 
 \left(\phi^{\prime}_{\nu^{\prime}\sigma^{\prime}\nu\sigma}(-\mathbf{r})\right)^* 
@@ -327,7 +332,7 @@ we determine $\phi^{\prime}$ from
 \begin{equation}
 <c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} 
 c^{\dagger}_{\mathbf{r}\nu\sigma}> = 
-m_p \Psi^{\prime}_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
+m_p \Psi^{\prime}_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) \sqrt{N_l}
 \end{equation}
 so that in the translationally invariant case (and assuming
 $n_p = 0$)

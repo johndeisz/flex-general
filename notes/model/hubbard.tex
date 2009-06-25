@@ -142,19 +142,19 @@ c^{\dagger}_{\mathbf{k}\nu\sigma}
 
 Let
 \begin{eqnarray}
-H_{p} & = & - \frac{1}{2} 
+H_{p} & = & - \frac{\sqrt{N_l}}{2} 
 \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 h_p \left( \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})
 c_{\mathbf{r}\nu\sigma}
 c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} + \mathrm{h.c.}\right) \\
- &  = & - \frac{1}{2} \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+ &  = & - \frac{\sqrt{N_l}}{2} \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 h_p \left(\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})  
 c_{\mathbf{r}\nu\sigma}
 c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} + 
 \Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}^*(\mathbf{r},\mathbf{r}^{\prime}) 
 c^{\dagger}_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}}
  c^{\dagger}_{\mathbf{r}\nu\sigma}\right) \\
-& = &  - \frac{1}{2} 
+& = &  - \frac{\sqrt{N_l}}{2} 
 \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 h_p \left(\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})  
 c_{\mathbf{r}\nu\sigma}
@@ -167,8 +167,9 @@ Here $\Psi$ is the normalized pairing wave function
 where the normalization is given by
 \begin{equation}
 \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} | 
-\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) |^2 = N_{sites}
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) |^2 = 1,
 \end{equation}
+$N_l$ is the number of lattice points
 and the real constant $h_p$ describes the strength of the
 pairing field.
 
@@ -223,20 +224,22 @@ Based on these considerations we write
 where the center of mass part, $\psi(\mathbf{r}_{cm})$, is given
 by
 \begin{equation}
-\psi(\mathbf{r}_{cm}) = e^{i 2 \pi ( n_{p,x} x_{cm} / L_x + n_{p,y} y_{cm}/L_y + 
+\psi(\mathbf{r}_{cm}) = 
+\frac{1}{\sqrt{N_l}}e^{i 2 \pi ( n_{p,x} x_{cm} / L_x + n_{p,y} y_{cm}/L_y + 
 n_{p,z} z_{cm}/L_z)}
 \end{equation}
 and the normalization of $\phi$ is given by
 \begin{eqnarray}
 \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 |\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})|^2 
-& = & N_{sites} \\
+& = & 1 \\
+\frac{1}{N_l}
 \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 |\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r} - \mathbf{r}^{\prime}) |^2 
-& = & N_{sites} \\
-N_{sites} \sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
+& = & 1\\
+\frac{1}{N_l} N_l \sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 |\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta})|^2 & = & 
-N_{sites} \\
+1 \\
 \sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
 |\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta}) |^2 & = & 1.
 \end{eqnarray}
