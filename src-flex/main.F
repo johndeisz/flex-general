@@ -16,7 +16,7 @@ c     Gather all the data from the input file
       call readin(t, flux, prfld,
      $   h, target_density, density_tol, mu, uu,
      $   up, uj, ed, tij,
-     $   prfld_pert, h_pert,
+     $   prfld_pert, h_pert, v_pert,
      $   read_input, sigma_input_file,
      $   write_output, sigma_output_file, max_pade_order,
      $   sigma_tol,  max_it, alpha, alpha_scheme)
@@ -58,7 +58,7 @@ c     Initialize a random pair wave function.
       endif
 
 #ifdef SECOND_ORDER
-      call h0_generate(h0, ek, psi, h, h_pert, 	
+      call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
      $   prfld, prfld_pert, mu, sigma1, iteration)
       call discontinuities(h0, delta_g_r, delta_g_k,
      $   delta_gp_r, delta_gp_k)
@@ -110,7 +110,7 @@ c     Prepare for self-consistency loop.
 
           sigma_converged = .true.
 
-          call h0_generate(h0, ek, psi, h, h_pert, 	
+          call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
      $       prfld, prfld_pert, mu, sigma1, iteration)
 
 #ifdef SECOND_ORDER
