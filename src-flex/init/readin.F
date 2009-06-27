@@ -2,7 +2,7 @@
 
       subroutine readin(t, flux, prfld, h,
      $   target_density, density_tol, mu, uu, up, uj, 
-     $   ed, tij, prfld_pert, h_pert,
+     $   ed, tij, prfld_pert, h_pert, v_pert,
      $   read_input, sigma_input_file,
      $   write_output, sigma_output_file, max_pade_order,
      $   sigma_tol,  max_it, alpha, alpha_scheme)
@@ -27,6 +27,8 @@ c Parameters to be read and returned
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       REAL prfld_pert
       REAL h_pert(1:3)
+      REAL v_pert_amp
+      REAL v_pert(0:nb-1)
       LOGICAL read_input, write_output
       CHARACTER*128 sigma_input_file, sigma_output_file
       INTEGER max_pade_order
@@ -148,6 +150,7 @@ c-----Perturbations: applied and relaxed over initial 10 iterations -------
         read(5,*)
         read(5,*) prfld_pert
         read(5,*) h_pert
+        read(5,*) v_pert_amp
 
         write(6,*) "Preturbations: applied and relaxed over",
      $   " initial 10 iterations"
@@ -158,12 +161,19 @@ c-----Perturbations: applied and relaxed over initial 10 iterations -------
      $     h_pert(2)
         write(6,*) "Artificial uniform magnetic field, hz = ", 
      $     h_pert(3)
+        write(6,*) "Random orbital potential amplitude  = ",
+     $     v_pert_amp
+        do ib = 0, nb-1
+          v_pert(ib) = v_pert_amp * rand()
+        enddo
       endif
 
 #ifdef USE_MPI
       call MPI_Bcast(prfld_pert, 1, MPI_REAL, 0, 
      $   MPI_COMM_WORLD, ierr)
       call MPI_Bcast(h_pert, 3, MPI_REAL, 0,
+     $   MPI_COMM_WORLD, ierr)
+      call MPI_Bcast(v_pert, nb, MPI_REAL, 0,
      $   MPI_COMM_WORLD, ierr)
 #endif
 
