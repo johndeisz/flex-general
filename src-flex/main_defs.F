@@ -18,6 +18,7 @@ c Parameters read from input file
 
       REAL prfld_pert
       REAL h_pert(1:3)
+      REAL v_pert(0:nb-1)
       LOGICAL read_input, write_output
       CHARACTER*128 sigma_input_file, sigma_output_file
       INTEGER max_pade_order
