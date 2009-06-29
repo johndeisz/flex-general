@@ -30,7 +30,7 @@
 #endif /* USE_MPI */
 
       psi_old = psi
-      phase_old = atan2(imag(psi(0,1,1)),real(psi(0,1,1)))
+      phase_old = atan2(imag(psi(0,1,llx+2)),real(psi(0,1,llx+2)))
 
       if (rank .eq. 0) then
 
@@ -91,7 +91,7 @@
 
       psi = (1.0d0 - alpha)*psi_old + alpha*psi
 
-      phase_new = atan2(imag(psi(0,1,1)),real(psi(0,1,1)))
+      phase_new = atan2(imag(psi(0,1,llx+2)),real(psi(0,1,llx+2)))
       psi = psi*cexp(cmplx(0.0d0,phase_old-phase_new))
 
 #ifdef USE_MPI
