@@ -11,6 +11,7 @@
 -- Perturbations: applied and relaxed over initial 10 iterations ---
 0.0d0       ! Pair field, start random, evolve to strongest channel
 0.0d0 0.0d0 0.0d0      ! Uniform magnetic field
+0.0d0       ! Random band offset
 
 ---------Sigma input and output ----------------------------------------------
 .false. "sig_output"             ! input
