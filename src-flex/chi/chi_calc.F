@@ -121,9 +121,9 @@ c     Multiply the results by gamma to obtain deltachi and deltachiprime
       endif
       
 #ifdef USE_MPI
-      call MPI_Bcast(delta_chi, 16*16*nb*nb*nc, 
+      call MPI_Bcast(delta_chi, 16*16*nb*nb*nb*nb*nc, 
      $   MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
-      call MPI_Bcast(delta_chi_prime, 16*16*nb*nb*nc, 
+      call MPI_Bcast(delta_chi_prime, 16*16*nb*nb*nb*nb*nc, 
      $   MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
 #endif
 
