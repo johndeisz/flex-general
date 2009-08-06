@@ -57,7 +57,7 @@
      $   delta_chi_prime, r_tau, r_omega,
      $   overall_eigenvalue_max, dominant_chi_eigenvector, 
      $   dominant_chi_index)
-#endif
+#endif /* THIRD_ORDER */
 
       call t_generate(chi, gamma_ph, delta_chi,
      $   delta_chi_prime)
