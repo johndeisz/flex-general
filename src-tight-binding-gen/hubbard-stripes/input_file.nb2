@@ -1,7 +1,7 @@
 0.00d0 0.0d0 0.0d0     ! flux_x, flux_y, flux_z
 0.0d0  0.0d0           ! ed0
--1.0d0                 ! tx
--1.0d0                 ! ty
+1.0d0                 ! tx
+1.0d0                 ! ty
 0.0d0                  ! txy
 0.0d0                  ! txx
 0.0d0                  ! tyy
