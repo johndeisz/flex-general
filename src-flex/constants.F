@@ -7,8 +7,8 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
 
       parameter (nb = 2)
 
-      parameter (m =  128) 
-      parameter (lcx = 4)
+      parameter (m =  256) 
+      parameter (lcx = 1)
       parameter (lcy = 2)
       parameter (lcz = 1)
       parameter (nc = lcx*lcy*lcz)  ! number of cluster sites
@@ -22,7 +22,7 @@ c MPI related constants.
 
       integer np, mp, ncp, max_message
 
-      parameter (np = 4)
+      parameter (np = 1)
       parameter (mp = m/np)  ! must be an integer
       parameter (ncp = nc/np)  ! must be an integer
 
