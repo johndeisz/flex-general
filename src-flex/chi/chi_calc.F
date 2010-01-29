@@ -55,8 +55,8 @@ c     the change close to 0
             do iz = 0, lcz1
 
               ir = ix + iy*lcx + iz*lcx*lcy
-              irm = mod(ix+lcx,lcx) + mod(iy+lcy,lcy)*lcx +
-     $           mod(iz+lcz,lcz)*lcx*lcy
+              irm = mod(-ix+lcx,lcx) + mod(-iy+lcy,lcy)*lcx +
+     $           mod(-iz+lcz,lcz)*lcx*lcy
 
               do h = 0, 4*nb-1
                 do i = 0, 4*nb-1
