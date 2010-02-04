@@ -166,9 +166,18 @@ c_{\mathbf{r}^{\prime}\nu^{\prime}\sigma^{\prime}} +
 Here $\Psi$ is the normalized pairing wave function
 where the normalization is given by
 \begin{equation}
-\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} | 
-\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) |^2 = 1,
+S(\nu_{max})  =  1 
 \end{equation}
+where $\nu_{max}$ corresponds to the band index 
+that maximizes the function
+\begin{equation}
+S(\nu) = \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu^{\prime}\sigma\sigma^{\prime}} | 
+\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime}) |^2 
+\end{equation}
+This normalization choice is made so that (1) for a given field, $h_p$, 
+identical results are obtained whether or not equivalent orbitals are
+treated as distinct or not and (2) if non-active bands are introduced no
+change is made to the normalization of the active bands.
 $N_l$ is the number of lattice points
 and the real constant $h_p$ describes the strength of the
 pairing field.
@@ -230,18 +239,18 @@ n_{p,z} z_{cm}/L_z)}
 \end{equation}
 and the normalization of $\phi$ is given by
 \begin{eqnarray}
-\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
-|\Psi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})|^2 
+S(\nu_{max}) = \sum_{\mathbf{r}\mathbf{r}^{\prime}\nu^{\prime}\sigma\sigma^{\prime}} 
+|\Psi_{\nu_{max}\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r},\mathbf{r}^{\prime})|^2 
 & = & 1 \\
 \frac{1}{N_l}
-\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
-|\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\mathbf{r} - \mathbf{r}^{\prime}) |^2 
+\sum_{\mathbf{r}\mathbf{r}^{\prime}\nu^{\prime}\sigma\sigma^{\prime}} 
+|\phi_{\nu_{max}\sigma\nu_{\prime}\sigma^{\prime}}(\mathbf{r} - \mathbf{r}^{\prime}) |^2 
 & = & 1\\
-\frac{1}{N_l} N_l \sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
-|\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta})|^2 & = & 
+\frac{1}{N_l} N_l \sum_{\vec{\delta}\nu^{\prime}\sigma\sigma^{\prime}} 
+|\phi_{\nu_{max}\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta})|^2 & = & 
 1 \\
-\sum_{\vec{\delta}\nu\nu^{\prime}\sigma\sigma^{\prime}} 
-|\phi_{\nu\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta}) |^2 & = & 1.
+\sum_{\vec{\delta}\nu^{\prime}\sigma\sigma^{\prime}} 
+|\phi_{\nu_{max}\sigma\nu^{\prime}\sigma^{\prime}}(\vec{\delta}) |^2 & = & 1.
 \end{eqnarray}
 Thus, the final real-space form for $H_p$ is given (in conventional
 notation) by
