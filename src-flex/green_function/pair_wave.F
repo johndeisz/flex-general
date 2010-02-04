@@ -10,7 +10,7 @@
 
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
       COMPLEX g_tau0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
-      REAL m_psi, alpha
+      REAL m_band, m_psi, alpha
 
       COMPLEX psi_old(0:2*nb-1,0:2*nb-1, 0:nl-1)
 
@@ -37,6 +37,9 @@
         m_psi = 0.0d0
 
         do ib = 0, nb-1
+
+          m_band = 0.0d0         
+
           do ibp = 0, nb-1
 
             do is = 0, 1
@@ -44,7 +47,7 @@
 
                 do k = 0, nl-1
 
-                  m_psi = m_psi + 
+                  m_band = m_band + 
      $               ( cabs( g_tau0( 4*ib+2+is,
      $               4*ibp+0+isp,k)) )**2
 
@@ -54,6 +57,11 @@
             enddo
 
           enddo
+
+          if (m_band .gt. m_psi) then
+            m_psi = m_band
+          endif
+
         enddo
 
         m_psi = m_psi / float(nl)
@@ -91,8 +99,8 @@
 
       psi = (1.0d0 - alpha)*psi_old + alpha*psi
 
-      phase_new = atan2(imag(psi(0,1,llx+2)),real(psi(0,1,llx+2)))
-      psi = psi*cexp(cmplx(0.0d0,phase_old-phase_new))
+c     phase_new = atan2(imag(psi(0,1,llx+2)),real(psi(0,1,llx+2)))
+c     psi = psi*cexp(cmplx(0.0d0,phase_old-phase_new))
 
 #ifdef USE_MPI
       call MPI_Bcast(psi, 4*nb*nb*nl,
