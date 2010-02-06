@@ -15,13 +15,13 @@ c  **************************************************************/
       COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
       REAL v_pert(0:nb-1)
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
-      REAL, dimension (1:3) :: h, h_pert
+      REAL, dimension (0:nb-1,1:3) :: h, h_pert
       REAL prfld, prfld_pert
       REAL mu
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
       INTEGER iteration
 
-      REAL, dimension (1:3) :: h_eff
+      REAL, dimension (0:nb-1,1:3) :: h_eff
       REAL prfld_eff
       REAL v_pert_eff(0:nb-1)
 
@@ -66,11 +66,12 @@ c  **************************************************************/
                 ind2 = 4 * nu2
 
                 h0(ind1 + 0, ind2 + 0, k) = ek(nu1,nu2,k)  +
-     $             cmplx((v_pert_eff(nu1)-mu -h_eff(3))*
+     $             cmplx((v_pert_eff(nu1)-mu -h_eff(nu1,3))*
      $             delta(nu1,nu2), 0.0d0)
 
                 h0(ind1 + 0, ind2 + 1, k) = 
-     $             cmplx(-h_eff(1), h_eff(2))*delta(nu1,nu2)
+     $             cmplx(-h_eff(nu1,1), h_eff(nu1,2))*
+     $              delta(nu1,nu2)
 
                 h0(ind1 + 0, ind2 + 2, k) = prfld_eff *
      $             conjg( psi( 2*nu1, 2*nu2, k_minus) )
@@ -79,10 +80,11 @@ c  **************************************************************/
      $             conjg( psi( 2*nu1, 2*nu2+1, k_minus) )
 	
                 h0(ind1 + 1, ind2 + 0, k) = 
-     $             cmplx(-h_eff(1), -h_eff(2))*delta(nu1,nu2)
+     $             cmplx(-h_eff(nu1,1),-h_eff(nu1,2))*
+     $                delta(nu1,nu2)
 
                 h0(ind1 + 1, ind2 + 1, k) =  ek(nu1,nu2,k) +
-     $             cmplx( (v_pert_eff(nu1)-mu + h_eff(3))*
+     $             cmplx( (v_pert_eff(nu1)-mu + h_eff(nu1,3))*
      $             delta(nu1,nu2), 0.0d0)
 
                 h0(ind1 + 1, ind2 + 2, k) = prfld_eff * 
@@ -98,11 +100,12 @@ c  **************************************************************/
      $             psi( 2*nu2+1, 2*nu1, k_minus)
 
                 h0(ind1 + 2, ind2 + 2, k) = -ek(nu2,nu1,k_minus) 
-     $             + cmplx((-v_pert_eff(nu1)+mu + h_eff(3))*
+     $             + cmplx((-v_pert_eff(nu1)+mu + h_eff(nu1,3))*
      $             delta(nu1,nu2), 0.0d0 )
 
                 h0(ind1 + 2, ind2 + 3, k) = 
-     $             cmplx(h_eff(1), h_eff(2))*delta(nu1,nu2)
+     $             cmplx(h_eff(nu1,1), h_eff(nu1,2))*
+     $              delta(nu1,nu2)
 
                 h0(ind1 + 3, ind2 + 0, k) = prfld_eff *
      $             psi( 2*nu2, 2*nu1+1, k_minus)
@@ -111,11 +114,12 @@ c  **************************************************************/
      $             psi( 2*nu2+1, 2*nu1+1, k_minus)
 
                 h0(ind1 + 3, ind2 + 2, k) = 
-     $             cmplx(h_eff(1), -h_eff(2))*delta(nu1,nu2)
+     $             cmplx(h_eff(nu1,1),-h_eff(nu1,2))*
+     $              delta(nu1,nu2)
 
                 h0(ind1 + 3, ind2 + 3, k) = 
      $             -ek(nu2,nu1,k_minus) +  
-     $             cmplx((-v_pert_eff(nu1)+mu - h_eff(3))*
+     $             cmplx((-v_pert_eff(nu1)+mu - h_eff(nu1,3))*
      $              delta(nu1,nu2), 0.0d0 )
 
               enddo

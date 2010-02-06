@@ -17,7 +17,7 @@ c Parameters to be read and returned
       REAL t
       REAL flux(1:3)
       REAL prfld
-      REAL h(1:3)
+      REAL h(0:nb-1,1:3)
       REAL target_density, density_tol
       REAL mu 
 
@@ -26,7 +26,8 @@ c Parameters to be read and returned
       REAL ed(0:nb-1)
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       REAL prfld_pert
-      REAL h_pert(1:3)
+      REAL h_pert_amp(1:3)
+      REAL h_pert(0:nb-1,1:3)
       REAL v_pert_amp
       REAL v_pert(0:nb-1)
       LOGICAL read_input, write_output
@@ -72,7 +73,9 @@ c     other variable
         read(5,*)
         read(5,*) t
         read(5,*) prfld
-        read(5,*) h
+        do ib = 0, nb - 1
+          read(5,*) h(ib,:)
+        enddo
         read(5,*) target_density, density_tol
         read(5,*) mu
         
@@ -80,9 +83,10 @@ c     other variable
         write(6,*) "temperature in K = ", t  
 
         write(6,*) "external pairing field = ", prfld
-        write(6,*) "uniform magnetic field, hx = ", h(1)
-        write(6,*) "                        hy = ", h(2)
-        write(6,*) "                        hz = ", h(3)       
+        write(6,*) "Band-dependent magnetic fields"
+        do ib = 0, nb-1
+           write(6,*) h(ib,:)
+        enddo
         write(6,*) "target electron density = ", target_density
         write(6,*) "density tolerance = ", density_tol
         write(6,*) "default initial chemical potential = ", mu
@@ -108,7 +112,7 @@ c     other variable
      $   MPI_COMM_WORLD, ierr)
       call MPI_Bcast(prfld, 1, MPI_REAL, 0,
      $   MPI_COMM_WORLD, ierr)
-      call MPI_Bcast(h, 3, MPI_REAL, 0,
+      call MPI_Bcast(h, 3*nb, MPI_REAL, 0,
      $   MPI_COMM_WORLD, ierr)
       call MPI_Bcast(target_density, 1, MPI_REAL, 0,
      $   MPI_COMM_WORLD, ierr)
@@ -149,18 +153,19 @@ c-----Perturbations: applied and relaxed over initial 10 iterations -------
         read(5,*)
         read(5,*)
         read(5,*) prfld_pert
-        read(5,*) h_pert
+        read(5,*) h_pert_amp
         read(5,*) v_pert_amp
 
         write(6,*) "Preturbations: applied and relaxed over",
      $   " initial 10 iterations"
         write(6,*) "Artificial pair field = ", prfld_pert
-        write(6,*) "Artificial uniform magnetic field, hx = ", 
-     $     h_pert(1)
-        write(6,*) "Artificial uniform magnetic field, hy = ", 
-     $     h_pert(2)
-        write(6,*) "Artificial uniform magnetic field, hz = ", 
-     $     h_pert(3)
+        write(6,*) "Random orbital-dependent mag. field amplitudes ", 
+     $     h_pert_amp
+        do ib = 0, nb-1
+          h_pert(ib,1) = h_pert_amp(1) * rand()
+          h_pert(ib,2) = h_pert_amp(2) * rand()
+          h_pert(ib,3) = h_pert_amp(3) * rand()
+        enddo
         write(6,*) "Random orbital potential amplitude  = ",
      $     v_pert_amp
         do ib = 0, nb-1
@@ -171,7 +176,7 @@ c-----Perturbations: applied and relaxed over initial 10 iterations -------
 #ifdef USE_MPI
       call MPI_Bcast(prfld_pert, 1, MPI_REAL, 0, 
      $   MPI_COMM_WORLD, ierr)
-      call MPI_Bcast(h_pert, 3, MPI_REAL, 0,
+      call MPI_Bcast(h_pert, 3*nb, MPI_REAL, 0,
      $   MPI_COMM_WORLD, ierr)
       call MPI_Bcast(v_pert, nb, MPI_REAL, 0,
      $   MPI_COMM_WORLD, ierr)

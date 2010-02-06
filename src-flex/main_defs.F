@@ -8,7 +8,7 @@ c Parameters read from input file
       REAL t
       REAL flux(1:3)
       REAL prfld
-      REAL h(1:3)
+      REAL h(0:nb-1,1:3)
       REAL target_density, density_tol
       REAL mu
       REAL uu, up, uj
@@ -17,7 +17,7 @@ c Parameters read from input file
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
 
       REAL prfld_pert
-      REAL h_pert(1:3)
+      REAL h_pert(0:nb-1,1:3)
       REAL v_pert(0:nb-1)
       LOGICAL read_input, write_output
       CHARACTER*128 sigma_input_file, sigma_output_file

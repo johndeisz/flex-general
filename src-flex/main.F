@@ -310,9 +310,10 @@ c     Prepare for self-consistency loop.
         write(6,*) 'flux_y = ', flux(2)
         write(6,*) 'flux_z = ', flux(3)
         write(6,*) 'applied pair field = ', prfld
-        write(6,*) 'hx = ', h(1)
-        write(6,*) 'hy = ', h(2)
-        write(6,*) 'hz = ', h(3)
+        write(6,*) 'Orbital dependent magnetic fields'
+        do ib = 0, nb - 1
+          write(6,*) h(ib,:)
+        enddo
         write(6,*)
         write(6,*) 'interaction parameters'
         write(6,*) 'uu = ', uu, ' up = ', up, ' uj = ', uj
