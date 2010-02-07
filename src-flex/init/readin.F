@@ -162,14 +162,14 @@ c-----Perturbations: applied and relaxed over initial 10 iterations -------
         write(6,*) "Random orbital-dependent mag. field amplitudes ", 
      $     h_pert_amp
         do ib = 0, nb-1
-          h_pert(ib,1) = h_pert_amp(1) * rand()
-          h_pert(ib,2) = h_pert_amp(2) * rand()
-          h_pert(ib,3) = h_pert_amp(3) * rand()
+          h_pert(ib,1) = h_pert_amp(1) * (rand()-0.5d0)
+          h_pert(ib,2) = h_pert_amp(2) * (rand()-0.5d0)
+          h_pert(ib,3) = h_pert_amp(3) * (rand()-0.5d0)
         enddo
         write(6,*) "Random orbital potential amplitude  = ",
      $     v_pert_amp
         do ib = 0, nb-1
-          v_pert(ib) = v_pert_amp * rand()
+          v_pert(ib) = v_pert_amp * (rand() - 0.5d0)
         enddo
       endif
 
