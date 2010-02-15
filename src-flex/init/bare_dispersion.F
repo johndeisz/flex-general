@@ -56,8 +56,6 @@ c$$$            write(6,*) ib, il, ek_min
         enddo
       enddo
 
-      write(6,*) "ek_min = ", ek_min
-
       return
       end
 
