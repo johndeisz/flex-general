@@ -9,6 +9,7 @@
       DOUBLE COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
 
       INTEGER ib
+      DOUBLE COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
 
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
@@ -28,9 +29,9 @@
 
       t = kb*t
 
-c$$$c     Bare bandstructure 
-c$$$      call bare_dispersion(tij, ed, ek, ek_min)
-c$$$
+c     Bare bandstructure 
+      call bare_dispersion(tij, ed, ek)
+
 c$$$#ifdef SECOND_ORDER
 c$$$      call sigma_input(sigma_input_file, uu, sigma1, psi,
 c$$$     $   sigma, mu, epsilon)
