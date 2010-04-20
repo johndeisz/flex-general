@@ -7,6 +7,7 @@
       DOUBLE PRECISION ed(0:nb-1), h(0:nb-1,1:3)
       DOUBLE COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       DOUBLE COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
+      DOUBLE COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
 
       INTEGER ib
       DOUBLE COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
@@ -15,7 +16,7 @@
       read(5,*) sigma_input_file
 
       call readin(sigma_input_file, t, mu, prfld, ed, h, 
-     $   tij, psi)
+     $   tij, psi, sigma1)
 
       write(6,*) "t = ", t
       write(6,*) "mu = ", mu
@@ -39,7 +40,8 @@ c$$$#else
 c$$$      call sigma_input(sigma_input_file, uu, sigma1, psi)
 c$$$#endif
 c$$$
-c$$$
+c$$$:wq
+
 c$$$c     Set the frequency limits and resolution
 c$$$c     Determine if A(k,w) or N(w) is desired
 c$$$

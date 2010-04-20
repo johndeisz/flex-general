@@ -1,5 +1,5 @@
       subroutine readin(sigma_input_file, t, mu, prfld, 
-     $   ed, h, tij, psi)
+     $   ed, h, tij, psi, sigma1)
 
 #include "constants.F"
 
@@ -12,10 +12,11 @@
       DOUBLE PRECISION ed(0:nb-1), h(0:nb-1,1:3)
       DOUBLE COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       DOUBLE COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
+      DOUBLE COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
       INTEGER ib, ibp
       INTEGER max_x, max_y, max_z, ix, iy, iz, k
       INTEGER id, idp, pr_flag
-      integer nu1, is1, nu2, is2
+      integer nu1, is1, nu2, is2, ia1, ia2
       
       open(unit=50, file=sigma_input_file, status='old')
       read(50,*)
@@ -120,6 +121,24 @@ c     Pair wave function
           enddo
         enddo
       endif
+
+      read(50,*)
+
+c Sigma_1
+
+      read(50,*)
+      read(50,*)
+
+      do nu1 = 0, nb-1
+        do ia1 = 0, 3
+          do nu2 = 0, nb-1
+            do ia2 = 0, 3
+              read(50,*) id1, id2, id3, id4, 
+     $           sigma1(nu1*4+ia1, nu2*4+ia2)            
+            enddo
+          enddo
+        enddo
+      enddo
 
       read(50,*)
 
