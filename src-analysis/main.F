@@ -105,25 +105,8 @@ c     Bare bandstructure and one-electron matrix
         write(6,*) "Resolution paramater too small. Stopping."
         stop
       endif
-      
 
-
-c$$$#ifdef SECOND_ORDER
-c$$$      call sigma_input(sigma_input_file, uu, sigma1, psi,
-c$$$     $   sigma, mu, epsilon)
-c$$$#else
-c$$$      call sigma_input(sigma_input_file, uu, sigma1, psi)
-c$$$#endif
-c$$$
-c$$$:wq
-
-c$$$c     Set the frequency limits and resolution
-c$$$c     Determine if A(k,w) or N(w) is desired
-c$$$
-
-c$$$
-c$$$      call dyson(rank, g, g_tau0, q_tau, q_epsilon, h0,
-c$$$     $   sigma, epsilon, t, cl_k)
+      call dyson(h0k)
 
  200  format("kx index, 0 -> kx = 0, ", i3, "-> kx = pi/a")
  201  format("ky index, 0 -> ky = 0, ", i3, "-> ky = pi/b")
