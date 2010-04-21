@@ -11,6 +11,7 @@
 
       INTEGER ib
       DOUBLE COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+      DOUBLE COMPLEX h0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
 
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
@@ -30,8 +31,9 @@
 
       t = kb*t
 
-c     Bare bandstructure 
+c     Bare bandstructure and one-electron matrix
       call bare_dispersion(tij, ed, ek)
+      call h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
 
 c$$$#ifdef SECOND_ORDER
 c$$$      call sigma_input(sigma_input_file, uu, sigma1, psi,
@@ -45,7 +47,7 @@ c$$$:wq
 c$$$c     Set the frequency limits and resolution
 c$$$c     Determine if A(k,w) or N(w) is desired
 c$$$
-c$$$      call h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
+
 c$$$
 c$$$      call dyson(rank, g, g_tau0, q_tau, q_epsilon, h0,
 c$$$     $   sigma, epsilon, t, cl_k)

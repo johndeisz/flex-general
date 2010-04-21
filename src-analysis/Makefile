@@ -7,7 +7,8 @@ OBJECTS = \
 	main.o \
 	readin.o \
 	bare_dispersion.o \
-	fft_3D_lattice.o
+	fft_3D_lattice.o \
+	h0_generate.o
 
 quasi : $(OBJECTS)
 	$(CC) -o quasi.exe $(OBJECTS) $(LIBRARIES)
@@ -23,6 +24,9 @@ bare_dispersion.o : bare_dispersion.F constants.F
 
 fft_3D_lattice.o : fft_3D_lattice.F constants.F fftw3.f
 	$(CC) -c fft_3D_lattice.F
+
+h0_generate.o : h0_generate.F constants.F
+	$(CC) -c h0_generate.F
 
 clean :
 	rm $(OBJECTS) 
