@@ -13,6 +13,21 @@
       DOUBLE COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
       DOUBLE COMPLEX h0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
 
+      INTEGER ikx, iky, ikz, ik
+
+      DOUBLE COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0k, 
+     $   tmp_h0k
+
+      DOUBLE PRECISION eigs_1st(1:4*nb)
+      INTEGER lwork, lrwork, liwork
+      DOUBLE COMPLEX work(1:16*nb*nb)
+      DOUBLE PRECISION rwork(1:16*nb*nb)
+      INTEGER iwork(1:16*nb*nb)
+      INTEGER info
+
+      DOUBLE PRECISION w_min, w_max, dw, eta
+      INTEGER n_w
+
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
 
@@ -35,6 +50,64 @@ c     Bare bandstructure and one-electron matrix
       call bare_dispersion(tij, ed, ek)
       call h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
 
+      write(6,200) llx/2 
+      read(5,*) ikx
+      write(6,201) lly/2 
+      read(5,*) iky
+      write(6,201) llz/2 
+      read(5,*) ikz
+
+      if ( (ikx .lt. 0) .or. (ikx .ge. llx) .or.
+     $   (iky .lt. 0) .or. (iky .ge. lly) .or.
+     $   (ikz .lt. 0) .or. (ikz .ge. llz) ) then
+        write(6,*)
+        write(6,*) "k-index out of range. Stopping."
+        write(6,*)
+        stop
+      endif
+
+      ik = ikx + iky*llx + ikz*llx*lly
+
+      h0k = h0(:,:,ik)
+
+      tmp_h0k = h0k
+
+      lwork = 16*nb*nb
+      call ZHEEVD('N', 'U',  4*nb,  tmp_h0k,  4*nb,  eigs_1st,  
+     $   WORK,  LWORK,  RWORK, LRWORK, IWORK, LIWORK, INFO )
+
+ 
+      if (info .ne. 0) then
+        write(6,*) "zheevd failed. stopping."
+      else
+        write(6,300) eigs_1st(1)
+        write(6,301) eigs_1st(4*nb)
+      endif
+
+      write(6,*)
+      write(6,*) "Input minimum energy value "
+      read(5,*) w_min
+      write(6,*) "Input maximum energy value "
+      read(5,*) w_max
+      write(6,*) "Num energy points, must be < ", n_w_max
+      read(5,*) n_w 
+      if ( n_w .gt. n_w_max) then
+        write(6,*) "n_w too large. Stopping."
+      else
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
+      endif
+
+      write(6,*) "Resolution parameter - ",
+     $   "should be larger than energy increment."
+      read(5,*) eta
+      if ( eta .lt. dw ) then
+        write(6,*) "Resolution paramater too small. Stopping."
+        stop
+      endif
+      
+
+
 c$$$#ifdef SECOND_ORDER
 c$$$      call sigma_input(sigma_input_file, uu, sigma1, psi,
 c$$$     $   sigma, mu, epsilon)
@@ -52,6 +125,12 @@ c$$$
 c$$$      call dyson(rank, g, g_tau0, q_tau, q_epsilon, h0,
 c$$$     $   sigma, epsilon, t, cl_k)
 
+ 200  format("kx index, 0 -> kx = 0, ", i3, "-> kx = pi/a")
+ 201  format("ky index, 0 -> ky = 0, ", i3, "-> ky = pi/b")
+ 202  format("kz index, 0 -> kz = 0, ", i3, "-> kz = pi/c")
+
+ 300  format("low eigenval of h0k+sig1 = ", e16.8)
+ 301  format("high eigenval of h0k+sig1 = ", e16.8)
 
       stop
       end

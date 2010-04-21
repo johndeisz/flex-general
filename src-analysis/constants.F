@@ -4,6 +4,7 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
       integer nb  
       integer lcx, lcy, lcz, nc 
       integer llx, lly, llz, nl
+      integer n_w_max, n_pade_max
 
       parameter (nb = 3)
 
@@ -16,6 +17,9 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
       parameter (lly = 32)
       parameter (llz = 1)
       parameter (nl = llx*lly*llz)
+
+      parameter (n_w_max = 1024)
+      parameter (n_pade_max = 10)
 
 c Convenience constants
 
