@@ -263,7 +263,7 @@ c     Prepare for self-consistency loop.
 
           open(unit=40, file=sigma_output_file, status='unknown')
 
-          call sigma1_out(t, mu, flux, prfld, h, 
+          call sigma1_out(t, mu, flux, prfld, ed, h, tij,
      $       uu, up, uj, psi,  sigma1)
 
         endif
