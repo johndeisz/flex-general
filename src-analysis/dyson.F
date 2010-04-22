@@ -8,9 +8,6 @@
 
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: sigma
  
-      REAL epsilon(0:mp1)
-      REAL t
-
       INTEGER x_stretch, y_stretch, z_stretch
       REAL wx(-llx/lcx: llx/lcx)
       REAL wy(-lly/lcy: lly/lcy)
@@ -34,28 +31,35 @@ c     Lapack related
       INTEGER ipiv(4*nb)
       INTEGER info
 
+      INTEGER sigma_flag
+
       p = dcmplx(0.0d0, 0.0d0)
       q = dcmplx(0.0d0, 0.0d0)
 
+      write(6,*) "Dynamical self-energy? Yes-1, No-0."
+      read(5,*) sigma_flag
+      
+      if (sigma_flag .eq. 1) then
 c     Read pade coefficients
-      do nu1 = 0, nb-1
-        do ia1 = 0, 3
-          na1 = 4*nu1 + ia1
-          do nu2 = 0, nb-1
-            do ia2 = 0, 3
-              na2 = 4*nu2 + ia2
-              do k = 0, nc-1
-                read(50,*) id1, id2, id3, id4, id5, n_pade(k)
-                if (n_pade(k) .gt. 0) then
-                  do l = 0, n_pade(k)
-                    read(50,*) p(na1, na2, k, l)
-                  enddo
-                endif
+        do nu1 = 0, nb-1
+          do ia1 = 0, 3
+            na1 = 4*nu1 + ia1
+            do nu2 = 0, nb-1
+              do ia2 = 0, 3
+                na2 = 4*nu2 + ia2
+                do k = 0, nc-1
+                  read(50,*) id1, id2, id3, id4, id5, n_pade(k)
+                  if (n_pade(k) .gt. 0) then
+                    do l = 0, n_pade(k)
+                      read(50,*) p(na1, na2, k, l)
+                    enddo
+                  endif
+                enddo
               enddo
             enddo
           enddo
         enddo
-      enddo
+      endif
 
       if (x_stretch .gt. 1) then
         ix_max = x_stretch/2
