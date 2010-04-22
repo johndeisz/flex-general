@@ -59,6 +59,9 @@
       INTEGER i1, i2, i3
       INTEGER nu1, nu2, is1, is2, ia1, ia2, ind1, ind2
       INTEGER l
+      INTEGER ib, ibp
+      INTEGER iix, iiy, iiz
+      INTEGER max_x, max_y, max_z
 
 #ifdef USE_MPI
        INTEGER ierr
@@ -78,17 +81,61 @@
         read(50,*)
         read(50,*)
         read(50,*)
+        read(50,*) ! nb
+        read(50,*)
         read(50,*) lcx_in, lcy_in, lcz_in, id1, llx_in, lly_in,
      $     llz_in
         read(50,*)  ! string
         read(50,*)  ! temp, mu, flux_x, flux_y, flux_z
         read(50,*)  ! string
-        read(50,*)  ! prfld, hx, hy, hz
+        read(50,*)  ! prfld
         read(50,*)  ! string
-        read(50,*) 
-        read(50,*)
+        do ib = 0, nb - 1
+          read(50,*) ! ed(ib) 
+        enddo
+        read(50,*)  ! string
+        do ib = 0, nb - 1
+          read(50,*)  ! h(ib,:)
+        enddo
+        read(50,*) ! string
         read(50,*) uu_1, up_1, uj_1
-        read(50,*)
+        read(50,*) ! string
+
+        if (llx_in .gt. 2) then
+          max_x = 2
+        else
+          max_x = llx_in - 1
+         endif
+
+        if (lly_in .gt. 2) then
+          max_y = 2
+        else
+          max_y = lly_in - 1
+        endif
+
+        if (llz_in .gt. 2) then
+          max_z = 2
+        else
+          max_z = llz_in - 1
+        endif
+
+        do iix = -max_x, max_x
+         do iiy = -max_y, max_y
+          do iiz = -max_z, max_z
+
+            read(50,*)  ! ix, iy, iz
+
+             do ib = 0, nb-1
+              do ibp = 0, nb-1
+                read(50,*) ! ib, ibp, tij
+              enddo
+            enddo
+
+          enddo
+        enddo
+       enddo
+
+       read(50,*)
       endif
 
 #ifdef USE_MPI

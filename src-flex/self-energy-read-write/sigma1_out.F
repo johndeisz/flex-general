@@ -1,17 +1,20 @@
 #include "../convert.F"
 
-      subroutine sigma1_out(t, mu, flux, prfld, h, 
-     $   uu, up, uj, psi,  sigma1)
+      subroutine sigma1_out(t, mu, flux, prfld, ed, h,  
+     $   tij, uu, up, uj, psi, sigma1)
 
 #include "../constants.F"
 
       REAL t, mu, flux(1:3)
-      REAL prfld, h(1:3)
+      REAL prfld, ed(0:nb-1), h(0:nb-1,1:3)
+      COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       REAL uu, up, uj
       COMPLEX psi(0:2*nb-1,0:2*nb-1,0:nl-1)
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
-
       INTEGER k, nu1, nu2, is1, is2, ia1, ia2
+      INTEGER ib, ibp
+      INTEGER ix, iy, iz
+      INTEGER max_x, max_y, max_z
 
 #if defined (FLEX)
       write(40,*) 'Fluctuation exchange approximation self-energy'
@@ -26,18 +29,65 @@
       write(40,*) "for the periodic Hubbard model."
       write(40,*) "------------------------------------------"
       write(40,*) "------Input Parameters---------"
+      write(40,*) "Nb (number of bands)"
+      write(40,*) nb
       write(40,*) "LCX LCY LCZ   M   LLX  LLY  LLZ "
       write(40,*) lcx, "  ", lcy, "  ", lcz, "  ", m,
      $   " ", llx, " ", lly, " ", llz
       write(40,*) "Temp(K)  mu   flux_x  flux_y  flux_z"
-      write(40,*)  t, " ",  mu, " ", flux(1), " ", flux(2),
+      write(40,*)  t/kb, " ",  mu, " ", flux(1), " ", flux(2),
      $   " ", flux(3)
-      write(40,*) "prfld   hx   hy   hz "
-      write(40,*) prfld, "  ", h(1), " ", h(2), " " , h(3)
-      write(40,*) "Band structure parameters not printed "
-      write(40,*)
+      write(40,*) "prfld"
+      write(40,*) prfld
+      write(40,*) "bare orbital levels"
+      do ib = 0, nb-1
+        write(40,*) ib, ed(ib)
+      enddo
+      write(40,*) "orbital-dependent magnetic fields"
+      do ib = 0, nb-1
+        write(40,*) ib, h(ib,:)
+      enddo
       write(40,*)  "uu, up, uj"
       write(40,*)  uu, up, uj
+      write(40,*) "Tight-binding parameters"
+
+      if (llx .gt. 2) then
+        max_x = 2
+      else
+        max_x = llx - 1
+      endif
+
+      if (lly .gt. 2) then
+        max_y = 2
+      else
+        max_y = lly - 1
+      endif
+
+      if (llz .gt. 2) then
+        max_z = 2
+      else
+        max_z = llz - 1
+      endif
+      do ix = -max_x, max_x
+        do iy = -max_y, max_y
+          do iz = -max_z, max_z
+
+            write(40,200) ix, iy, iz
+
+            k = mod(ix+llx,llx) + mod(iy+lly,lly)*llx +
+     $         mod(iz+llz,llz)*llx*lly
+            
+            do ib = 0, nb-1
+              do ibp = 0, nb-1
+                write(40,300) ib, ibp, real(tij(ib,ibp,k)),
+     $             aimag(tij(ib,ibp,k))
+              enddo
+            enddo
+
+          enddo
+        enddo
+      enddo
+
       write(40,*)  
 
       write(40,*) "--Pair field wave function (k-space)-------"
@@ -97,6 +147,11 @@
       enddo
 
       write(40,*)
+
+ 200  format('------------------- [',i3,',',i3,',',i3,'] hopping',
+     $   '------------------------')
+
+ 300  format(i3,',',i3,'  ','(',D16.9,',',D16.9,')')
 
       return
       end
