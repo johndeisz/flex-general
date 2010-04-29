@@ -1,10 +1,16 @@
       subroutine dyson(h0k)
 
-#include "../constants.F"
+#include "constants.F"
 
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0k
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1, 0:nc-1, 
      $   0:n_pade_max) :: p, q
+
+      INTEGER sigma_flag
+      INTEGER n_pade(0:4*nb-1,0:4*nb-1,0:nc-1)
+      INTEGER nu1, ia1, nu2, ia2, na1, na2
+
+      INTEGER id1, id2, id3, id4, id5
 
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: sigma
  
@@ -31,8 +37,6 @@ c     Lapack related
       INTEGER ipiv(4*nb)
       INTEGER info
 
-      INTEGER sigma_flag
-
       p = dcmplx(0.0d0, 0.0d0)
       q = dcmplx(0.0d0, 0.0d0)
 
@@ -40,6 +44,8 @@ c     Lapack related
       read(5,*) sigma_flag
       
       if (sigma_flag .eq. 1) then
+        read(50,*) 
+        read(50,*)
 c     Read pade coefficients
         do nu1 = 0, nb-1
           do ia1 = 0, 3
@@ -48,9 +54,10 @@ c     Read pade coefficients
               do ia2 = 0, 3
                 na2 = 4*nu2 + ia2
                 do k = 0, nc-1
-                  read(50,*) id1, id2, id3, id4, id5, n_pade(k)
-                  if (n_pade(k) .gt. 0) then
-                    do l = 0, n_pade(k)
+                  read(50,*) id1, id2, id3, id4, id5, 
+     $               n_pade(na1,na2,k)
+                  if (n_pade(na1,na2,k) .gt. 0) then
+                    do l = 0, n_pade(na1,na2,k)
                       read(50,*) p(na1, na2, k, l)
                     enddo
                   endif
