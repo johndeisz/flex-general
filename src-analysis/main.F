@@ -50,23 +50,24 @@ c     Bare bandstructure and one-electron matrix
       call bare_dispersion(tij, ed, ek)
       call h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
 
-      write(6,200) llx/2 
+      write(6,200) -llx/2,llx/2, llx/2 
       read(5,*) ikx
-      write(6,201) lly/2 
+      write(6,201) -lly/2,lly/2,lly/2 
       read(5,*) iky
-      write(6,201) llz/2 
+      write(6,201) -llz/2,llz/2,llz/2 
       read(5,*) ikz
 
-      if ( (ikx .lt. 0) .or. (ikx .ge. llx) .or.
-     $   (iky .lt. 0) .or. (iky .ge. lly) .or.
-     $   (ikz .lt. 0) .or. (ikz .ge. llz) ) then
+      if ( (ikx .lt. -llx/2) .or. (ikx .gt. llx/2) .or.
+     $   (iky .lt. -lly/2) .or. (iky .gt. lly/2) .or.
+     $   (ikz .lt. -llz/2) .or. (ikz .gt. llz/2) ) then
         write(6,*)
         write(6,*) "k-index out of range. Stopping."
         write(6,*)
         stop
       endif
 
-      ik = ikx + iky*llx + ikz*llx*lly
+      ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $   mod(ikz+llz,llz)*llx*lly
 
       h0k = h0(:,:,ik)
 
@@ -108,9 +109,12 @@ c     Bare bandstructure and one-electron matrix
 
       call dyson(h0k)
 
- 200  format("kx index, 0 -> kx = 0, ", i3, "-> kx = pi/a")
- 201  format("ky index, 0 -> ky = 0, ", i3, "-> ky = pi/b")
- 202  format("kz index, 0 -> kz = 0, ", i3, "-> kz = pi/c")
+ 200  format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
+     $   i3, "-> kx = pi/a")
+ 201  format("ky index, [",i3,",",i3,"]:: 0 -> ky = 0, ", 
+     $   i3, "-> ky = pi/b")
+ 202  format("kz index, [",i3,",",i3,"]:: 0 -> kz = 0, ", 
+     $   i3, "-> kz = pi/c")
 
  300  format("low eigenval of h0k+sig1 = ", e16.8)
  301  format("high eigenval of h0k+sig1 = ", e16.8)
