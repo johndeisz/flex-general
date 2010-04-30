@@ -47,6 +47,8 @@ c     Lapack related
 
       DOUBLE PRECISION sum
 
+      write(6,*) 'klin = ', klin
+
       p = dcmplx(0.0d0, 0.0d0)
       q = dcmplx(0.0d0, 0.0d0)
 
@@ -78,6 +80,10 @@ c     Read pade coefficients
           enddo
         enddo
       endif
+
+      x_stretch = llx / lcx
+      y_stretch = lly / lcy
+      z_stretch = llz / lcz
 
       if (x_stretch .gt. 1) then
         ix_max = x_stretch/2
@@ -174,11 +180,18 @@ c     Loop over cluster k-points.
 
 c     Invert temp_gl2
 
-                      call cgesv(4*nb, 4*nb, temp_gl2, 4*nb, 
+                      call zgesv(4*nb, 4*nb, temp_gl2, 4*nb, 
      $                   ipiv, temp_gl, 4*nb, info)
 
                       if (info .ne. 0) then
                         write(6,*) 'info not equal to zero'
+                        write(6,*) 'kl = ', kl
+                        write(6,*) 'kx = ', kx
+                        write(6,*) 'klx = ', klx
+                        write(6,*) 'ky = ', ky
+                        write(6,*) 'kly = ', kly
+                        write(6,*) 'kz = ', kz
+                        write(6,*) 'klz = ', klz
                       endif
 
                       a = a + wx(ix)*wy(iy)*wz(iz)*temp_gl
