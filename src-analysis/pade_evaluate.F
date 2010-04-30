@@ -1,16 +1,15 @@
-#include "../convert.F"
+      DOUBLE COMPLEX function pade_evaluate(z, n_pade, p, q)
 
-      COMPLEX function pade_evaluate(z, n_pade, p, q)
+#include "constants.F"
 
-#include "../constants.F"
-      COMPLEX z
+      DOUBLE COMPLEX z
       INTEGER n_pade 
-      COMPLEX p(0:m/2-1), q(0:m/2-1)
+      DOUBLE COMPLEX p(0:n_pade_max), q(0:n_pade_max)
 
-      COMPLEX num, den, result
+      DOUBLE COMPLEX num, den, result
       INTEGER i
 
-      num  = cmplx(0.0d0,0.0d0)
+      num  = dcmplx(0.0d0,0.0d0)
       den  = z**(n_pade + 1)
 
       do i = 0, n_pade

@@ -4,7 +4,7 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
       integer nb  
       integer lcx, lcy, lcz, nc 
       integer llx, lly, llz, nl
-      integer n_w_max, n_pade_max
+      integer n_pade_max
 
       parameter (nb = 3)
 
@@ -18,7 +18,6 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
       parameter (llz = 1)
       parameter (nl = llx*lly*llz)
 
-      parameter (n_w_max = 1024)
       parameter (n_pade_max = 10)
 
 c Convenience constants
@@ -40,5 +39,6 @@ c Convenience constants
 
 c Mathematical and physical constants
 
-      DOUBLE PRECISION kb
+      DOUBLE PRECISION kb, pi
       parameter( kb = 8.61734315d-05)  ! eV/K
+      parameter( pi = 3.14159265358979323)

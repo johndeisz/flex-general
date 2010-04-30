@@ -9,7 +9,8 @@ OBJECTS = \
 	bare_dispersion.o \
 	fft_3D_lattice.o \
 	h0_generate.o \
-	dyson.o
+	dyson.o \
+	pade_evaluate.o
 
 quasi : $(OBJECTS)
 	$(CC) -o quasi.exe $(OBJECTS) $(LIBRARIES)
@@ -31,6 +32,9 @@ h0_generate.o : h0_generate.F constants.F
 
 dyson.o : dyson.F constants.F
 	$(CC) -c dyson.F
+
+pade_evaluate.o : pade_evaluate.F constants.F
+	$(CC) -c pade_evaluate.F
 
 clean :
 	rm $(OBJECTS) 

@@ -90,14 +90,10 @@ c     Bare bandstructure and one-electron matrix
       read(5,*) w_min
       write(6,*) "Input maximum energy value "
       read(5,*) w_max
-      write(6,*) "Num energy points, must be < ", n_w_max
+      write(6,*) "Num energy points "
       read(5,*) n_w 
-      if ( n_w .gt. n_w_max) then
-        write(6,*) "n_w too large. Stopping."
-      else
-        dw = (w_max - w_min) / dfloat(n_w - 1)
-        write(6,*) "energy increment = ", dw
-      endif
+      dw = (w_max - w_min) / dfloat(n_w - 1)
+      write(6,*) "energy increment = ", dw
 
       write(6,*) "Resolution parameter - ",
      $   "should be larger than energy increment."
@@ -107,7 +103,7 @@ c     Bare bandstructure and one-electron matrix
         stop
       endif
 
-      call dyson(h0k)
+      call dyson(h0k,ik, w_min,dw,n_w,eta)
 
  200  format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")

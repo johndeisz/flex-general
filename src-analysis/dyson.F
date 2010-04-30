@@ -1,8 +1,12 @@
-      subroutine dyson(h0k)
+      subroutine dyson(h0k, klin, w_min, dw, n_w, eta)
 
 #include "constants.F"
 
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0k
+      INTEGER klin
+      DOUBLE PRECISION w_min, dw, eta
+      INTEGER n_w
+
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1, 0:nc-1, 
      $   0:n_pade_max) :: p, q
 
@@ -13,13 +17,17 @@
       INTEGER id1, id2, id3, id4, id5
 
       DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: sigma
+      DOUBLE COMPLEX pade_evaluate
+      EXTERNAL pade_evaluate
  
       INTEGER x_stretch, y_stretch, z_stretch
-      REAL wx(-llx/lcx: llx/lcx)
-      REAL wy(-lly/lcy: lly/lcy)
-      REAL wz(-llz/lcz: llz/lcz)
+      DOUBLE PRECISION wx(-llx/lcx: llx/lcx)
+      DOUBLE PRECISION wy(-lly/lcy: lly/lcy)
+      DOUBLE PRECISION wz(-llz/lcz: llz/lcz)
       INTEGER ix_max, iy_max, iz_max
-      COMPLEX e_n(0:4*nb-1, 0:4*nb-1)
+      DOUBLE COMPLEX e_n(0:4*nb-1, 0:4*nb-1)
+      DOUBLE PRECISION w
+      DOUBLE COMPLEX z
 
 c     Counters
       INTEGER ix, iy, iz
@@ -30,12 +38,14 @@ c     Counters
       INTEGER ia, ib
 
 c     Arrays
-      COMPLEX, dimension (0:4*nb-1,0:4*nb-1) ::
-     $   identity, temp_gc, temp_gl2, temp_gl
+      DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1) ::
+     $   a, identity, temp_gl2, temp_gl
 
 c     Lapack related
       INTEGER ipiv(4*nb)
       INTEGER info
+
+      DOUBLE PRECISION sum
 
       p = dcmplx(0.0d0, 0.0d0)
       q = dcmplx(0.0d0, 0.0d0)
@@ -58,7 +68,8 @@ c     Read pade coefficients
      $               n_pade(na1,na2,k)
                   if (n_pade(na1,na2,k) .gt. 0) then
                     do l = 0, n_pade(na1,na2,k)
-                      read(50,*) p(na1, na2, k, l)
+                      read(50,*) p(na1, na2, k, l),
+     $                   q(na1,na2,k,l)
                     enddo
                   endif
                 enddo
@@ -107,104 +118,95 @@ c     Read pade coefficients
         wz(0) = 1.0d0
       endif
 
-c$$$      do i = 0, 4*nb-1
-c$$$        do j = 0, 4*nb-1
-c$$$          if (i .eq. j) then
-c$$$            identity(i,j) = cmplx(1.0d0, 0.0d0)
-c$$$          else
-c$$$            identity(i,j) = cmplx(0.0d0, 0.0d0)
-c$$$          endif
-c$$$        enddo
-c$$$      enddo
-c$$$
-c$$$c     Loop over cluster k-points.
-c$$$      do kx = 0, lcx-1
-c$$$        do ky = 0, lcy-1
-c$$$          do kz = 0, lcz-1
-c$$$
-c$$$            k = kx + ky*lcx + kz*lcx*lcy
-c$$$
-c$$$            do ix = -ix_max, ix_max
-c$$$              do iy = -iy_max, iy_max
-c$$$                do iz = -iz_max, iz_max
-c$$$
-c$$$                  klx = mod(kx*x_stretch + ix + llx, llx)   
-c$$$                  kly = mod(ky*y_stretch + iy + lly, lly)
-c$$$                  klz = mod(kz*z_stretch + iz + llz, llz)
-c$$$                  
-c$$$                  kl = klx + kly*llx + klz*llx*lly
-c$$$
-c$$$            do l = 0, mp1
-c$$$
-c$$$              do i = 0, 4*nb-1
-c$$$                do j = 0, 4*nb-1
-c$$$                  if (i .eq. j) then
-c$$$                    e_n(i,j) = epsilon(l)*cmplx(0.0d0, 1.0d0)
-c$$$                  else
-c$$$                    e_n(i,j) = epsilon(l)*cmplx(0.0d0, 0.0d0)
-c$$$                  endif
-c$$$                enddo
-c$$$              enddo
-c$$$
-c$$$              temp_gc = cmplx(0.0d0, 0.0d0)
-c$$$
-c$$$c     For each cluster k-point, sum over all points in the
-c$$$c     coarse-graining cell.
-c$$$
-c$$$              do ix = -ix_max, ix_max
-c$$$                do iy = -iy_max, iy_max
-c$$$                  do iz = -iz_max, iz_max
-c$$$
-c$$$                    klx = mod(kx*x_stretch + ix + llx, llx)   
-c$$$                    kly = mod(ky*y_stretch + iy + lly, lly)
-c$$$                    klz = mod(kz*z_stretch + iz + llz, llz)
-c$$$
-c$$$                    kl = klx + kly*llx + klz*llx*lly
-c$$$
-c$$$                    temp_gl2 = e_n - h0(:,:,kl) -
-c$$$     $                 sigma(:,:,l,k)
-c$$$                    temp_gl = identity
-c$$$
-c$$$c     Invert temp_gl
-c$$$                    call cgesv(4*nb, 4*nb, temp_gl2, 4*nb, 
-c$$$     $                 ipiv, temp_gl, 4*nb, info)
-c$$$
-c$$$                    if (info .ne. 0) then
-c$$$                      write(6,*) 'info not equal to zero'
-c$$$                    endif
-c$$$
-c$$$                    temp_gc = temp_gc +
-c$$$     $                 wx(ix) * wy(iy) * wz(iz) * temp_gl
-c$$$
-c$$$c     Remove the analytic term so as to perform a trace
-c$$$c     to get the tau=0+ lattice Green's function.
-c$$$
-c$$$                    do ia = 0, 1
-c$$$                      do ib = 0, 1
-c$$$                        temp_gl = temp_gl -
-c$$$     $                     cl_k(ia,ib,:,:,kl) *
-c$$$     $                     q_epsilon(ia,ib,l)
-c$$$                      enddo
-c$$$                    enddo
-c$$$
-c$$$c     Obtain g_tau0 by summing over all frequencies.  Include
-c$$$c     weights wx,wy,wz as the lattice greens function may appear
-c$$$c     in several course graining cells.
-c$$$
-c$$$                    g_ktau0(:,:,kl) =  g_ktau0(:,:,kl) + 
-c$$$     $                 t * wx(ix) * wy(iy) * wz(iz) * 
-c$$$     $                 temp_gl
-c$$$
-c$$$                  enddo
-c$$$                enddo
-c$$$              enddo
-c$$$
-c$$$              g(:,:,l,k) = temp_gc / float(coarse_grain_points)
-c$$$
-c$$$            enddo
-c$$$          enddo
-c$$$        enddo
-c$$$      enddo
+      do i = 0, 4*nb-1
+        do j = 0, 4*nb-1
+          if (i .eq. j) then
+            identity(i,j) = cmplx(1.0d0, 0.0d0)
+          else
+            identity(i,j) = cmplx(0.0d0, 0.0d0)
+          endif
+        enddo
+      enddo
+
+      do l = 1, n_w
+
+        w = w_min + dw*dfloat(l-1)
+        z = dcmplx(w, eta)
+        a = dcmplx(0.0d0,0.0d0)
+
+c     Loop over cluster k-points.
+      
+        do kx = 0, lcx-1
+          do ky = 0, lcy-1
+            do kz = 0, lcz-1
+
+              k = kx + ky*lcx + kz*lcx*lcy
+
+              do ix = -ix_max, ix_max
+                do iy = -iy_max, iy_max
+                  do iz = -iz_max, iz_max
+
+                    klx = mod(kx*x_stretch + ix + llx, llx)   
+                    kly = mod(ky*y_stretch + iy + lly, lly)
+                    klz = mod(kz*z_stretch + iz + llz, llz)
+                  
+                    kl = klx + kly*llx + klz*llx*lly
+                    
+                    if (kl .eq. klin) then
+                      
+                      do i = 0, 4*nb-1
+                        do j = 0, 4*nb-1
+
+                          sigma(i,j) = pade_evaluate(z,n_pade(i,j,k),
+     $                       p(i,j,k,:), q(i,j,k,:))
+
+                          if (i .eq. j) then
+                            e_n(i,j) = z
+                          else
+                            e_n(i,j) = dcmplx(0.0d0, 0.0d0)
+                          endif
+
+                        enddo
+                      enddo
+
+                      temp_gl2 = e_n - h0k - sigma
+                      temp_gl = identity
+
+c     Invert temp_gl2
+
+                      call cgesv(4*nb, 4*nb, temp_gl2, 4*nb, 
+     $                   ipiv, temp_gl, 4*nb, info)
+
+                      if (info .ne. 0) then
+                        write(6,*) 'info not equal to zero'
+                      endif
+
+                      a = a + wx(ix)*wy(iy)*wz(iz)*temp_gl
+
+                    endif
+
+                  enddo
+                enddo
+              enddo
+
+            enddo
+          enddo
+        enddo
+
+        sum = 0.0d0
+
+        do nu1 = 0, nb-1
+          do ia1 = 0, 1
+
+            na1 = 4*nu1 + ia1
+            sum = sum + dimag(a(na1,na1))
+
+          enddo
+        enddo
+
+        write(6,*) w, -sum / (2.0d0*pi)
+
+      enddo
 
       return
       end

@@ -4,7 +4,6 @@
 
       DOUBLE COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1) :: tij, ek
       DOUBLE PRECISION, dimension (0:nb-1) :: ed
-      DOUBLE PRECISION pi
 
       INTEGER ll(1:3)
 
@@ -13,8 +12,6 @@
       INTEGER isignv(0:3)
 
       DOUBLE COMPLEX, dimension (0:nl-1) :: tij_tmp
-
-      pi = dacos(-1.0d0)
 
       ll = (/ llx, lly, llz /)
 
