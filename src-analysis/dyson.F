@@ -46,8 +46,12 @@ c     Lapack related
       INTEGER info
 
       DOUBLE PRECISION sum
+      CHARACTER*128 output_file
 
-      write(6,*) 'klin = ', klin
+
+      write(6,*) 'Name of output file for a(k,w)'
+      read(5,*) output_file
+      open(unit=40, file=output_file, status="unknown")
 
       p = dcmplx(0.0d0, 0.0d0)
       q = dcmplx(0.0d0, 0.0d0)
@@ -163,8 +167,13 @@ c     Loop over cluster k-points.
                       do i = 0, 4*nb-1
                         do j = 0, 4*nb-1
 
-                          sigma(i,j) = pade_evaluate(z,n_pade(i,j,k),
-     $                       p(i,j,k,:), q(i,j,k,:))
+                          if ( (sigma_flag .eq. 1) .and. 
+     $                       (n_pade(i,j,k) .gt. 0)) then
+                            sigma(i,j) = pade_evaluate(z,n_pade(i,j,k),
+     $                         p(i,j,k,:), q(i,j,k,:))
+                          else
+                            sigma(i,j) = dcmplx(0.0d0,0.0d0)
+                          endif
 
                           if (i .eq. j) then
                             e_n(i,j) = z
@@ -217,9 +226,10 @@ c     Invert temp_gl2
           enddo
         enddo
 
-        write(6,*) w, -sum / (2.0d0*pi)
+        write(40,*) w, -sum / (2.0d0*pi)
 
       enddo
+      close(unit=40)
 
       return
       end

@@ -1,9 +1,10 @@
-      subroutine bare_dispersion(tij, ed, ek)
+      subroutine bare_dispersion(tij, ed, ek, mu)
 
 #include "constants.F"
 
       DOUBLE COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1) :: tij, ek
       DOUBLE PRECISION, dimension (0:nb-1) :: ed
+      DOUBLE PRECISION mu
 
       INTEGER ll(1:3)
 
@@ -29,7 +30,7 @@
           tij_tmp = tij(ib,ibp,:)
 
           if (ib .eq. ibp) then
-            tij_tmp(0) = tij_tmp(0) + ed(ib)
+            tij_tmp(0) = tij_tmp(0) + ed(ib) - mu
           endif
 
           call fft_3D_lattice (tij_tmp, isignv)      

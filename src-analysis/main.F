@@ -47,7 +47,7 @@
       t = kb*t
 
 c     Bare bandstructure and one-electron matrix
-      call bare_dispersion(tij, ed, ek)
+      call bare_dispersion(tij, ed, ek, mu)
       call h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
 
       write(6,200) -llx/2,llx/2, llx/2 
