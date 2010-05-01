@@ -1,4 +1,4 @@
-      subroutine h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
+      subroutine h0_generate(h0, ek, psi, h, prfld, sigma1)
 
 #include "constants.F"
 
@@ -7,7 +7,6 @@
       DOUBLE COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
       DOUBLE PRECISION, dimension (0:nb-1,1:3) :: h
       DOUBLE PRECISION prfld
-      DOUBLE PRECISION mu
       DOUBLE COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
 
       DOUBLE PRECISION, dimension (0:nb-1, 0:nb-1) :: delta
@@ -36,7 +35,7 @@
                 ind2 = 4 * nu2
 
                 h0(ind1 + 0, ind2 + 0, k) = ek(nu1,nu2,k)  +
-     $             cmplx((-mu -h(nu1,3))*
+     $             cmplx((-h(nu1,3))*
      $             delta(nu1,nu2), 0.0d0)
 
                 h0(ind1 + 0, ind2 + 1, k) = 
@@ -54,7 +53,7 @@
      $                delta(nu1,nu2)
 
                 h0(ind1 + 1, ind2 + 1, k) =  ek(nu1,nu2,k) +
-     $             cmplx( (-mu + h(nu1,3))*
+     $             cmplx( ( h(nu1,3))*
      $             delta(nu1,nu2), 0.0d0)
 
                 h0(ind1 + 1, ind2 + 2, k) = prfld * 
@@ -70,7 +69,7 @@
      $             psi( 2*nu2+1, 2*nu1, k_minus)
 
                 h0(ind1 + 2, ind2 + 2, k) = -ek(nu2,nu1,k_minus) 
-     $             + cmplx((mu + h(nu1,3))*
+     $             + cmplx((h(nu1,3))*
      $             delta(nu1,nu2), 0.0d0 )
 
                 h0(ind1 + 2, ind2 + 3, k) = 
@@ -89,7 +88,7 @@
 
                 h0(ind1 + 3, ind2 + 3, k) = 
      $             -ek(nu2,nu1,k_minus) +  
-     $             cmplx((mu - h(nu1,3))*
+     $             cmplx((- h(nu1,3))*
      $              delta(nu1,nu2), 0.0d0 )
 
               enddo

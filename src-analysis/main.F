@@ -48,7 +48,7 @@
 
 c     Bare bandstructure and one-electron matrix
       call bare_dispersion(tij, ed, ek, mu)
-      call h0_generate(h0, ek, psi, h, prfld, mu, sigma1)
+      call h0_generate(h0, ek, psi, h, prfld, sigma1)
 
       write(6,200) -llx/2,llx/2, llx/2 
       read(5,*) ikx
