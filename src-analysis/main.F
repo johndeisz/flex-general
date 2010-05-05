@@ -2,7 +2,7 @@
 
 #include "constants.F"
 
-      CHARACTER*128 sigma_input_file
+      CHARACTER*128 sigma_input_file, output_file
       DOUBLE PRECISION t, mu, prfld
       DOUBLE PRECISION ed(0:nb-1), h(0:nb-1,1:3)
       DOUBLE COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
@@ -27,6 +27,18 @@
 
       DOUBLE PRECISION w_min, w_max, dw, eta
       INTEGER n_w
+
+      DOUBLE COMPLEX, dimension (0:4*nb-1,0:4*nb-1, 0:nc-1, 
+     $   0:n_pade_max) :: p, q
+
+      INTEGER sigma_flag
+      INTEGER n_pade(0:4*nb-1,0:4*nb-1,0:nc-1)
+      INTEGER k, nu1, ia1, nu2, ia2, na1, na2
+      INTEGER id1, id2, id3, id4, id5
+
+      INTEGER l
+      DOUBLE COMPLEX z
+      DOUBLE PRECISION w, a
 
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
@@ -54,7 +66,7 @@ c     Bare bandstructure and one-electron matrix
       read(5,*) ikx
       write(6,201) -lly/2,lly/2,lly/2 
       read(5,*) iky
-      write(6,201) -llz/2,llz/2,llz/2 
+      write(6,202) -llz/2,llz/2,llz/2 
       read(5,*) ikz
 
       if ( (ikx .lt. -llx/2) .or. (ikx .gt. llx/2) .or.
@@ -74,9 +86,10 @@ c     Bare bandstructure and one-electron matrix
       tmp_h0k = h0k
 
       lwork = 16*nb*nb
+      lrwork = 16*nb*nb
+      liwork = 16*nb*nb
       call ZHEEVD('N', 'U',  4*nb,  tmp_h0k,  4*nb,  eigs_1st,  
-     $   WORK,  LWORK,  RWORK, LRWORK, IWORK, LIWORK, INFO )
-
+     $   work,  lwork,  rwork, lrwork, iwork, liwork, info )
  
       if (info .ne. 0) then
         write(6,*) "zheevd failed. stopping."
@@ -103,7 +116,57 @@ c     Bare bandstructure and one-electron matrix
         stop
       endif
 
-      call dyson(h0k,ik, w_min,dw,n_w,eta)
+      write(6,*) "Dynamical self-energy? Yes-1, No-0."
+      read(5,*) sigma_flag
+
+      p = dcmplx(0.0d0, 0.0d0)
+      q = dcmplx(0.0d0, 0.0d0)
+      
+      if (sigma_flag .eq. 1) then
+        read(50,*) 
+        read(50,*)
+c     Read pade coefficients
+        do nu1 = 0, nb-1
+          do ia1 = 0, 3
+            na1 = 4*nu1 + ia1
+            do nu2 = 0, nb-1
+              do ia2 = 0, 3
+                na2 = 4*nu2 + ia2
+                do k = 0, nc-1
+                  read(50,*) id1, id2, id3, id4, id5, 
+     $               n_pade(na1,na2,k)
+                  if (n_pade(na1,na2,k) .gt. 0) then
+                    do l = 0, n_pade(na1,na2,k)
+                      read(50,*) p(na1, na2, k, l),
+     $                   q(na1,na2,k,l)
+                    enddo
+                  endif
+                enddo
+              enddo
+            enddo
+          enddo
+        enddo
+      endif
+
+      close(unit=50)
+
+      write(6,*) 'Name of output file for a(k,w)'
+      read(5,*) output_file
+      open(unit=40, file=output_file, status="unknown")
+
+      do l = 1, n_w
+
+        w = w_min + dw*dfloat(l-1)
+        z = dcmplx(w, eta)
+
+        write(6,*) sigma_flag
+        call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+
+        write(40,*) w, a
+
+      enddo
+
+      close(unit=40)
 
  200  format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")

@@ -1,4 +1,5 @@
-      subroutine dyson(h0k, klin, w_min, dw, n_w, eta)
+      subroutine dyson(h0k, klin, p, q, n_pade, sigma_flag,
+     c    z, akw)
 
 #include "constants.F"
 
@@ -45,45 +46,8 @@ c     Lapack related
       INTEGER ipiv(4*nb)
       INTEGER info
 
-      DOUBLE PRECISION sum
+      DOUBLE PRECISION sum, akw
       CHARACTER*128 output_file
-
-
-      write(6,*) 'Name of output file for a(k,w)'
-      read(5,*) output_file
-      open(unit=40, file=output_file, status="unknown")
-
-      p = dcmplx(0.0d0, 0.0d0)
-      q = dcmplx(0.0d0, 0.0d0)
-
-      write(6,*) "Dynamical self-energy? Yes-1, No-0."
-      read(5,*) sigma_flag
-      
-      if (sigma_flag .eq. 1) then
-        read(50,*) 
-        read(50,*)
-c     Read pade coefficients
-        do nu1 = 0, nb-1
-          do ia1 = 0, 3
-            na1 = 4*nu1 + ia1
-            do nu2 = 0, nb-1
-              do ia2 = 0, 3
-                na2 = 4*nu2 + ia2
-                do k = 0, nc-1
-                  read(50,*) id1, id2, id3, id4, id5, 
-     $               n_pade(na1,na2,k)
-                  if (n_pade(na1,na2,k) .gt. 0) then
-                    do l = 0, n_pade(na1,na2,k)
-                      read(50,*) p(na1, na2, k, l),
-     $                   q(na1,na2,k,l)
-                    enddo
-                  endif
-                enddo
-              enddo
-            enddo
-          enddo
-        enddo
-      endif
 
       x_stretch = llx / lcx
       y_stretch = lly / lcy
@@ -138,11 +102,7 @@ c     Read pade coefficients
         enddo
       enddo
 
-      do l = 1, n_w
-
-        w = w_min + dw*dfloat(l-1)
-        z = dcmplx(w, eta)
-        a = dcmplx(0.0d0,0.0d0)
+      a = dcmplx(0.0d0,0.0d0)
 
 c     Loop over cluster k-points.
       
@@ -226,10 +186,7 @@ c     Invert temp_gl2
           enddo
         enddo
 
-        write(40,*) w, -sum / (2.0d0*pi)
-
-      enddo
-      close(unit=40)
+        akw = -sum / (2.0d0*pi)
 
       return
       end
