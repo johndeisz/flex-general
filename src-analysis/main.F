@@ -167,8 +167,6 @@ c     Read pade coefficients
 
           w = w_min + dw*dfloat(l-1)
           z = dcmplx(w, eta)
-
-          write(6,*) sigma_flag
           call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
 
           write(40,*) w, a
@@ -221,7 +219,6 @@ c     Read pade coefficients
             w = w_min + dw*dfloat(l-1)
             z = dcmplx(w, eta)
 
-            write(6,*) sigma_flag
             call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
 
             write(40,*) pi*float(ikx)/float(llx/2), w, a
