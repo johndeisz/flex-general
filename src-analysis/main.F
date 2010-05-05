@@ -40,6 +40,8 @@
       DOUBLE COMPLEX z
       DOUBLE PRECISION w, a
 
+      INTEGER itype, i_sc_type
+
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
 
@@ -61,60 +63,6 @@
 c     Bare bandstructure and one-electron matrix
       call bare_dispersion(tij, ed, ek, mu)
       call h0_generate(h0, ek, psi, h, prfld, sigma1)
-
-      write(6,200) -llx/2,llx/2, llx/2 
-      read(5,*) ikx
-      write(6,201) -lly/2,lly/2,lly/2 
-      read(5,*) iky
-      write(6,202) -llz/2,llz/2,llz/2 
-      read(5,*) ikz
-
-      if ( (ikx .lt. -llx/2) .or. (ikx .gt. llx/2) .or.
-     $   (iky .lt. -lly/2) .or. (iky .gt. lly/2) .or.
-     $   (ikz .lt. -llz/2) .or. (ikz .gt. llz/2) ) then
-        write(6,*)
-        write(6,*) "k-index out of range. Stopping."
-        write(6,*)
-        stop
-      endif
-
-      ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
-     $   mod(ikz+llz,llz)*llx*lly
-
-      h0k = h0(:,:,ik)
-
-      tmp_h0k = h0k
-
-      lwork = 16*nb*nb
-      lrwork = 16*nb*nb
-      liwork = 16*nb*nb
-      call ZHEEVD('N', 'U',  4*nb,  tmp_h0k,  4*nb,  eigs_1st,  
-     $   work,  lwork,  rwork, lrwork, iwork, liwork, info )
- 
-      if (info .ne. 0) then
-        write(6,*) "zheevd failed. stopping."
-      else
-        write(6,300) eigs_1st(1)
-        write(6,301) eigs_1st(4*nb)
-      endif
-
-      write(6,*)
-      write(6,*) "Input minimum energy value "
-      read(5,*) w_min
-      write(6,*) "Input maximum energy value "
-      read(5,*) w_max
-      write(6,*) "Num energy points "
-      read(5,*) n_w 
-      dw = (w_max - w_min) / dfloat(n_w - 1)
-      write(6,*) "energy increment = ", dw
-
-      write(6,*) "Resolution parameter - ",
-     $   "should be larger than energy increment."
-      read(5,*) eta
-      if ( eta .lt. dw ) then
-        write(6,*) "Resolution paramater too small. Stopping."
-        stop
-      endif
 
       write(6,*) "Dynamical self-energy? Yes-1, No-0."
       read(5,*) sigma_flag
@@ -150,25 +98,143 @@ c     Read pade coefficients
 
       close(unit=50)
 
-      write(6,*) 'Name of output file for a(k,w)'
-      read(5,*) output_file
-      open(unit=40, file=output_file, status="unknown")
+      write(6,*) "Calculation type:"
+      write(6,*) "1 - Spectral function"
+      write(6,*) "2 - k,w scans"
+      read(5,*) itype
 
-      do l = 1, n_w
+      if (itype .eq. 1) then
 
-        w = w_min + dw*dfloat(l-1)
-        z = dcmplx(w, eta)
+        write(6,200) -llx/2,llx/2, llx/2 
+        read(5,*) ikx
+        write(6,201) -lly/2,lly/2,lly/2 
+        read(5,*) iky
+        write(6,202) -llz/2,llz/2,llz/2 
+        read(5,*) ikz
 
-        write(6,*) sigma_flag
-        call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+        if ( (ikx .lt. -llx/2) .or. (ikx .gt. llx/2) .or.
+     $     (iky .lt. -lly/2) .or. (iky .gt. lly/2) .or.
+     $     (ikz .lt. -llz/2) .or. (ikz .gt. llz/2) ) then
+          write(6,*)
+          write(6,*) "k-index out of range. Stopping."
+          write(6,*)
+          stop
+        endif
 
-        write(40,*) w, a
+        ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $     mod(ikz+llz,llz)*llx*lly
 
-      enddo
+        h0k = h0(:,:,ik)
 
-      close(unit=40)
+        tmp_h0k = h0k
 
- 200  format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
+        lwork = 16*nb*nb
+        lrwork = 16*nb*nb
+        liwork = 16*nb*nb
+        call ZHEEVD('N', 'U',  4*nb,  tmp_h0k,  4*nb,  eigs_1st,  
+     $     work,  lwork,  rwork, lrwork, iwork, liwork, info )
+ 
+        if (info .ne. 0) then
+          write(6,*) "zheevd failed. stopping."
+        else
+          write(6,300) eigs_1st(1)
+          write(6,301) eigs_1st(4*nb)
+        endif
+
+        write(6,*)
+        write(6,*) "Input minimum energy value "
+        read(5,*) w_min
+        write(6,*) "Input maximum energy value "
+        read(5,*) w_max
+        write(6,*) "Num energy points "
+        read(5,*) n_w 
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
+
+        write(6,*) "Resolution parameter - ",
+     $     "should be larger than energy increment."
+        read(5,*) eta
+        if ( eta .lt. dw ) then
+          write(6,*) "Resolution paramater too small. Stopping."
+          stop
+        endif
+
+        write(6,*) 'Name of output file for a(k,w)'
+        read(5,*) output_file
+        open(unit=40, file=output_file, status="unknown")
+
+        do l = 1, n_w
+
+          w = w_min + dw*dfloat(l-1)
+          z = dcmplx(w, eta)
+
+          write(6,*) sigma_flag
+          call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+
+          write(40,*) w, a
+
+        enddo
+
+        close(unit=40)
+
+      endif
+
+      if (itype .eq. 2) then
+
+        write(6,*) '1 - Gamma-M scan'
+        write(6,*) '2 - Gamma-X scan'
+        read(5,*) i_sc_type
+
+        write(6,*)
+        write(6,*) "Input minimum energy value "
+        read(5,*) w_min
+        write(6,*) "Input maximum energy value "
+        read(5,*) w_max
+        write(6,*) "Num energy points "
+        read(5,*) n_w 
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
+
+        write(6,*) "Resolution parameter - ",
+     $     "should be larger than energy increment."
+        read(5,*) eta
+
+        write(6,*) 'Name of output file'
+        read(5,*) output_file
+        open(unit=40, file=output_file, status="unknown")
+
+        do ikx = 0, llx/2
+
+          if (i_sc_type .eq. 1) then
+            iky = 0
+          else
+            iky = ikx
+          endif
+
+          ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $       mod(ikz+llz,llz)*llx*lly
+
+          h0k = h0(:,:,ik)
+
+          do l = 1, n_w
+            
+            w = w_min + dw*dfloat(l-1)
+            z = dcmplx(w, eta)
+
+            write(6,*) sigma_flag
+            call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+
+            write(40,*) pi*float(ikx)/float(llx/2), w, a
+
+          enddo
+
+        enddo
+
+        close(unit=40)
+
+      endif
+
+ 200    format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")
  201  format("ky index, [",i3,",",i3,"]:: 0 -> ky = 0, ", 
      $   i3, "-> ky = pi/b")
