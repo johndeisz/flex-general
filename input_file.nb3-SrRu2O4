@@ -1,12 +1,14 @@
 ------------Basic thermodynamic parameters -----------------------
-100.0d0            ! temperature (K) 
+300.0d0            ! temperature (K) 
 0.00d0              ! pair field strength - iterate to strongest pair channel 
-0.0d0 0.0d0 0.0d0             ! uniform magnetic field: hx, hy, hz
-2.0d0   1.0d-6    ! electron density, tolerance
-1.5d+00   ! guess for unrenormalized chemical potential
+0.0d0 0.0d0 0.0d0             ! band 1 field: hx, hy, hz
+0.0d0 0.0d0 0.0d0             ! band 2 field: hx, hy, hz
+0.0d0 0.0d0 0.0d0             ! band 3 field: hx, hy, hz
+4.0d0   1.0d-6    ! electron density, tolerance
+-1.5d+00   ! guess for unrenormalized chemical potential
  
 -------------------- Interaction parameters  ------------------------------
-3.0d0 3.0d0 0.0d0 ! U (uu), U' (up), J (uj) (eV)
+1.0d0 0.75d0 0.25d0 ! U (uu), U' (up), J (uj) (eV)
 
 -- Perturbations: applied and relaxed over initial 10 iterations ---
 0.0d0       ! Pair field, start random, evolve to strongest channel
@@ -14,13 +16,13 @@
 0.0d0       ! Random band offset
 
 ---------Sigma input and output ----------------------------------------------
-.false. "sig_output"             ! input
-.false. "sig_output"                               ! output
+.true. "sig_output"             ! input
+.true. "sig_output"                               ! output
 10                        ! Maximum pade order for output sigma
 
 ----------FEA parameters ------------------------------------------------
-1.0d-06 400             ! tolerance in sigma, maximum iterations   
-0.5d0  2       ! alpha, (0 constant, 1 using Sig_HF, 2 using Sig_e0)
+1.0d-06 200             ! tolerance in sigma, maximum iterations   
+0.1d0  2       ! alpha, (0 constant, 1 using Sig_HF, 2 using Sig_e0)
 
 ***********-Band structure-****************************************
  --------------flux values --------------
