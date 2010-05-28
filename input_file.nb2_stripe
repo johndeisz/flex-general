@@ -1,8 +1,8 @@
 ------------Basic thermodynamic parameters -----------------------
 4000.0d0            ! temperature (K) 
 0.00d0              ! pair field strength - iterate to strongest pair channel 
-0.0d0 0.0d0 0.0d0             ! uniform magnetic field: hx, hy, hz
-0.0d0 0.0d0 0.0d0             ! uniform magnetic field: hx, hy, hz
+0.0d0 0.0d0 0.0d0             ! band 0 magnetic field: hx, hy, hz
+0.0d0 0.0d0 0.0d0             ! band 1 magnetic field: hx, hy, hz
 1.7d0   1.0d-7    ! electron density, tolerance
 1.5d+00   ! guess for unrenormalized chemical potential
  
