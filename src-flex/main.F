@@ -58,6 +58,7 @@ c     Initialize a random pair wave function.
       endif
 
 #ifdef SECOND_ORDER
+      iteration = 0
       call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
      $   prfld, prfld_pert, mu, sigma1, iteration)
       call discontinuities(h0, delta_g_r, delta_g_k,
@@ -305,7 +306,7 @@ c     Prepare for self-consistency loop.
         write(6,*) 'Calculation parameters: '
         write(6,*) '-------------------------------------'
         write(6,*) 't (K) = ', t/kb
-        write(6,*) 'Final mu = ', mu
+        write(6,*) 'Final mu = ', mu, convergence_text
         write(6,*) 'flux_x = ', flux(1)
         write(6,*) 'flux_y = ', flux(2)
         write(6,*) 'flux_z = ', flux(3)
