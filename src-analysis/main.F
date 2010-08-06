@@ -100,7 +100,8 @@ c     Read pade coefficients
 
       write(6,*) "Calculation type:"
       write(6,*) "1 - Spectral function"
-      write(6,*) "2 - k,w scans"
+      write(6,*) "2 - A(k,w) vs. k,w scans"
+      write(6,*) "3 - QP energy and width vs. k"
       read(5,*) itype
 
       if (itype .eq. 1) then
@@ -200,6 +201,59 @@ c     Read pade coefficients
         write(6,*) 'Name of output file'
         read(5,*) output_file
         open(unit=40, file=output_file, status="unknown")
+
+        do ikx = 0, llx/2
+
+          if (i_sc_type .eq. 1) then
+            iky = 0
+          else
+            iky = ikx
+          endif
+
+          ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $       mod(ikz+llz,llz)*llx*lly
+
+          h0k = h0(:,:,ik)
+
+          do l = 1, n_w
+            
+            w = w_min + dw*dfloat(l-1)
+            z = dcmplx(w, eta)
+
+            call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+
+            write(40,*) pi*float(ikx)/float(llx/2), w, a
+
+          enddo
+
+        enddo
+
+        close(unit=40)
+
+      endif
+
+      if (itype .eq. 3) then
+
+       write(6,*) '1 - Gamma-M scan'
+       write(6,*) '2 - Gamma-X scan'
+       read(5,*) i_sc_type
+       write(6,*)
+       write(6,*) "Input minimum energy value "
+       read(5,*) w_min
+       write(6,*) "Input maximum energy value "
+       read(5,*) w_max
+       write(6,*) "Num energy points "
+       read(5,*) n_w 
+       dw = (w_max - w_min) / dfloat(n_w - 1)
+       write(6,*) "energy increment = ", dw
+
+       write(6,*) "Resolution parameter - ",
+     $    "should be larger than energy increment."
+       read(5,*) eta
+
+       write(6,*) 'Name of output file'
+       read(5,*) output_file
+       open(unit=40, file=output_file, status="unknown")
 
         do ikx = 0, llx/2
 
