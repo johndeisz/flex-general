@@ -255,18 +255,31 @@ c     Read pade coefficients
        read(5,*) output_file
        open(unit=40, file=output_file, status="unknown")
 
-        do ikx = 0, llx/2
+       x_stretch = llx / lcx
+       y_stretch = lly / lcy
 
-          if (i_sc_type .eq. 1) then
-            iky = 0
-          else
-            iky = ikx
-          endif
+       do ikx = 0, llx/2
 
-          ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
-     $       mod(ikz+llz,llz)*llx*lly
+         if (2*mod(ikx, x_stretch) .ne. x_stretch) then
 
-          h0k = h0(:,:,ik)
+           icx = 
+           
+           if (i_sc_type .eq. 1) then
+             iky = 0
+           else
+             iky = ikx
+           endif
+
+           if (2*mod(iky, y_stretch) .ne. y_stretch) then
+
+             icy = 
+
+             ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $          mod(ikz+llz,llz)*llx*lly
+
+             h0k = h0(:,:,ik)
+
+             ic =
 
           do l = 1, n_w
             
