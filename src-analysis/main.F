@@ -234,71 +234,78 @@ c     Read pade coefficients
 
       if (itype .eq. 3) then
 
-       write(6,*) '1 - Gamma-M scan'
-       write(6,*) '2 - Gamma-X scan'
-       read(5,*) i_sc_type
-       write(6,*)
-       write(6,*) "Input minimum energy value "
-       read(5,*) w_min
-       write(6,*) "Input maximum energy value "
-       read(5,*) w_max
-       write(6,*) "Num energy points "
-       read(5,*) n_w 
-       dw = (w_max - w_min) / dfloat(n_w - 1)
-       write(6,*) "energy increment = ", dw
+        write(6,*) '1 - Gamma-M scan'
+        write(6,*) '2 - Gamma-X scan'
+        read(5,*) i_sc_type
+        write(6,*)
+        write(6,*) "Input minimum energy value "
+        read(5,*) w_min
+        write(6,*) "Input maximum energy value "
+        read(5,*) w_max
+        write(6,*) "Num energy points "
+        read(5,*) n_w 
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
 
-       write(6,*) "Resolution parameter - ",
-     $    "should be larger than energy increment."
-       read(5,*) eta
+        write(6,*) "Resolution parameter - ",
+     $     "should be larger than energy increment."
+        read(5,*) eta
 
-       write(6,*) 'Name of output file'
-       read(5,*) output_file
-       open(unit=40, file=output_file, status="unknown")
+        write(6,*) 'Name of output file'
+        read(5,*) output_file
+        open(unit=40, file=output_file, status="unknown")
 
-       x_stretch = llx / lcx
-       y_stretch = lly / lcy
+        x_stretch = llx / lcx
+        y_stretch = lly / lcy
 
-       do ikx = 0, llx/2
+        do ikx = 0, llx/2
 
-         if (2*mod(ikx, x_stretch) .ne. x_stretch) then
+          if ((2*mod(ikx, x_stretch) .ne. x_stretch) .or.
+     $       lcx .eq. 1) then
 
-           icx = 
+            icx = nint(float(ikx)/float(x_stretch))
+            icx = mod(icx,lcx)
            
-           if (i_sc_type .eq. 1) then
-             iky = 0
-           else
-             iky = ikx
-           endif
+            if (i_sc_type .eq. 1) then
+              iky = 0
+            else
+              iky = ikx
+            endif
 
-           if (2*mod(iky, y_stretch) .ne. y_stretch) then
+            if ( (2*mod(iky, y_stretch) .ne. y_stretch) .or.
+     $         lcy .eq. 1) then
 
-             icy = 
+              icy = nint(float(iky)/float(y_stretch))
+              icy = mod(icy,lcy)
 
-             ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
-     $          mod(ikz+llz,llz)*llx*lly
+              ik = ikx + iky*llx 
 
-             h0k = h0(:,:,ik)
+              h0k = h0(:,:,ik)
 
-             ic =
+              ic = icx + icy*lcx
 
-          do l = 1, n_w
+              do l = 1, n_w
             
-            w = w_min + dw*dfloat(l-1)
-            z = dcmplx(w, eta)
+                w = w_min + dw*dfloat(l-1)
+                z = dcmplx(w, eta)
 
-            call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+                call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+                
+                write(40,*) pi*float(ikx)/float(llx/2), w, a
 
-            write(40,*) pi*float(ikx)/float(llx/2), w, a
+              enddo
 
-          enddo
+            endif
+
+          endif
 
         enddo
-
+      
         close(unit=40)
-
+        
       endif
 
- 200    format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
+ 200  format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")
  201  format("ky index, [",i3,",",i3,"]:: 0 -> ky = 0, ", 
      $   i3, "-> ky = pi/b")
