@@ -42,6 +42,33 @@
 
       INTEGER itype, i_sc_type
 
+
+      DOUBLE COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: hk, hk_herm,
+     $   sigma
+      DOUBLE PRECISION eigs(0:4*nb-1)
+      DOUBLE COMPLEX work2(16*nb+32*nb**2)
+      INTEGER lwork2
+      DOUBLE PRECISION rwork2(2+20*nb+64*nb**2)
+      INTEGER lrwork2
+      INTEGER iwork2(6+20*nb)
+      INTEGER liwork2, info2
+
+      INTEGER i,j
+
+      DOUBLE COMPLEX a_up_spin
+      INTEGER eigs_smaller_new, eigs_smaller_old
+
+      INTEGER ic, icx, icy
+      INTEGER x_stretch, y_stretch
+
+      DOUBLE COMPLEX pade_evaluate
+      EXTERNAL pade_evaluate
+      
+
+      lwork2 = 16*nb + 32*nb**2
+      lrwork2 = 2+20*nb+64*nb**2
+      liwork2= 6+20*nb
+
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
 
@@ -284,15 +311,82 @@ c     Read pade coefficients
 
               ic = icx + icy*lcx
 
+              eigs_smaller_old = 0
+
               do l = 1, n_w
             
                 w = w_min + dw*dfloat(l-1)
                 z = dcmplx(w, eta)
 
-                call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
-                
-                write(40,*) pi*float(ikx)/float(llx/2), w, a
+                do i = 0, 4*nb-1
+                  do j = 0, 4*nb-1
 
+                    if ( (sigma_flag .eq. 1) .and.
+     $                 (n_pade(i,j,ic) .gt. 0)) then
+
+                      sigma(i,j) = pade_evaluate(z,n_pade(i,j,ic),
+     $                   p(i,j,ic,:), q(i,j,ic,:))
+
+                    else
+                      sigma(i,j) = dcmplx(0.0d0,0.0d0)
+                    endif
+
+                  enddo
+                enddo
+
+                hk = h0k + sigma1 + sigma
+
+                do i = 0, 4*nb-1
+                  do j= 0, 4*nb-1
+
+                    hk_herm = 0.5d0*(hk(i,j) + conjg(hk(j,i)))
+
+                  enddo
+                enddo
+
+                call zheevd('V','U',4*nb,hk_herm,4*nb,eigs,work2,
+     $             lwork2,rwork2,lrwork2,iwork2,liwork2,info2)
+
+                if (info2 .ne. 0) then
+                  write(6,*) "zheevd failed. stopping."
+                endif
+
+                eigs_smaller_new = 0
+
+                do i = 0, 4*nb-1
+
+                  if (eigs(l) .lt. w) then
+                    eigs_smaller_new = eigs_smaller_new + 1
+                  endif
+
+                enddo
+
+                if ( (l .gt. 1) .and. (eigs_smaller_new .gt. 
+     $             eigs_smaller_old) ) then
+
+                  do j = eigs_smaller_old, eigs_smaller_new - 1
+
+                    a_up_spin = 0.0d0
+
+                    do ib = 0, nb-1
+
+                      a_up_spin = a_up_spin + hk_herm(4*ib,j)*
+     $                   conjg(hk_herm(4*ib,j))
+
+                    enddo
+
+                    if (dreal(a_up_spin) .gt. 0.1d0) then
+                      
+                      write(40,*) 2.0d0*float(ikx)/float(llx),
+     $                   eigs(j)
+
+                    endif
+
+                  enddo
+                endif
+
+                eigs_smaller_old = eigs_smaller_new
+                  
               enddo
 
             endif
