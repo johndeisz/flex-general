@@ -64,6 +64,10 @@
       DOUBLE COMPLEX pade_evaluate
       EXTERNAL pade_evaluate
       
+      INTEGER out_type
+      DOUBLE COMPLEX gamma
+
+      INTEGER ii,jj
 
       lwork2 = 16*nb + 32*nb**2
       lrwork2 = 2+20*nb+64*nb**2
@@ -265,6 +269,10 @@ c     Read pade coefficients
         write(6,*) '2 - Gamma-X scan'
         read(5,*) i_sc_type
         write(6,*)
+        write(6,*) '1 - Eqp and gamma vs. k/(pi/a)'
+        write(6,*) '2 - Gamma vs Eqp'
+        read(5,*) out_type
+        write(6,*)
         write(6,*) "Input minimum energy value "
         read(5,*) w_min
         write(6,*) "Input maximum energy value "
@@ -334,12 +342,13 @@ c     Read pade coefficients
                   enddo
                 enddo
 
-                hk = h0k + sigma1 + sigma
+                hk = h0k + sigma
 
                 do i = 0, 4*nb-1
                   do j= 0, 4*nb-1
 
-                    hk_herm = 0.5d0*(hk(i,j) + conjg(hk(j,i)))
+                    hk_herm(i,j) = 
+     $                 0.5d0*(hk(i,j) + conjg(hk(j,i)))
 
                   enddo
                 enddo
@@ -355,7 +364,7 @@ c     Read pade coefficients
 
                 do i = 0, 4*nb-1
 
-                  if (eigs(l) .lt. w) then
+                  if (eigs(i) .lt. w) then
                     eigs_smaller_new = eigs_smaller_new + 1
                   endif
 
@@ -376,9 +385,22 @@ c     Read pade coefficients
                     enddo
 
                     if (dreal(a_up_spin) .gt. 0.1d0) then
+
+                      gamma = 0
+
+                      do ii = 0, 4*nb-1
+                        do jj = 0, 4*nb-1
+                          gamma = gamma + conjg(hk_herm(ii,j))*
+     $                       sigma(ii,jj)*hk_herm(jj,j)
+                        enddo
+                      enddo
                       
-                      write(40,*) 2.0d0*float(ikx)/float(llx),
-     $                   eigs(j)
+                      if (out_type .eq. 1) then
+                        write(40,*) 2.0d0*float(ikx)/float(llx),
+     $                     eigs(j), -dimag(gamma)
+                      else
+                        write(40,*) eigs(j), -dimag(gamma)
+                      endif
 
                     endif
 

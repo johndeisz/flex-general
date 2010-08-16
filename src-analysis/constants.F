@@ -8,8 +8,8 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
 
       parameter (nb = 3)
 
-      parameter (lcx = 1)
-      parameter (lcy = 1)
+      parameter (lcx = 4)
+      parameter (lcy = 4)
       parameter (lcz = 1)
       parameter (nc = lcx*lcy*lcz)  ! number of cluster sites
 
