@@ -2,19 +2,22 @@
 
       implicit none
 
-      integer ml, ms
-
 c ms = 0 -> spin up
 c ms = 1 -> spin down
 
-      complex double hspin(0:9,0:9)
-      complex double psi(-2:2, 0:3)
-      complex double psi_spin(0:9,0:5)
+      double complex hspin(0:9,0:9)
+      double complex psi(-2:2, 0:3)
+      double complex psi_spin(0:9,0:5)
+
+      integer nus, nu, is, ml, ind, ms, ind1, ind2
+      integer nus1, nus2
+
+      double complex sum
 
       hspin = dcmplx(0.0d0,0.0d0)
 
 c Define spatial wave functions
-      psi(-2,0) = 0.0d0
+      psi(-2,0) = dcmplx(0.0d0, 0.0d0)
       psi(-1,0) = -1.0d0 / dsqrt(2.0d0) 
       psi(0,0) = 0.0d0
       psi(1,0) = -1.0d0 / dsqrt(2.0d0)
@@ -30,17 +33,17 @@ c Define spatial wave functions
       psi(-1,2) = 0.0d0
       psi(0,2) = 0.d0
       psi(1,2) = 0.d0
-      psi(2,2) = dcmpx( 0.0d0, -1.0d0 / dsqrt(2.0d0))
+      psi(2,2) = dcmplx( 0.0d0, -1.0d0 / dsqrt(2.0d0))
 
       psi_spin = cmplx(0.0d0, 0.0d0)
 
       do nu = 0, 2
         do is = 0, 1
+
           nus = 2*nu + is
 
           do ml = -2, 2
             ind = 2*(ml+2) + is
-
             psi_spin(ind, nus) = psi(ml,nu)
           enddo
 
@@ -78,8 +81,31 @@ c Orbital angular momentum lowered, spin angular momentum raised
                
         enddo
       enddo
-
        
+c Compute the spin-orbit matrix elements
+	
+      do nus1=0,5
+        do nus2 = 0,5
+
+          sum = 0.0d0
+
+          do ind1 = 0,9
+            do ind2 = 0, 9
+
+              sum = sum + dconjg(psi_spin(ind2,nus2))*
+     $           hspin(ind2,ind1)*psi(ind1,nus1)
+              
+            enddo
+          enddo
+            
+          write(6,*) nus1, nus2, sum
+
+        enddo
+      enddo
+
+      stop
+      end
+
 
 
            
