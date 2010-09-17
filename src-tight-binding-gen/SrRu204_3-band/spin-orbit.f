@@ -18,7 +18,7 @@ c ms = 1 -> spin down
 
 c Define spatial wave functions
       psi(-2,0) = dcmplx(0.0d0, 0.0d0)
-      psi(-1,0) = -1.0d0 / dsqrt(2.0d0) 
+      psi(-1,0) = 1.0d0 / dsqrt(2.0d0) 
       psi(0,0) = 0.0d0
       psi(1,0) = -1.0d0 / dsqrt(2.0d0)
       psi(2,0) = 0.0d0
@@ -33,9 +33,9 @@ c Define spatial wave functions
       psi(-1,2) = 0.0d0
       psi(0,2) = 0.d0
       psi(1,2) = 0.d0
-      psi(2,2) = dcmplx( 0.0d0, -1.0d0 / dsqrt(2.0d0))
+      psi(2,2) = dcmplx( 0.0d0, 1.0d0 / dsqrt(2.0d0))
 
-      psi_spin = cmplx(0.0d0, 0.0d0)
+      psi_spin = dcmplx(0.0d0, 0.0d0)
 
       do nu = 0, 2
         do is = 0, 1
@@ -93,7 +93,7 @@ c Compute the spin-orbit matrix elements
             do ind2 = 0, 9
 
               sum = sum + dconjg(psi_spin(ind2,nus2))*
-     $           hspin(ind2,ind1)*psi(ind1,nus1)
+     $           hspin(ind2,ind1)*psi_spin(ind1,nus1)
               
             enddo
           enddo
