@@ -2,7 +2,7 @@
 
       subroutine readin(t, flux, prfld, h,
      $   target_density, density_tol, mu, uu, up, uj, 
-     $   ed, tij, prfld_pert, h_pert, v_pert,
+     $   ed, tij, prfld_pert, h_pert, v_pert, h_so,
      $   read_input, sigma_input_file,
      $   write_output, sigma_output_file, max_pade_order,
      $   sigma_tol,  max_it, alpha, alpha_scheme)
@@ -25,6 +25,7 @@ c Parameters to be read and returned
 
       REAL ed(0:nb-1)
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
       REAL prfld_pert
       REAL h_pert_amp(1:3)
       REAL h_pert(0:nb-1,1:3)
@@ -50,6 +51,10 @@ c     other variable
       INTEGER ib, ibp, id, idp
       INTEGER ix, iy, iz, k
       INTEGER max_x, max_y, max_z
+
+      INTEGER ibs, ibsp
+      LOGICAL so_flag
+      REAL so_amp
 
 #ifdef USE_MPI
       call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierr)
@@ -322,10 +327,38 @@ c-----Orbital energies and hopping matrix elements -------------------
      $   MPI_COMM_WORLD, ierr)
 #endif 
 
+      if (rank .eq. 0) then
+        read(5,*)
+        read(5,*)
+        read(5,*)
+        read(5,*) so_flag, so_amp
+        write(6,*)
+        write(6,*) 'so_flag = ', so_flag
+        write(6,*) 'so_amp = ', so_amp
+        if (so_flag) then
+          read(5,*)
+          write(6,*) 'nus   nusp  so_matrix'
+          do ibs = 0, 2*nb-1
+            do ibsp = 0, 2*nb-1
+              read(5,*) id, idp, h_so(ibs,ibsp)
+              write(6,300) ibs, ibsp, real(h_so(ibs,ibsp)),
+     $           imag(h_so(ibs,ibsp))
+            enddo
+          enddo
+          h_so = so_amp*h_so
+        else
+          h_so = cmplx(0.0d0, 0.0d0)
+        endif
+      endif
+
+#ifdef USE_MPI
+      call MPI_Bast(h_so,4*nb*nb, MPI_COMPLEX, 0,
+     $   MPI_COMM_WORLD, ierr)
+#endif
+
  200  format('------------------- [',i3,',',i3,',',i3,'] hopping',
      $   '------------------------')
  300  format(i3,',',i3,'  ','(',D16.9,',',D16.9,')')
-
 
       return
       end

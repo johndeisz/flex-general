@@ -25,7 +25,7 @@
 
       INTEGER lcx_in, lcy_in, lcz_in
       INTEGER llx_in, lly_in, llz_in
-      INTEGER pair_flag
+      INTEGER pair_flag, so_flag
       INTEGER id1, id2, id3, id4, id5
 
       REAL uu_1, up_1, uj_1
@@ -336,6 +336,25 @@ c     Stretch the pair wave function.
             enddo
           enddo
 
+        endif
+
+c     Spin-orbit matrix stuff
+        read(50,*)
+        read(50,*)
+        read(50,*)
+        read(50,*) so_flag
+
+        if (so_flag > 0) then
+          read(50,*)
+          do nu1 = 0, nb-1
+            do is1 = 0, 1
+              do nu2 = 0, nb-1
+                do is2 = 0, 1
+                  read(50,*)
+                enddo
+              enddo
+            enddo
+          enddo
         endif
 
         read(50,*)

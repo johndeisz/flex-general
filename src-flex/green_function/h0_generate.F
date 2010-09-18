@@ -1,7 +1,7 @@
 #include "../convert.F"
 
       subroutine h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
-     $   prfld, prfld_pert, mu, sigma1, iteration)
+     $   prfld, prfld_pert, mu, sigma1, h_so, iteration)
 
 c /**************************************************************
 c * H0 -- program to calculate the H0 array                    *
@@ -19,6 +19,7 @@ c  **************************************************************/
       REAL prfld, prfld_pert
       REAL mu
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
       INTEGER iteration
 
       REAL, dimension (0:nb-1,1:3) :: h_eff
@@ -28,6 +29,7 @@ c  **************************************************************/
       REAL, dimension (0:nb-1, 0:nb-1) :: delta
 
       INTEGER nu1, nu2, k, k_minus, k1, k2, k3
+      INTEGER is1, is2
       INTEGER ind1, ind2
 
       delta = 0.0d0
@@ -132,5 +134,26 @@ c  **************************************************************/
         enddo
       enddo
 
+
+
+c     Add spin-orbit interaction
+      do nu1 = 0, nb-1
+        do is1 = 0, 1
+          do nu2 = 0, nb-1
+            do is2 = 0, 1
+
+              h0(4*nu1+is1, 4*nu2+is2,:) =
+     $           h0(4*nu1+is1, 4*nu2+is2,:) + 
+     $           h_so(2*nu1+is1,2*nu2+is2) 
+
+              h0(4*nu1+is1+2, 4*nu2+is2+2,:) =
+     $           h0(4*nu1+is1+2, 4*nu2+is2+2,:)  -
+     $           conjg(h_so(2*nu1+is1,2*nu2+is2))
+
+            enddo
+          enddo
+        enddo
+      enddo
+              
       return
       end

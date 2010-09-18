@@ -15,6 +15,7 @@ c Parameters read from input file
 
       REAL ed(0:nb-1)
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
 
       REAL prfld_pert
       REAL h_pert(0:nb-1,1:3)

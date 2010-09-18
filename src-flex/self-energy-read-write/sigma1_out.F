@@ -1,7 +1,7 @@
 #include "../convert.F"
 
       subroutine sigma1_out(t, mu, flux, prfld, ed, h,  
-     $   tij, uu, up, uj, psi, sigma1)
+     $   tij, uu, up, uj, psi, h_so, sigma1)
 
 #include "../constants.F"
 
@@ -10,6 +10,7 @@
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       REAL uu, up, uj
       COMPLEX psi(0:2*nb-1,0:2*nb-1,0:nl-1)
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
       INTEGER k, nu1, nu2, is1, is2, ia1, ia2
       INTEGER ib, ibp
@@ -122,8 +123,27 @@
 
       endif
 
+      write(40,*)  
+      write(40,*) "--Spin-orbit matrix -------"
+      write(40,*) "Print flag (0 not printed, 1 printed)"
+      write(40,*) 1
+      write(40,*) "nu1 is1  nu2 is2 h_so"
+      do nu1 = 0, nb-1
+        do is1 = 0, 1
+          do nu2 = 0, nb-1
+            do is2 = 0, 1
+              write(40, 119) nu1, is1, nu2, is2, 
+     $           real(h_so(2*nu1+is1,2*nu2+is2)),
+     $           imag(h_so(2*nu1+is1,2*nu2+is2))
+            enddo
+          enddo
+        enddo
+      enddo
+
  105  format(i3,2x,i1,2x,i3,2x,i1,2x,'(',d18.10,', ',d18.10,')')
  109  format(i3,2x,i1,2x,i3,2x,i1,2x,i7,2x,
+     $   '(',d18.10,', ',d18.10,')')
+ 119  format(i3,2x,i1,2x,i3,2x,i1,3x,
      $   '(',d18.10,', ',d18.10,')')
 
       write(40,*)
