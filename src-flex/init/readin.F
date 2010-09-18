@@ -352,7 +352,7 @@ c-----Orbital energies and hopping matrix elements -------------------
       endif
 
 #ifdef USE_MPI
-      call MPI_Bast(h_so,4*nb*nb, MPI_COMPLEX, 0,
+      call MPI_Bcast(h_so,4*nb*nb, MPI_COMPLEX, 0,
      $   MPI_COMM_WORLD, ierr)
 #endif
 
