@@ -24,7 +24,7 @@ c Define spatial wave functions
       psi(2,0) = 0.0d0
 
       psi(-2,1) = 0.0d0 
-      psi(-1,1) = dcmplx(0.0d0,-1.0d0 / dsqrt(2.0d0))
+      psi(-1,1) = dcmplx(0.0d0,1.0d0 / dsqrt(2.0d0))
       psi(0,1) = 0.0d0
       psi(1,1) = dcmplx(0.0d0, 1.0d0 / dsqrt(2.0d0))
       psi(2,1) = 0.0d0
@@ -33,7 +33,7 @@ c Define spatial wave functions
       psi(-1,2) = 0.0d0
       psi(0,2) = 0.d0
       psi(1,2) = 0.d0
-      psi(2,2) = dcmplx( 0.0d0, 1.0d0 / dsqrt(2.0d0))
+      psi(2,2) = dcmplx( 0.0d0, -1.0d0 / dsqrt(2.0d0))
 
       psi_spin = dcmplx(0.0d0, 0.0d0)
 
