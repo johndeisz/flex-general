@@ -412,6 +412,51 @@ C$$$#endif /* THIRD_ORDER */
      $       magb(ib,3)
         enddo
 
+        mag = 0.0d0
+        magb = 0.0d0
+        denb = 0.0d0
+
+        do ib = 0, nb-1
+          denb(ib) = -real( g_tau0_local(4*ib+2,4*ib+2) + 
+     $       g_tau0_local(4*ib+3,4*ib+3) ) 
+        enddo
+
+        do ib = 0, nb-1
+          magb(ib,1) = -real( g_tau0_local(4*ib+3,4*ib+2) + 
+     $       g_tau0_local(4*ib+2,4*ib+3) ) 
+          mag = mag + magb(ib,1)
+        enddo
+        write(6,*) 'Mag(x), using hole basis = ', mag,
+     $     convergence_text
+
+        mag = 0.0d0
+        do ib = 0, nb-1
+          magb(ib,2) = real( cmplx(0.0d0,1.0d0)*
+     $       (g_tau0_local(4*ib+2,4*ib+3) -
+     $       g_tau0_local(4*ib+3,4*ib+2)) ) 
+          mag = mag + magb(ib,2)
+        enddo
+        write(6,*) 'Mag(y), using hole basis = ', mag,
+     $     convergence_text
+
+        mag = 0.0d0
+        do ib = 0, nb-1
+          magb(ib,3) =  real( -g_tau0_local(4*ib+2,4*ib+2) + 
+     $       g_tau0_local(4*ib+3,4*ib+3) )
+          mag = mag + magb(ib,3)
+        enddo
+        write(6,*) 'Mag(z) using hole basis = ', mag,
+     $       convergence_text
+
+
+        write(6,*) 'Density and magnet. by band using hole basis'
+        write(6,*) 'band  rho     mx       my      mz'
+        do ib = 0, nb-1
+          write(6,225) ib, denb(ib), magb(ib,1), magb(ib,2),
+     $       magb(ib,3)
+        enddo
+
+
  225    format(i3,2x,d16.8,2x,d16.8,2x,d16.8,2x,d16.8)
 
 
