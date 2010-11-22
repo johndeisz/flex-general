@@ -29,6 +29,7 @@ OBJECTS_COMMON = \
 	analyze_psi_1D.o \
 	analyze_psi_2D_tet.o \
 	analyze_psi_2D_ortho.o \
+	pair_wave_test.o \
 #	analyze_psi_3D_cubic.o \
 #	analyze_psi_3D_tet.o \
 #	sig_output.o \
@@ -256,6 +257,9 @@ pade.o : self-energy-read-write/pade.F constants.F
 
 pade_evaluate.o : self-energy-read-write/pade_evaluate.F constants.F
 	$(CC) -c self-energy-read-write/pade_evaluate.F $(defines)
+
+pair_wave_test.o : green_function/pair_wave_test.F constants.F
+	$(CC) -c green_function/pair_wave_test.F $(defines)
 
 clean :
 	rm $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD)
