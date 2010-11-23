@@ -109,7 +109,7 @@
         
       endif
 
-      psi = (1.0d0 - alpha)*psi_old + alpha*psi
+c     psi = (1.0d0 - alpha)*psi_old + alpha*psi
 
 c     phase_new = atan2(imag(psi(0,1,llx+2)),real(psi(0,1,llx+2)))
 c     psi = psi*cexp(cmplx(0.0d0,phase_old-phase_new))
