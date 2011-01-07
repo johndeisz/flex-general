@@ -14,11 +14,12 @@
       INTEGER i, j, ix, iy, iz
       INTEGER ib, is, jb, js, il
       INTEGER ind1, ind2
+      INTEGER ibp, isp, k
       
       REAL real_psi, imag_psi
 
       COMPLEX tmp_psi
-      REAL psi_norm
+      REAL m_band, m_psi, psi_norm
 
 #ifdef USE_MPI
       call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierr)
@@ -60,7 +61,7 @@ c     Antisymmetrize
 
                       psi(2*(ib-1)+is,2*(jb-1)+js, ind1) = 
      $                   tmp_psi
-
+                      
                       psi(2*(jb-1)+js,2*(ib-1)+is, ind2) = 
      $                   -tmp_psi
                       
@@ -72,21 +73,55 @@ c     Antisymmetrize
           enddo
         enddo
 
-        psi_norm = 0.0d0
+        m_psi = 0.0d0
 
-        do i = 0, 2*nb-1
-          do j = 0, 2*nb-1
-            do il = 0, nl-1
+        do ib = 0, nb-1
 
-              psi_norm = psi_norm + 
-     $           (real(psi(i,j,il)))**2 +
-     $           (imag(psi(i,j,il)))**2
+          m_band = 0.0d0         
 
+          do ibp = 0, nb-1
+
+            do is = 0, 1
+              do isp = 0, 1
+
+                do k = 0, nl-1
+
+                  m_band = m_band + 
+     $               (cabs(psi(2*ib+is,2*ibp+isp,k)) )**2
+
+                enddo
+                
+              enddo
             enddo
-          enddo
-        enddo
 
-        psi = psi / sqrt(psi_norm)
+          enddo
+
+          if (m_band .gt. m_psi) then
+            m_psi = m_band
+          endif
+
+       enddo
+
+       m_psi = sqrt(m_psi)
+
+       do ib = 0, nb-1
+         do ibp = 0, nb-1
+
+           do is = 0, 1
+             do isp = 0, 1
+                    
+               do k = 0, nl-1
+
+                 psi(2*ib+is,2*ibp+isp,k) = 
+     $              psi(2*ib+is,2*ibp+isp,k)  / m_psi
+
+               enddo
+                
+             enddo
+           enddo
+           
+         enddo
+       enddo
 
       endif
 
