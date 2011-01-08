@@ -33,7 +33,7 @@ c Determine overall wavefunction normalization
               do ir = 0, nl - 1
               
                 overall = overall + 
-     $             cabs(psi(2*ib+is,2*ibp+isp,ir))**2.0d0
+     $             (cabs(psi(2*ib+is,2*ibp+isp,ir)))**2.0d0
                 
               enddo
             enddo
@@ -42,7 +42,7 @@ c Determine overall wavefunction normalization
       enddo
 
       if (overall .gt. 1.0d-11) then
-        call analyze_psi_exchange(psi)
+        call analyze_psi_exchange(psi, overall)
         call analyze_psi_spin(psi, overall)
       endif
 
