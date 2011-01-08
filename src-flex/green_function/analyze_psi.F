@@ -8,19 +8,9 @@
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
 
       INTEGER isignv(0:3)
-      INTEGER i, j, ix, iy, iz, jx, jy, jz
-      COMPLEX total
-      REAL pi
 
-      COMPLEX dot
-      REAL dot_real, dot_imag
-      REAL mag
-
-      REAL overall, norm
-      COMPLEX overlap
-
-      pi = 4.0*atan(1.0d0)
-
+      INTEGER is, isp, ib, ibp, ir
+      REAL overall
 
 c     First fft the wave function to r-space
       isignv(0) = 0
@@ -52,9 +42,8 @@ c Determine overall wavefunction normalization
       enddo
 
       if (overall .gt. 1.0d-11) then
-
-      call analyze_psi_spin(psi, overall)
-
+        call analyze_psi_exchange(psi)
+        call analyze_psi_spin(psi, overall)
       endif
 
       if ( (lly .eq. 1) .and. (llz .eq. 1) ) then  ! 1D

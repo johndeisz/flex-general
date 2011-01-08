@@ -26,6 +26,8 @@ OBJECTS_COMMON = \
 	sigma_input.o \
 	kinetic_energy.o \
 	analyze_psi.o \
+	analyze_psi_exchange.o \
+	analyze_psi_spin.o \
 	analyze_psi_1D.o \
 	analyze_psi_2D_tet.o \
 	analyze_psi_2D_ortho.o \
@@ -167,6 +169,12 @@ kinetic_energy.o : thermodynamics/kinetic_energy.F constants.F
 
 analyze_psi.o : green_function/analyze_psi.F constants.F
 	$(CC) -c green_function/analyze_psi.F $(defines)
+
+analyze_psi_exchange.o : green_function/analyze_psi_exchange.F constants.F
+	$(CC) -c green_function/analyze_psi_exchange.F $(defines)
+
+analyze_psi_spin.o : green_function/analyze_psi_spin.F constants.F
+	$(CC) -c green_function/analyze_psi_spin.F $(defines)
 
 analyze_psi_1D.o : green_function/analyze_psi_1D.F constants.F
 	$(CC) -c green_function/analyze_psi_1D.F $(defines)

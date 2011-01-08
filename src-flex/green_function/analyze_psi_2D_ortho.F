@@ -47,6 +47,20 @@ c     extended s, x^2
         write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi      
       enddo
 
+c     extended s, 2x^2
+      write(6,*) "**** extended s, (2x)^2 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = 0.5d0 * ( psi(2*ib+0,2*ib+1,2) - 
+     $     psi(2*ib+1,2*ib+0,2) +
+     $     psi(2*ib+0,2*ib+1,llx1-1) - 
+     $     psi(2*ib+1,2*ib+0,llx1-1) )
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi      
+      enddo
+
 c     extended s, y^2
       write(6,*) "**** extended s, y^2 ****"
       write(6,*) "ib  amp      phase/pi"
@@ -55,6 +69,20 @@ c     extended s, y^2
      $     psi(2*ib+1,2*ib+0,llx) +
      $     psi(2*ib+0,2*ib+1,lly1*llx) - 
      $     psi(2*ib+1,2*ib+0,lly1*llx) )
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi      
+      enddo
+
+c     extended s, 2y^2
+      write(6,*) "**** extended s, (2y)^2 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = 0.5d0 * ( psi(2*ib+0,2*ib+1,2*llx) - 
+     $     psi(2*ib+1,2*ib+0,2*llx) +
+     $     psi(2*ib+0,2*ib+1,(lly1-1)*llx) - 
+     $     psi(2*ib+1,2*ib+0,(lly1-1)*llx) )
         dot_real = real(dot)
         dot_imag = imag(dot)
         mag = sqrt( dot_real**2 + dot_imag**2)
@@ -74,6 +102,25 @@ c     extended s, xy (A2)
      $     psi(2*ib+1,2*ib+0,llx1+llx) +
      $     psi(2*ib+0,2*ib+1,llx1+lly1*llx) - 
      $     psi(2*ib+1,2*ib+0,llx1+lly1*llx) )
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi      
+      enddo
+
+c     extended s, 2x2y (A2)
+      write(6,*) "**** extended s, 2x2y (A2) ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = 0.5d0 * sqrt(0.5d0) * 
+     $     ( psi(2*ib+0,2*ib+1,2*llx+2) - 
+     $     psi(2*ib+1,2*ib+0,2*llx+2) -
+     $     psi(2*ib+0,2*ib+1,(lly1-1)*llx+2) + 
+     $     psi(2*ib+1,2*ib+0,(lly1-1)*llx+2) -
+     $     psi(2*ib+0,2*ib+1,llx1-1+2*llx) + 
+     $     psi(2*ib+1,2*ib+0,llx1-1+2*llx) +
+     $     psi(2*ib+0,2*ib+1,llx1-1+(lly1-1)*llx) - 
+     $     psi(2*ib+1,2*ib+0,llx1-1+(lly1-1)*llx) )
         dot_real = real(dot)
         dot_imag = imag(dot)
         mag = sqrt( dot_real**2 + dot_imag**2)

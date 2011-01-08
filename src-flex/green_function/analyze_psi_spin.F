@@ -12,7 +12,7 @@
 
       REAL chi_s(0:1, -1:1, 0:1, 0:1)
 
-      INTEGER s, ms, is, isp, ir
+      INTEGER s, ms, is, isp, ib, ibp, ir
 
       write(6,*)
       write(6,*) 'Pair wave function weight by pair spin'
@@ -64,7 +64,7 @@
             enddo
           enddo
 
-          write(6,159) s,ms, norm/overlap
+          write(6,159) s,ms, norm/overall
 
         enddo
       enddo

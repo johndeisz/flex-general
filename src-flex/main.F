@@ -468,17 +468,20 @@ C$$$#endif /* THIRD_ORDER */
         call kinetic_energy(g_tau0, ek, kinetic)
         write(6,*) 'kinetic energy = ', kinetic
 
-        call analyze_psi(psi, tij)
+        if (m_psi .gt. 1.0d-12) then
+          call analyze_psi(psi, tij)
 
-        write(6,*) 'Reanalyze pair wave function using hole basis'
+          write(6,*) 'Reanalyze pair wave function using hole basis'
 
-        call pair_wave_test(psi, g_tau0, alpha, m_psi)
+          call pair_wave_test(psi, g_tau0, alpha, m_psi)
 
-        write(6,*) 'Pair amplitude = ', m_psi
+          write(6,*) 'Pair amplitude = ', m_psi
 
-        call analyze_psi(psi, tij)
+          call analyze_psi(psi, tij)
+          
+         endif 
 
-      endif
+        endif
 
       call cpu_time(end_time)
       if (rank .eq. 0) then
