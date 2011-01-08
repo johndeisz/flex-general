@@ -16,6 +16,9 @@
       REAL dot_real, dot_imag
       REAL mag
 
+      REAL overall, norm
+      COMPLEX overlap
+
       pi = 4.0*atan(1.0d0)
 
 
@@ -58,7 +61,7 @@ c Singlet-singlet
         do ibp = 0, nb -1
           do ir = 0, nl - 1
   
-            overlap = dcmplx(0.0d0, 0.0d0)
+            overlap = cmplx(0.0d0, 0.0d0)
             
             do is = 0, 1
               
@@ -110,32 +113,38 @@ c Triplet-triplet
 
       norm = 0.0d0
 
-      do is = 0, 1
+      do ib = 0, nb-1
+        do ibp = 0, nb -1
+          do ir = 0, nl - 1
 
-        if (is .eq. 0) then
-          phase = 1.0d0
-        else
-          phase = 1.0d0
-        endif
-
-        do isp = 0, 1
-          
-          if (isp .eq. 0) then
-            phasep = 1.0d0
-          else
-            phasep = 1.0d0
-          endif
-
-          do ib = 0, nb-1
-            do ibp = 0, nb -1
-              do ir = 0, nl - 1
+            overlap = cmplx(0.0d0, 0.0d0)
               
-                norm = norm + 
-     $             (1.0d0/4.0d0)*phase*phasep*
-     $             (cabs(psi(2*ib+is,2*ibp+isp,ir)))**2.0d0
+            do is = 0, 1
+
+              if (is .eq. 0) then
+                phase = 1.0d0
+              else
+                phase = 1.0d0
+              endif
+
+              do isp = 0, 1
+          
+                if (isp .eq. 0) then
+                  phasep = 1.0d0
+                else
+                  phasep = 1.0d0
+                endif
+
+                overlap = overlap + 
+     $             (1.0d0/2.0d0)*phase*phasep*
+     $             psi(2*ib+is,2*ibp+isp,ir)
+
                 
               enddo
             enddo
+
+            norm = norm + (cabs(overlap))**2.0d0
+
           enddo
 
         enddo
@@ -162,60 +171,68 @@ c Singlet-triplet
 
       norm = 0.0d0
 
-      do is = 0, 1
+      do ib = 0, nb-1
+        do ibp = 0, nb -1
+          do ir = 0, nl - 1
 
-        if (is .eq. 0) then
-          phase = 1.0d0
-        else
-          phase = -1.0d0
-        endif
+            overlap = cmplx(0.0d0, 0.0d0)
 
-        do ib = 0, nb-1
-          do ibp = 0, nb -1
-            do ir = 0, nl - 1
+            do is = 0, 1
+
+              if (is .eq. 0) then
+                phase = 1.0d0
+              else
+                phase = -1.0d0
+              endif
               
-              norm = norm + 
-     $           (1.0d0/2.0d0)*phase*
-     $           (cabs(psi(2*ib+is,2*ibp+0,ir)))**2.0d0
+              overlap = overlap + 
+     $           (1.0d0/sqrt(2.0d0))*phase*
+     $           psi(2*ib+is,2*ibp+0,ir)
                 
             enddo
+
+            norm = norm + (cabs(overlap))**2.0d0
+
           enddo
         enddo
-
       enddo
 
       write(6,*) '<S=0 Sz=0|psi|S=1 Sz=1> = ', norm / overall    
 
       norm = 0.0d0
 
-      do is = 0, 1
-
-        if (is .eq. 0) then
-          phase = 1.0d0
-        else
-          phase = -1.0d0
-        endif
-
-        do isp = 0, 1
+      do ib = 0, nb-1
+        do ibp = 0, nb -1
+          do ir = 0, nl - 1
           
-          if (isp .eq. 0) then
-            phasep = 1.0d0
-          else
-            phasep = 1.0d0
-          endif
+            overlap = cmplx(0.0d0, 0.0d0)
+            
+            do is = 0, 1
 
-          do ib = 0, nb-1
-            do ibp = 0, nb -1
-              do ir = 0, nl - 1
-              
-                norm = norm + 
-     $             (1.0d0/4.0d0)*phase*phasep*
-     $             (cabs(psi(2*ib+is,2*ibp+isp,ir)))**2.0d0
+              if (is .eq. 0) then
+                phase = 1.0d0
+              else
+                phase = -1.0d0
+              endif
+
+              do isp = 0, 1
+                
+                if (isp .eq. 0) then
+                  phasep = 1.0d0
+                else
+                  phasep = 1.0d0
+                endif
+
+                overlap = overlap + 
+     $             (1.0d0/2.0d0)*phase*phasep*
+     $             psi(2*ib+is,2*ibp+isp,ir)
                 
               enddo
             enddo
-          enddo
 
+            norm = norm + (cabs(overlap))**2.0d0
+
+          enddo
         enddo
       enddo
 
