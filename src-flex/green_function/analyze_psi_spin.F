@@ -29,7 +29,7 @@
 
       chi_s(1,0,0,0) = 0.0d0
       chi_s(1,0,0,1) = 1.0d0 / sqrt(2.0d0)
-      chi_s(1,0,1,0) = -1.0d0 / sqrt(2.0d0)
+      chi_s(1,0,1,0) = 1.0d0 / sqrt(2.0d0)
       chi_s(1,0,1,1) = 0.0d0
 
       chi_s(1,-1, 0, 0) = 0.0d0
@@ -69,7 +69,7 @@
         enddo
       enddo
 
- 159  format('|S=',i1,', Ms =',i1,'> = ',f10.8)
+ 159  format('|S=',i1,', Ms =',i2,'> = ',f10.8)
 
       return
       end

@@ -28,6 +28,7 @@ OBJECTS_COMMON = \
 	analyze_psi.o \
 	analyze_psi_exchange.o \
 	analyze_psi_spin.o \
+	analyze_psi_band.o \
 	analyze_psi_1D.o \
 	analyze_psi_2D_tet.o \
 	analyze_psi_2D_ortho.o \
@@ -175,6 +176,9 @@ analyze_psi_exchange.o : green_function/analyze_psi_exchange.F constants.F
 
 analyze_psi_spin.o : green_function/analyze_psi_spin.F constants.F
 	$(CC) -c green_function/analyze_psi_spin.F $(defines)
+
+analyze_psi_band.o : green_function/analyze_psi_band.F constants.F
+	$(CC) -c green_function/analyze_psi_band.F $(defines)
 
 analyze_psi_1D.o : green_function/analyze_psi_1D.F constants.F
 	$(CC) -c green_function/analyze_psi_1D.F $(defines)

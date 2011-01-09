@@ -44,6 +44,7 @@ c Determine overall wavefunction normalization
       if (overall .gt. 1.0d-11) then
         call analyze_psi_exchange(psi, overall)
         call analyze_psi_spin(psi, overall)
+        call analyze_psi_band(psi, overall)
       endif
 
       if ( (lly .eq. 1) .and. (llz .eq. 1) ) then  ! 1D
