@@ -103,25 +103,7 @@ c     Antisymmetrize
        enddo
 
        m_psi = sqrt(m_psi)
-
-       do ib = 0, nb-1
-         do ibp = 0, nb-1
-
-           do is = 0, 1
-             do isp = 0, 1
-                    
-               do k = 0, nl-1
-
-                 psi(2*ib+is,2*ibp+isp,k) = 
-     $              psi(2*ib+is,2*ibp+isp,k)  / m_psi
-
-               enddo
-                
-             enddo
-           enddo
-           
-         enddo
-       enddo
+       psi = psi / m_psi
 
       endif
 
