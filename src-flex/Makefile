@@ -67,6 +67,7 @@ OBJECTS_SECOND = \
 	convergence_test.o \
 	pade.o \
 	sigma_out.o \
+        symmetrize.o \
 
 OBJECTS_THIRD = \
 	transform_chi.o \
@@ -273,6 +274,9 @@ pade_evaluate.o : self-energy-read-write/pade_evaluate.F constants.F
 
 pair_wave_test.o : green_function/pair_wave_test.F constants.F
 	$(CC) -c green_function/pair_wave_test.F $(defines)
+
+symmetrize.o : green_function/symmetrize.F constants.F
+	$(CC) -c green_function/symmetrize.F $(defines)
 
 clean :
 	rm $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD)

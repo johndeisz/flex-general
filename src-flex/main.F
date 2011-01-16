@@ -132,6 +132,8 @@ c     Prepare for self-consistency loop.
           call g_minus_tau(rank, g_mtau, t, c_r, q_epsilon,
      $       q_tau, tau)
 
+          call symmetrize(rank, g, g_mtau)
+
           call green_parameter(rank, g, t, x, c_r, delta_g_r,
      $       delta_gp_r)
 
