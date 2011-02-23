@@ -42,9 +42,9 @@
         enddo
 
 c     Antisymmetrize
-        do ib = 1, nb
+        do ib = 0, nb-1
           do is = 0, 1
-            do jb = 1, nb
+            do jb = 0, nb-1
               do js = 0, 1
                 do ix = 0, llx1
                   do iy = 0, lly1
@@ -56,13 +56,13 @@ c     Antisymmetrize
      $                   mod(llz-iz,llz)*llx*lly
 
                       tmp_psi = 0.5d0 *  
-     $                   ( psi(2*(ib-1)+is,2*(jb-1)+js,ind1) - 
-     $                   psi( 2*(jb-1)+js,2*(ib-1)+is,ind2) )
+     $                   ( psi(2*ib+is,2*jb+js,ind1) - 
+     $                   psi( 2*jb+js,2*ib+is,ind2) )
 
-                      psi(2*(ib-1)+is,2*(jb-1)+js, ind1) = 
+                      psi(2*ib+is,2*jb+js, ind1) = 
      $                   tmp_psi
                       
-                      psi(2*(jb-1)+js,2*(ib-1)+is, ind2) = 
+                      psi(2*jb+js,2*ib+is, ind2) = 
      $                   -tmp_psi
                       
                     enddo
@@ -73,9 +73,9 @@ c     Antisymmetrize
           enddo
         enddo
 c    Project triplet symmetry 
-        do ib = 1, nb
+        do ib = 0, nb-1
           do is = 0, 1
-            do jb = 1, nb
+            do jb = 0, nb-1
               do js = 0, 1
                 do ix = 0, llx1
                   do iy = 0, lly1
@@ -84,13 +84,13 @@ c    Project triplet symmetry
                       ind1 = ix + iy*llx + iz*llx*lly
 
                       tmp_psi = 0.5d0 *  
-     $                   ( psi(2*(ib-1)+is,2*(jb-1)+js,ind1) + 
-     $                   psi( 2*(ib-1)+js,2*(jb-1)+is,ind1) )
+     $                   ( psi(2*ib+is,2*jb+js,ind1) + 
+     $                   psi( 2*ib+js,2*jb+is,ind1) )
 
-                      psi(2*(ib-1)+is,2*(jb-1)+js, ind1) = 
+                      psi(2*ib+is,2*jb+js, ind1) = 
      $                   tmp_psi
                       
-                      psi(2*(ib-1)+js,2*(jb-1)+is, ind1) = 
+                      psi(2*ib+js,2*jb+is, ind1) = 
      $                   tmp_psi
                       
                     enddo
