@@ -13,8 +13,9 @@
       REAL m_band, m_psi, alpha
 
       COMPLEX psi_old(0:2*nb-1,0:2*nb-1, 0:nl-1)
+      COMPLEX tmp_psi
 
-      INTEGER k, ib, ibp, is, isp
+      INTEGER k, ib, ibp, is, isp, jb, js
 
       INTEGER rank
       REAL phase_old, phase_new
@@ -95,6 +96,29 @@
  
         endif
         
+c    Project triplet symmetry 
+        do ib = 0, nb-1
+          do is = 0, 1
+            do jb = 0, nb-1
+              do js = 0, 1
+                do k = 0, nl-1
+
+                  tmp_psi = 0.5d0 *  
+     $               ( psi(2*ib+is,2*jb+js,k) + 
+     $               psi( 2*ib+js,2*jb+is,k) )
+                  
+                  psi(2*ib+is,2*jb+js, k) = 
+     $               tmp_psi
+                  
+                  psi(2*ib+js,2*jb+is, k) = 
+     $               tmp_psi
+                      
+                enddo
+              enddo
+            enddo
+          enddo
+        enddo
+
       endif
 
       psi = (1.0d0 - alpha)*psi_old + alpha*psi
