@@ -17,6 +17,8 @@
       write(6,*)
       write(6,*) 'Pair wave function weight by pair spin'
 
+      chi_s = 0.0d0
+
       chi_s(0,0,0,0) = 0.0d0
       chi_s(0,0,0,1) = 1.0d0 / sqrt(2.0d0) 
       chi_s(0,0,1,0) = -1.0d0 / sqrt(2.d0)
@@ -69,7 +71,7 @@
         enddo
       enddo
 
- 159  format('|S=',i1,', Ms =',i2,'> = ',f10.8)
+ 159  format('|S=',i1,', Ms =',i2,'> = ',f13.10)
 
       return
       end
