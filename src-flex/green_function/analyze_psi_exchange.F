@@ -81,37 +81,37 @@
 
       write(6,*) 'Symmetric weight = ', norm/overall
 
-      write(6,*) 'ib is ibp isp ind1 ind2'
-      write(6,*) 'psi'
-      write(6,*) 'P psi'
+c     write(6,*) 'ib is ibp isp ind1 ind2'
+c     write(6,*) 'psi'
+c     write(6,*) 'P psi'
 
-      do ix = 0, llx1
-        do iy = 0, lly1
-          do iz = 0, llz1
+c     do ix = 0, llx1
+c       do iy = 0, lly1
+c         do iz = 0, llz1
 
-            ind1 = ix + iy*llx + iz*llx*lly
-            ind2 = mod(llx-ix,llx) +
-     $         mod(lly-iy,lly)*llx +
-     $         mod(llz-iz,llz)*llx*lly
+c           ind1 = ix + iy*llx + iz*llx*lly
+c           ind2 = mod(llx-ix,llx) +
+c    $         mod(lly-iy,lly)*llx +
+c    $         mod(llz-iz,llz)*llx*lly
 
-            do ib = 0, nb-1
-              do is = 0, 1
-                do ibp = 0, nb-1
-                  do isp = 0, 1
+c           do ib = 0, nb-1
+c             do is = 0, 1
+c               do ibp = 0, nb-1
+c                 do isp = 0, 1
 
 
-                   write(6,58) ib, is, ibp, isp, ind1, ind2
-                    write(6,*)  psi(2*ib+is, 2*ibp+isp, ind1) 
-                    write(6,*)  psi(2*ibp+isp, 2*ib+is, ind2)
+c                  write(6,58) ib, is, ibp, isp, ind1, ind2
+c                   write(6,*)  psi(2*ib+is, 2*ibp+isp, ind1) 
+c                   write(6,*)  psi(2*ibp+isp, 2*ib+is, ind2)
 
-                  enddo
-                 enddo
-                enddo
-               enddo
+c                 enddo
+c                enddo
+c               enddo
+c              enddo
 
-              enddo
-             enddo
-            enddo
+c             enddo
+c            enddo
+c           enddo
 
 58    format(i1,2x,i1,2x,i1,2x,i1,2x,i4,2x,i4)
       
