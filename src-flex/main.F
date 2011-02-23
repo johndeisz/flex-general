@@ -463,6 +463,9 @@ C$$$#endif /* THIRD_ORDER */
 
 
         write(6,*)
+        alpha = 1.0d0
+        call  pair_wave(psi, g_tau0, alpha, m_psi)
+
         write(6,*) 'Pair amplitude = ', m_psi,
      $    convergence_text
 
@@ -475,6 +478,7 @@ C$$$#endif /* THIRD_ORDER */
 
           write(6,*) 'Reanalyze pair wave function using hole basis'
 
+          alpha = 1.0d0
           call pair_wave_test(psi, g_tau0, alpha, m_psi)
 
           write(6,*) 'Pair amplitude = ', m_psi
