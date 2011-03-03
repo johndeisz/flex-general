@@ -97,27 +97,27 @@
         endif
         
 c    Project triplet symmetry 
-        do ib = 0, nb-1
-          do is = 0, 1
-            do jb = 0, nb-1
-              do js = 0, 1
-                do k = 0, nl-1
-
-                  tmp_psi = 0.5d0 *  
-     $               ( psi(2*ib+is,2*jb+js,k) + 
-     $               psi( 2*ib+js,2*jb+is,k) )
-                  
-                  psi(2*ib+is,2*jb+js, k) = 
-     $               tmp_psi
-                  
-                  psi(2*ib+js,2*jb+is, k) = 
-     $               tmp_psi
-                      
-                enddo
-              enddo
-            enddo
-          enddo
-        enddo
+c$$$        do ib = 0, nb-1
+c$$$          do is = 0, 1
+c$$$            do jb = 0, nb-1
+c$$$              do js = 0, 1
+c$$$                do k = 0, nl-1
+c$$$
+c$$$                  tmp_psi = 0.5d0 *  
+c$$$     $               ( psi(2*ib+is,2*jb+js,k) + 
+c$$$     $               psi( 2*ib+js,2*jb+is,k) )
+c$$$                  
+c$$$                  psi(2*ib+is,2*jb+js, k) = 
+c$$$     $               tmp_psi
+c$$$                  
+c$$$                  psi(2*ib+js,2*jb+is, k) = 
+c$$$     $               tmp_psi
+c$$$                      
+c$$$                enddo
+c$$$              enddo
+c$$$            enddo
+c$$$          enddo
+c$$$        enddo
 
       endif
 

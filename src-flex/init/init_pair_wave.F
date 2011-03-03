@@ -73,33 +73,33 @@ c     Antisymmetrize
           enddo
         enddo
 c    Project triplet symmetry 
-        do ib = 0, nb-1
-          do is = 0, 1
-            do jb = 0, nb-1
-              do js = 0, 1
-                do ix = 0, llx1
-                  do iy = 0, lly1
-                    do iz = 0, llz1
-
-                      ind1 = ix + iy*llx + iz*llx*lly
-
-                      tmp_psi = 0.5d0 *  
-     $                   ( psi(2*ib+is,2*jb+js,ind1) + 
-     $                   psi( 2*ib+js,2*jb+is,ind1) )
-
-                      psi(2*ib+is,2*jb+js, ind1) = 
-     $                   tmp_psi
-                      
-                      psi(2*ib+js,2*jb+is, ind1) = 
-     $                   tmp_psi
-                      
-                    enddo
-                  enddo
-                enddo
-              enddo
-            enddo
-          enddo
-        enddo
+c$$$        do ib = 0, nb-1
+c$$$          do is = 0, 1
+c$$$            do jb = 0, nb-1
+c$$$              do js = 0, 1
+c$$$                do ix = 0, llx1
+c$$$                  do iy = 0, lly1
+c$$$                    do iz = 0, llz1
+c$$$
+c$$$                      ind1 = ix + iy*llx + iz*llx*lly
+c$$$
+c$$$                      tmp_psi = 0.5d0 *  
+c$$$     $                   ( psi(2*ib+is,2*jb+js,ind1) + 
+c$$$     $                   psi( 2*ib+js,2*jb+is,ind1) )
+c$$$
+c$$$                      psi(2*ib+is,2*jb+js, ind1) = 
+c$$$     $                   tmp_psi
+c$$$                      
+c$$$                      psi(2*ib+js,2*jb+is, ind1) = 
+c$$$     $                   tmp_psi
+c$$$                      
+c$$$                    enddo
+c$$$                  enddo
+c$$$                enddo
+c$$$              enddo
+c$$$            enddo
+c$$$          enddo
+c$$$        enddo
 
         m_psi = 0.0d0
 
