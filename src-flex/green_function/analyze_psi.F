@@ -54,16 +54,7 @@ c Determine overall wavefunction normalization
 
       if ( (lly .gt. 1) .and. (llz .eq. 1) ) then ! 2D
 
-        if ( (lly .eq. llx) .and. (lcx .eq. lcy) .and.
-     $     ( cabs(tij(0,0,1) - tij(0,0,llx)) .lt. 0.00001d0) ) then
-
-          call analyze_psi_2D_tet(psi)
-        
-        else
-
-          call analyze_psi_2D_ortho(psi)
-
-        endif
+        call analyze_psi_2D_ortho(psi)
 
       endif
 c$$$
