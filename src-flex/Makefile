@@ -31,7 +31,6 @@ OBJECTS_COMMON = \
 	analyze_psi_spin.o \
 	analyze_psi_band.o \
 	analyze_psi_1D.o \
-	analyze_psi_2D_tet.o \
 	analyze_psi_2D_ortho.o \
 	pair_wave_test.o \
 #	analyze_psi_3D_cubic.o \
@@ -184,9 +183,6 @@ analyze_psi_band.o : green_function/analyze_psi_band.F constants.F
 
 analyze_psi_1D.o : green_function/analyze_psi_1D.F constants.F
 	$(CC) -c green_function/analyze_psi_1D.F $(defines)
-
-analyze_psi_2D_tet.o : green_function/analyze_psi_2D_tet.F constants.F
-	$(CC) -c green_function/analyze_psi_2D_tet.F $(defines)
 
 analyze_psi_2D_ortho.o : green_function/analyze_psi_2D_ortho.F constants.F
 	$(CC) -c green_function/analyze_psi_2D_ortho.F $(defines)

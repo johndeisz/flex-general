@@ -414,49 +414,49 @@ C$$$#endif /* THIRD_ORDER */
      $       magb(ib,3)
         enddo
 
-        mag = 0.0d0
-        magb = 0.0d0
-        denb = 0.0d0
-
-        do ib = 0, nb-1
-          denb(ib) = -real( g_tau0_local(4*ib+2,4*ib+2) + 
-     $       g_tau0_local(4*ib+3,4*ib+3) ) 
-        enddo
-
-        do ib = 0, nb-1
-          magb(ib,1) = -real( g_tau0_local(4*ib+3,4*ib+2) + 
-     $       g_tau0_local(4*ib+2,4*ib+3) ) 
-          mag = mag + magb(ib,1)
-        enddo
-        write(6,*) 'Mag(x), using hole basis = ', mag,
-     $     convergence_text
-
-        mag = 0.0d0
-        do ib = 0, nb-1
-          magb(ib,2) = real( cmplx(0.0d0,1.0d0)*
-     $       (g_tau0_local(4*ib+2,4*ib+3) -
-     $       g_tau0_local(4*ib+3,4*ib+2)) ) 
-          mag = mag + magb(ib,2)
-        enddo
-        write(6,*) 'Mag(y), using hole basis = ', mag,
-     $     convergence_text
-
-        mag = 0.0d0
-        do ib = 0, nb-1
-          magb(ib,3) =  real( -g_tau0_local(4*ib+2,4*ib+2) + 
-     $       g_tau0_local(4*ib+3,4*ib+3) )
-          mag = mag + magb(ib,3)
-        enddo
-        write(6,*) 'Mag(z) using hole basis = ', mag,
-     $       convergence_text
-
-
-        write(6,*) 'Density and magnet. by band using hole basis'
-        write(6,*) 'band  rho     mx       my      mz'
-        do ib = 0, nb-1
-          write(6,225) ib, denb(ib), magb(ib,1), magb(ib,2),
-     $       magb(ib,3)
-        enddo
+c$$$        mag = 0.0d0
+c$$$        magb = 0.0d0
+c$$$        denb = 0.0d0
+c$$$
+c$$$        do ib = 0, nb-1
+c$$$          denb(ib) = -real( g_tau0_local(4*ib+2,4*ib+2) + 
+c$$$     $       g_tau0_local(4*ib+3,4*ib+3) ) 
+c$$$        enddo
+c$$$
+c$$$        do ib = 0, nb-1
+c$$$          magb(ib,1) = -real( g_tau0_local(4*ib+3,4*ib+2) + 
+c$$$     $       g_tau0_local(4*ib+2,4*ib+3) ) 
+c$$$          mag = mag + magb(ib,1)
+c$$$        enddo
+c$$$        write(6,*) 'Mag(x), using hole basis = ', mag,
+c$$$     $     convergence_text
+c$$$
+c$$$        mag = 0.0d0
+c$$$        do ib = 0, nb-1
+c$$$          magb(ib,2) = real( cmplx(0.0d0,1.0d0)*
+c$$$     $       (g_tau0_local(4*ib+2,4*ib+3) -
+c$$$     $       g_tau0_local(4*ib+3,4*ib+2)) ) 
+c$$$          mag = mag + magb(ib,2)
+c$$$        enddo
+c$$$        write(6,*) 'Mag(y), using hole basis = ', mag,
+c$$$     $     convergence_text
+c$$$
+c$$$        mag = 0.0d0
+c$$$        do ib = 0, nb-1
+c$$$          magb(ib,3) =  real( -g_tau0_local(4*ib+2,4*ib+2) + 
+c$$$     $       g_tau0_local(4*ib+3,4*ib+3) )
+c$$$          mag = mag + magb(ib,3)
+c$$$        enddo
+c$$$        write(6,*) 'Mag(z) using hole basis = ', mag,
+c$$$     $       convergence_text
+c$$$
+c$$$
+c$$$        write(6,*) 'Density and magnet. by band using hole basis'
+c$$$        write(6,*) 'band  rho     mx       my      mz'
+c$$$        do ib = 0, nb-1
+c$$$          write(6,225) ib, denb(ib), magb(ib,1), magb(ib,2),
+c$$$     $       magb(ib,3)
+c$$$        enddo
 
 
  225    format(i3,2x,d16.8,2x,d16.8,2x,d16.8,2x,d16.8)
@@ -478,14 +478,14 @@ C$$$#endif /* THIRD_ORDER */
         if (m_psi .gt. 1.0d-12) then
           call analyze_psi(psi, tij)
 
-          write(6,*) 'Reanalyze pair wave function using hole basis'
-
-          alpha = 1.0d0
-          call pair_wave_test(psi, g_tau0, alpha, m_psi)
-
-          write(6,*) 'Pair amplitude = ', m_psi
-
-          call analyze_psi(psi, tij)
+c$$$          write(6,*) 'Reanalyze pair wave function using hole basis'
+c$$$
+c$$$          alpha = 1.0d0
+c$$$          call pair_wave_test(psi, g_tau0, alpha, m_psi)
+c$$$
+c$$$          write(6,*) 'Pair amplitude = ', m_psi
+c$$$
+c$$$          call analyze_psi(psi, tij)
           
          endif 
 
