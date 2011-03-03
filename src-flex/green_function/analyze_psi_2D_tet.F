@@ -12,7 +12,7 @@
       REAL dot_real, dot_imag
       REAL mag
 
-      INTEGER ib
+      INTEGER ib, jb
 
       pi = 4.0*atan(1.0d0)
 
@@ -22,18 +22,24 @@
 
 c     local singlet
       write(6,*) "**** local s-wave ****"
-      write(6,*) "ib  amp      phase/pi"
+      write(6,*) "ib  jb  amp      phase/pi"
       do ib = 0, nb-1
-        dot = sqrt(0.5d0)*(psi(2*ib+0,2*ib+1,0) - 
-     $     psi(2*ib+1,2*ib+0,0))       
-        dot_real = real(dot)
-        dot_imag = imag(dot)
-        mag = sqrt( dot_real**2 + dot_imag**2)
-        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+        do jb = 0, nb-1
+          dot = sqrt(0.5d0)*(psi(2*ib+0,2*jb+1,0) - 
+     $       psi(2*ib+1,2*jb+0,0))
+          if (ib .eq. jb) then
+            dot = dot / sqrt(2.0)
+          enddo
+          dot_real = real(dot)
+          dot_imag = imag(dot)
+          mag = sqrt( dot_real**2 + dot_imag**2)
+          write(6,200) ib, jb, mag, atan2(dot_real, dot_imag) / pi
+        enddo
       enddo
 
 c     extended s-wave (nn)
       write(6,*) "**** extended s-wave (nn) ****"
+      write(6,*) "hast no been fixed for interband"
       write(6,*) "ib  amp      phase/pi"
       do ib = 0, nb-1     
         dot = 0.5d0 * sqrt(0.5d0) *
@@ -48,7 +54,7 @@ c     extended s-wave (nn)
         dot_real = real(dot)
         dot_imag = imag(dot)
         mag = sqrt( dot_real**2 + dot_imag**2)
-        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi      
+        write(6,200) ib, ib, mag, atan2(dot_real, dot_imag) / pi      
       enddo
 
 c     d_{x2-y2}
@@ -161,7 +167,84 @@ c     py
         write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
       enddo
 
- 200  format(i3, 2x, e16.8, 2x, e16.8)
+c     p_x+y
+      write(6,*) "**** p_x+y, Sz=1 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = sqrt(0.5d0)*(psi(2*ib+0,2*ib+0,1+llx) - 
+     $     psi(2*ib+0,2*ib+0,lly1*llx+llx1))
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+      enddo
+
+      write(6,*) "**** p_x+y, Sz=0 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = 0.5d0 * (psi(2*ib+0,2*ib+1,1+llx) + 
+     $     psi(2*ib+1,2*ib+0,1+llx) -
+     $     psi(2*ib+0,2*ib+1,lly1*llx+llx1) - 
+     $     psi(2*ib+1,2*ib+0,lly1*llx+llx1))
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+      enddo
+
+      write(6,*) "**** p_x+y, Sz=-1 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = sqrt(0.5d0) * ( psi(2*ib+1,2*ib+1,1+llx) - 
+     $     psi(2*ib+1,2*ib+1,lly1*llx+llx1) )
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+      enddo
+
+c     p_x-y
+      write(6,*) "**** p_x-y, Sz=1 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = sqrt(0.5d0)*(psi(2*ib+0,2*ib+0,llx1+llx) - 
+     $     psi(2*ib+0,2*ib+0,lly1*llx+1))
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+      enddo
+
+      write(6,*) "**** p_x-y, Sz=0 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = 0.5d0 * (psi(2*ib+0,2*ib+1,llx1+llx) + 
+     $     psi(2*ib+1,2*ib+0,llx1+llx) -
+     $     psi(2*ib+0,2*ib+1,lly1*llx+1) - 
+     $     psi(2*ib+1,2*ib+0,lly1*llx+1))
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+      enddo
+
+      write(6,*) "**** p_x-y, Sz=-1 ****"
+      write(6,*) "ib  amp      phase/pi"
+      do ib = 0, nb-1
+        dot = sqrt(0.5d0) * ( psi(2*ib+1,2*ib+1,llx1+llx) - 
+     $     psi(2*ib+1,2*ib+1,lly1*llx+1) )
+        dot_real = real(dot)
+        dot_imag = imag(dot)
+        mag = sqrt( dot_real**2 + dot_imag**2)
+        write(6,200) ib, mag, atan2(dot_real, dot_imag) / pi
+      enddo
+
+
+
+
+
+
+ 200  format(i3, 2x, i3, 2x, e16.8, 2x, e16.8)
 
       return
       end
