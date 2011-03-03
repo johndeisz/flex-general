@@ -464,8 +464,10 @@ C$$$#endif /* THIRD_ORDER */
 
         write(6,*)
         alpha = 1.0d0
+      endif
         call  pair_wave(psi, g_tau0, alpha, m_psi)
-
+  
+      if (rank .eq. 0) then
         write(6,*) 'Pair amplitude = ', m_psi,
      $    convergence_text
 
