@@ -164,7 +164,7 @@ c     extended s, 2x-2y (A2)
       write(6,*) "ib  jb amp      phase/pi"
       do ib = 0, nb-1
         do jb = 0, nb-1
-          dot = psi(2*ib+0,2*jb+1,0)+ psi(2*ib+0,2*jb+1,0)
+          dot = psi(2*ib+0,2*jb+1,0)+ psi(2*ib+1,2*jb+0,0)
           dot_real = real(dot)
           dot_imag = imag(dot)
           mag = sqrt( dot_real**2 + dot_imag**2)
@@ -176,7 +176,7 @@ c     extended s, 2x-2y (A2)
       write(6,*) "ib  jb amp      phase/pi"
       do ib = 0, nb-1
         do jb = 0, nb-1
-          dot = sqrt(2.0d0)*psi(2*ib+1,2*jb+0,1) 
+          dot = sqrt(2.0d0)*psi(2*ib+1,2*jb+1,1) 
           dot_real = real(dot)
           dot_imag = imag(dot)
           mag = sqrt( dot_real**2 + dot_imag**2)
@@ -318,7 +318,7 @@ c     px
         enddo
       enddo
 
-      write(6,*) "**** px+y, Sz=-1 ****"
+      write(6,*) "**** px-y, Sz=-1 ****"
       write(6,*) "ib jb  amp      phase/pi"
       do ib = 0, nb-1
         do jb = 0, nb-1
