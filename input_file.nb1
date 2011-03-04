@@ -1,17 +1,17 @@
 ------------Basic thermodynamic parameters -----------------------
-4000.0d0            ! temperature (K) 
+400.0d0            ! temperature (K) 
 0.00d0              ! pair field strength - iterate to strongest pair channel 
 0.0d0 0.0d0 0.0d0             ! uniform magnetic field: hx, hy, hz
 0.85d0   1.0d-7    ! electron density, tolerance
-1.5d+00   ! guess for unrenormalized chemical potential
+-1.5d+00   ! guess for unrenormalized chemical potential
  
 -------------------- Interaction parameters  ------------------------------
-0.0d0 0.0d0 0.0d0 ! U (uu), U' (up), J (uj) (eV)
+-4.0d0 0.0d0 0.0d0 ! U (uu), U' (up), J (uj) (eV)
 
 -- Perturbations: applied and relaxed over initial 10 iterations ---
-0.0d0       ! Pair field, start random, evolve to strongest channel
-0.0d0 0.0d0 0.0d0      ! Uniform magnetic field
-0.0d0       ! Random band offset
+0.01d0       ! Pair field, start random, evolve to strongest channel
+0.01d0 0.01d0 0.01d0      ! Uniform magnetic field
+0.01d0       ! Random band offset
 
 ---------Sigma input and output ----------------------------------------------
 .false. "sig_output"             ! input
@@ -103,3 +103,8 @@
 
 ------------------- [  2,  2] hopping------------------------
   0,  0  ( 0.000000000D+00, 0.000000000D+00)
+
+***********Spin-orbit matrix ****************************************
+
+.false.  0.0d0   ! Input spin-orbit matrices, so interaction amplitude
+
