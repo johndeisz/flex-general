@@ -1,4 +1,4 @@
-      subroutine h0_generate(h0, ek, psi, h, prfld, sigma1)
+      subroutine h0_generate(h0, ek, psi, h, prfld, sigma1, h_so)
 
 #include "constants.F"
 
@@ -8,10 +8,12 @@
       DOUBLE PRECISION, dimension (0:nb-1,1:3) :: h
       DOUBLE PRECISION prfld
       DOUBLE COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
+      DOUBLE COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
 
       DOUBLE PRECISION, dimension (0:nb-1, 0:nb-1) :: delta
 
       INTEGER nu1, nu2, k, k_minus, k1, k2, k3
+      INTEGER is1, is2
       INTEGER ind1, ind2
 
       delta = 0.0d0
@@ -97,6 +99,25 @@
 
             h0(:,:,k) = h0(:,:,k) + sigma1
 
+          enddo
+        enddo
+      enddo
+
+c     Add spin-orbit interaction
+      do nu1 = 0, nb-1
+        do is1 = 0, 1
+          do nu2 = 0, nb-1
+            do is2 = 0, 1
+
+              h0(4*nu1+is1, 4*nu2+is2,:) =
+     $           h0(4*nu1+is1, 4*nu2+is2,:) +
+     $           h_so(2*nu1+is1,2*nu2+is2)
+
+              h0(4*nu1+is1+2, 4*nu2+is2+2,:) =
+     $           h0(4*nu1+is1+2, 4*nu2+is2+2,:)  -
+     $           conjg(h_so(2*nu1+is1,2*nu2+is2))
+
+            enddo
           enddo
         enddo
       enddo

@@ -11,6 +11,7 @@
 
       INTEGER ib
       DOUBLE COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+      DOUBLE COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
       DOUBLE COMPLEX h0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
 
       INTEGER ikx, iky, ikz, ik
@@ -77,7 +78,7 @@
       read(5,*) sigma_input_file
 
       call readin(sigma_input_file, t, mu, prfld, ed, h, 
-     $   tij, psi, sigma1)
+     $   tij, psi, sigma1, h_so)
 
       write(6,*) "t = ", t
       write(6,*) "mu = ", mu
@@ -93,7 +94,7 @@
 
 c     Bare bandstructure and one-electron matrix
       call bare_dispersion(tij, ed, ek, mu)
-      call h0_generate(h0, ek, psi, h, prfld, sigma1)
+      call h0_generate(h0, ek, psi, h, prfld, sigma1, h_so)
 
       write(6,*) "Dynamical self-energy? Yes-1, No-0."
       read(5,*) sigma_flag
