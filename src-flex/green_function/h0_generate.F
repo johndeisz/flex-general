@@ -53,6 +53,9 @@ c  **************************************************************/
 
       endif
 
+c Include anomolous part of the g-factor for spin coupling
+      h_eff = h_eff * (gs/2.0d0)
+
       do k3 = 0, llz1
         do k2 = 0, lly1
           do k1 = 0, llx1
@@ -134,7 +137,8 @@ c  **************************************************************/
         enddo
       enddo
 
-
+c    Remove spin g-factor correction from magnetic field:
+      h_eff = h_eff / (gs/2.0d0)
 
 c     Add spin-orbit interaction
       do nu1 = 0, nb-1
