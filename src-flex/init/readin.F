@@ -88,7 +88,7 @@ c     other variable
         write(6,*) "temperature in K = ", t  
 
         write(6,*) "external pairing field = ", prfld
-        write(6,*) "Band-dependent magnetic fields"
+        write(6,*) "Band-dependent magnetic fields (Tesla)"
         do ib = 0, nb-1
            write(6,*) h(ib,:)
         enddo
@@ -164,7 +164,7 @@ c-----Perturbations: applied and relaxed over initial 10 iterations -------
         write(6,*) "Preturbations: applied and relaxed over",
      $   " initial 10 iterations"
         write(6,*) "Artificial pair field = ", prfld_pert
-        write(6,*) "Random orbital-dependent mag. field amplitudes ", 
+        write(6,*) "Random orb.-dependent mag. field amp (T) ", 
      $     h_pert_amp
         do ib = 0, nb-1
           h_pert(ib,1) = h_pert_amp(1) * (rand()-0.5d0)

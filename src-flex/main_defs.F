@@ -16,6 +16,8 @@ c Parameters read from input file
       REAL ed(0:nb-1)
       COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
       COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
+      COMPLEX Lvec(1:3,0:nb-1, 0:nb-1)
+      COMPLEX Lorb(1:3)
 
       REAL prfld_pert
       REAL h_pert(0:nb-1,1:3)
@@ -61,7 +63,7 @@ c Self-energy arrays
 c     Chemical potential, density, and interaction strength
       REAL mu_old, mu_current, dn_dmu, mu_min, mu_max
       REAL density, density_old, delta_mu
-      INTEGER ib
+      INTEGER ib, jb
       LOGICAL density_converged
       REAL m_psi, mag
       REAL denb(0:nb-1), magb(0:nb-1,1:3)

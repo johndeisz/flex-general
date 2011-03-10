@@ -8,13 +8,13 @@ c Lattice and frequency grid parameters. (all must be 2^n!)
       parameter (nb = 3)
 
       parameter (m =  256) 
-      parameter (lcx = 1)
-      parameter (lcy = 1)
+      parameter (lcx = 8)
+      parameter (lcy = 8)
       parameter (lcz = 1)
       parameter (nc = lcx*lcy*lcz)  ! number of cluster sites
 
-      parameter (llx = 128)     ! lattice dimension >=lcx 
-      parameter (lly = 128)
+      parameter (llx = 64)     ! lattice dimension >=lcx 
+      parameter (lly = 64)
       parameter (llz = 1)
       parameter (nl = llx*lly*llz)
 
@@ -50,6 +50,8 @@ c Convenience constants
 
 c Mathematical and physical constants
 
-      REAL kb
+      REAL kb, mub, gs
 
       parameter( kb = 8.61734315d-05)  ! eV/K
+      parameter( mub = 5.788381755d-5) ! eV/T
+      parameter( gs = 2.002319)

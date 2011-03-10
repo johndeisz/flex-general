@@ -33,6 +33,7 @@ OBJECTS_COMMON = \
 	analyze_psi_1D.o \
 	analyze_psi_2D_ortho.o \
 	pair_wave_test.o \
+	angular_matrices.o
 #	analyze_psi_3D_cubic.o \
 #	analyze_psi_3D_tet.o \
 #	sig_output.o \
@@ -273,6 +274,9 @@ pair_wave_test.o : green_function/pair_wave_test.F constants.F
 
 symmetrize.o : green_function/symmetrize.F constants.F
 	$(CC) -c green_function/symmetrize.F $(defines)
+
+angular_matrices.o : green_function/angular_matrices.F constants.F
+	$(CC) -c green_function/angular_matrices.F $(defines)
 
 clean :
 	rm $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD)

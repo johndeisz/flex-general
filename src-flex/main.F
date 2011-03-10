@@ -21,7 +21,11 @@ c     Gather all the data from the input file
      $   write_output, sigma_output_file, max_pade_order,
      $   sigma_tol,  max_it, alpha, alpha_scheme)
 
+c Put temperature in eV
       t = kb*t
+c Multiply H by mu_B to get eV
+      h = mub*h
+      h_pert = mub*h_pert 
 
 c     Bare bandstructure and vertex
       call bare_dispersion(tij, ed, ek, ek_min)
@@ -313,9 +317,9 @@ c     Prepare for self-consistency loop.
         write(6,*) 'flux_y = ', flux(2)
         write(6,*) 'flux_z = ', flux(3)
         write(6,*) 'applied pair field = ', prfld
-        write(6,*) 'Orbital dependent magnetic fields'
+        write(6,*) 'Orbital dependent magnetic fields (T)'
         do ib = 0, nb - 1
-          write(6,*) h(ib,:)
+          write(6,*) h(ib,:)/mub
         enddo
         write(6,*)
         write(6,*) 'interaction parameters'
@@ -384,7 +388,7 @@ C$$$#endif /* THIRD_ORDER */
      $       g_tau0_local(4*ib+0,4*ib+1) ) 
           mag = mag + magb(ib,1)
         enddo
-        write(6,*) 'Magnetization(x) = ', mag,
+        write(6,*) 'Mx_spin per atom/((g/2)*mub) = ', mag,
      $     convergence_text
 
         mag = 0.0d0
@@ -394,7 +398,7 @@ C$$$#endif /* THIRD_ORDER */
      $       g_tau0_local(4*ib+0,4*ib+1)) ) 
           mag = mag + magb(ib,2)
         enddo
-        write(6,*) 'Magnetization(y) = ', mag,
+        write(6,*) 'My_spin per atom/((g/2)*mub) ', mag,
      $     convergence_text
 
         mag = 0.0d0
@@ -403,7 +407,7 @@ C$$$#endif /* THIRD_ORDER */
      $       g_tau0_local(4*ib+1,4*ib+1) )
           mag = mag + magb(ib,3)
         enddo
-        write(6,*) 'Magnetization(z) = ', mag,
+        write(6,*) 'Mz_spin per atom/((g/2)*mub) ', mag,
      $       convergence_text
 
 
@@ -413,51 +417,32 @@ C$$$#endif /* THIRD_ORDER */
           write(6,225) ib, denb(ib), magb(ib,1), magb(ib,2),
      $       magb(ib,3)
         enddo
+        write(6,*) 'testing' 
 
-c$$$        mag = 0.0d0
-c$$$        magb = 0.0d0
-c$$$        denb = 0.0d0
-c$$$
-c$$$        do ib = 0, nb-1
-c$$$          denb(ib) = -real( g_tau0_local(4*ib+2,4*ib+2) + 
-c$$$     $       g_tau0_local(4*ib+3,4*ib+3) ) 
-c$$$        enddo
-c$$$
-c$$$        do ib = 0, nb-1
-c$$$          magb(ib,1) = -real( g_tau0_local(4*ib+3,4*ib+2) + 
-c$$$     $       g_tau0_local(4*ib+2,4*ib+3) ) 
-c$$$          mag = mag + magb(ib,1)
-c$$$        enddo
-c$$$        write(6,*) 'Mag(x), using hole basis = ', mag,
-c$$$     $     convergence_text
-c$$$
-c$$$        mag = 0.0d0
-c$$$        do ib = 0, nb-1
-c$$$          magb(ib,2) = real( cmplx(0.0d0,1.0d0)*
-c$$$     $       (g_tau0_local(4*ib+2,4*ib+3) -
-c$$$     $       g_tau0_local(4*ib+3,4*ib+2)) ) 
-c$$$          mag = mag + magb(ib,2)
-c$$$        enddo
-c$$$        write(6,*) 'Mag(y), using hole basis = ', mag,
-c$$$     $     convergence_text
-c$$$
-c$$$        mag = 0.0d0
-c$$$        do ib = 0, nb-1
-c$$$          magb(ib,3) =  real( -g_tau0_local(4*ib+2,4*ib+2) + 
-c$$$     $       g_tau0_local(4*ib+3,4*ib+3) )
-c$$$          mag = mag + magb(ib,3)
-c$$$        enddo
-c$$$        write(6,*) 'Mag(z) using hole basis = ', mag,
-c$$$     $       convergence_text
-c$$$
-c$$$
-c$$$        write(6,*) 'Density and magnet. by band using hole basis'
-c$$$        write(6,*) 'band  rho     mx       my      mz'
-c$$$        do ib = 0, nb-1
-c$$$          write(6,225) ib, denb(ib), magb(ib,1), magb(ib,2),
-c$$$     $       magb(ib,3)
-c$$$        enddo
+        Lorb = cmplx(0.0d0, 0.0d0)
 
+        call angular_matrices(Lvec)
+
+        do ib = 0, nb-1
+          do jb = 0, nb-1
+
+            if (ib .eq. jb) then            
+              Lorb = Lorb + Lvec(:,ib,ib) * 
+     $           (g_tau0_local(4*ib,4*ib) +
+     $           g_tau0_local(4*ib+1,4*ib+1) + 2.0d0)
+            else
+              Lorb = Lorb + Lvec(:,ib,jb) * 
+     $           (g_tau0_local(4*jb,4*ib) +
+     $           g_tau0_local(4*jb+1,4*ib+1))
+            endif
+
+          enddo
+        enddo
+        write(6,*) 'testing testing'
+
+        write(6,*) 'Lx/mub = ', Lorb(1)
+        write(6,*) 'Ly/mub = ', Lorb(2)
+        write(6,*) 'Lz/mub = ', Lorb(3)
 
  225    format(i3,2x,d16.8,2x,d16.8,2x,d16.8,2x,d16.8)
 
