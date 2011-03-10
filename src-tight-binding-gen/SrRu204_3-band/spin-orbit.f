@@ -92,8 +92,8 @@ c Compute the spin-orbit matrix elements
           do ind1 = 0,9
             do ind2 = 0, 9
 
-              sum = sum + dconjg(psi_spin(ind2,nus2))*
-     $           hspin(ind2,ind1)*psi_spin(ind1,nus1)
+              sum = sum + dconjg(psi_spin(ind1,nus1))*
+     $           hspin(ind1,ind2)*psi_spin(ind2,nus2)
               
             enddo
           enddo
