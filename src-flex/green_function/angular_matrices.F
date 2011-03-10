@@ -70,7 +70,6 @@ c Compute the spin-orbit matrix elements
           enddo
             
           Lvec(:,nu1,nu2) = sum
-          write(6,*) nu1, nu2, Lvec(:,nu1,nu2)
 
         enddo
       enddo

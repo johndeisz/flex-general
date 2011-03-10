@@ -20,6 +20,7 @@ c  **************************************************************/
       REAL mu
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
       COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
+      COMPLEX Lvec(1:3,0:nb-1,0:nb-1)
       INTEGER iteration
 
       REAL, dimension (0:nb-1,1:3) :: h_eff
@@ -139,6 +140,29 @@ c Include anomolous part of the g-factor for spin coupling
 
 c    Remove spin g-factor correction from magnetic field:
       h_eff = h_eff / (gs/2.0d0)
+
+      call angular_matrices(Lvec)
+
+      do nu1 = 0, nb-1
+        do nu2 = 0, nb-1
+          do is1 = 0, 1
+
+            h0(4*nu1+is1, 4*nu2+is1,:) = 
+     $         h0(4*nu1+is1, 4*nu2+is1,:) -
+     $         h_eff(nu1,1)*Lvec(1,nu1,nu2) -
+     $         h_eff(nu1,2)*Lvec(2,nu1,nu2) -
+     $         h_eff(nu1,3)*Lvec(3,nu1,nu2)
+
+
+            h0(4*nu1+is1+2, 4*nu2+is1+2,:) = 
+     $         h0(4*nu1+is1+2, 4*nu2+is1+2,:) +
+     $         h_eff(nu1,1)*conjg(Lvec(1,nu1,nu2)) +
+     $         h_eff(nu1,2)*conjg(Lvec(2,nu1,nu2)) +
+     $         h_eff(nu1,3)*conjg(Lvec(3,nu1,nu2))
+          enddo
+        enddo
+      enddo
+
 
 c     Add spin-orbit interaction
       do nu1 = 0, nb-1
