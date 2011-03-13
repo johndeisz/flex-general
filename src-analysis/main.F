@@ -214,6 +214,7 @@ c     Read pade coefficients
 
         write(6,*) '1 - Gamma-M scan'
         write(6,*) '2 - Gamma-X scan'
+        write(6,*) '3 - M-x scan'
         read(5,*) i_sc_type
 
         write(6,*)
@@ -238,8 +239,12 @@ c     Read pade coefficients
 
           if (i_sc_type .eq. 1) then
             iky = 0
-          else
+          endif
+          if (i_sc_type .eq. 2) then
             iky = ikx
+          endif
+          if (i_sc_type .eq. 3) then
+            iky = llx/2
           endif
 
           ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
@@ -268,7 +273,13 @@ c     Read pade coefficients
 
         write(6,*) '1 - Gamma-M scan'
         write(6,*) '2 - Gamma-X scan'
+        write(6,*) '3 - M-X scan'
+        write(6,*) '4 - Fixed ky scan'
         read(5,*) i_sc_type
+        if (i_sc_type .eq. 4) then
+          write(6,201)
+          read(5,*) iky
+        endif
         write(6,*)
         write(6,*) '1 - Eqp and gamma vs. k/(pi/a)'
         write(6,*) '2 - Gamma vs Eqp'
@@ -304,8 +315,12 @@ c     Read pade coefficients
            
             if (i_sc_type .eq. 1) then
               iky = 0
-            else
+            endif
+            if (i_sc_type .eq. 2) then
               iky = ikx
+            endif
+            if (i_sc_type .eq. 3) then
+                iky = lly/2
             endif
 
             if ( (2*mod(iky, y_stretch) .ne. y_stretch) .or.
