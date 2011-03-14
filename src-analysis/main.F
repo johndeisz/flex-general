@@ -14,7 +14,7 @@
       DOUBLE COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
       DOUBLE COMPLEX h0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
 
-      INTEGER ikx, iky, ikz, ik
+      INTEGER ikx, iky, ikz, ik, ikx_max
 
       DOUBLE COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0k, 
      $   tmp_h0k
@@ -274,10 +274,11 @@ c     Read pade coefficients
         write(6,*) '1 - Gamma-M scan'
         write(6,*) '2 - Gamma-X scan'
         write(6,*) '3 - M-X scan'
-        write(6,*) '4 - Fixed ky scan'
+        write(6,*) '4 - ky = 2*kx scan'
+        write(6,*) '5 - Fixed ky scan'
         read(5,*) i_sc_type
-        if (i_sc_type .eq. 4) then
-          write(6,201)
+        if (i_sc_type .eq. 5) then
+          write(6,201) -lly/2, lly/2, lly/2
           read(5,*) iky
         endif
         write(6,*)
@@ -305,7 +306,13 @@ c     Read pade coefficients
         x_stretch = llx / lcx
         y_stretch = lly / lcy
 
-        do ikx = 0, llx/2
+        if (i_sc_type .eq. 4) then
+          ikx_max = llx/4
+        else
+          ikx_max = llx/2
+        endif
+
+        do ikx = 0, ikx_max
 
           if ((2*mod(ikx, x_stretch) .ne. x_stretch) .or.
      $       lcx .eq. 1) then
@@ -320,7 +327,10 @@ c     Read pade coefficients
               iky = ikx
             endif
             if (i_sc_type .eq. 3) then
-                iky = lly/2
+              iky = lly/2
+            endif
+            if (i_sc_type .eq. 4) then
+              iky = 2*ikx
             endif
 
             if ( (2*mod(iky, y_stretch) .ne. y_stretch) .or.
@@ -437,11 +447,11 @@ c     Read pade coefficients
         
       endif
 
- 200  format("kx index, [",i3,",",i3,"]:: 0 -> kx = 0, ", 
+ 200  format("kx index, [",i4,",",i4,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")
- 201  format("ky index, [",i3,",",i3,"]:: 0 -> ky = 0, ", 
+ 201  format("ky index, [",i4,",",i4,"]:: 0 -> ky = 0, ", 
      $   i3, "-> ky = pi/b")
- 202  format("kz index, [",i3,",",i3,"]:: 0 -> kz = 0, ", 
+ 202  format("kz index, [",i4,",",i4,"]:: 0 -> kz = 0, ", 
      $   i3, "-> kz = pi/c")
 
  300  format("low eigenval of h0k+sig1 = ", e16.8)
