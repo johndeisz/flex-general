@@ -63,7 +63,7 @@ c Self-energy arrays
 c     Chemical potential, density, and interaction strength
       REAL mu_old, mu_current, dn_dmu, mu_min, mu_max
       REAL density, density_old, delta_mu
-      INTEGER ib, jb
+      INTEGER ib, jb, is, js
       LOGICAL density_converged
       REAL m_psi, mag
       REAL denb(0:nb-1), magb(0:nb-1,1:3)
@@ -99,6 +99,7 @@ c Output
 
 c Thermodynamic quantities
       REAL kinetic
+      COMPLEX so_energy, glocal
 
 #ifdef USE_MPI
       INTEGER ierr

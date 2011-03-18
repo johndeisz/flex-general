@@ -438,7 +438,6 @@ C$$$#endif /* THIRD_ORDER */
 
           enddo
         enddo
-        write(6,*) 'testing testing'
 
         write(6,*) 'Lx/mub = ', Lorb(1)
         write(6,*) 'Ly/mub = ', Lorb(2)
@@ -459,6 +458,30 @@ C$$$#endif /* THIRD_ORDER */
         write(6,*)
         call kinetic_energy(g_tau0, ek, kinetic)
         write(6,*) 'kinetic energy = ', kinetic
+
+        so_energy = cmplx(0.0d0, 0.0d0)
+        do ib =0, nb-1
+         do is = 0, 1
+          do jb = 0, nb-1
+            do js = 0, 1
+
+              glocal = g_tau0_local(4*jb+js, 4*ib+is)
+
+              if ( 4*ib+is .eq. 4*jb+js ) then
+               glocal = glocal + 1.0d0
+              endif 
+
+              so_energy = so_energy + h_so(2*ib+is,2*jb+js)*
+     $             glocal
+     
+             enddo
+            enddo
+
+         enddo
+        enddo
+
+        write(6,*) 'Spin-orbit energy = ', so_energy
+    
 
         if (m_psi .gt. 1.0d-12) then
           call analyze_psi(psi, tij)
