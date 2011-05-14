@@ -1,8 +1,8 @@
 SHELL=/bin/sh
 
 CC=gfortran -O3
-MPICC=mpif90 -O3
-# MPICC=mpif90 -O3 -mcmodel=medium
+# MPICC=mpif90 -O3
+MPICC=mpif90 -O3 -mcmodel=medium
 LIBRARIES= -lfftw3 -lblas -llapack 
 
 ifdef SYS
