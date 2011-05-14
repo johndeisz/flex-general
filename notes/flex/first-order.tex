@@ -167,7 +167,23 @@ G_{30} & 0 & G_{01} & -G_{00}
 \section{$\mathrm{Tr}\; \Sigma^{(1)} G$}
 
 This trace is needed in the evaluation of the thermodynamic
-potential.  For this trace we have
+potential.  
+\begin{eqnarray}
+\mathrm{Tr}\; \Sigma^{(1)} G & \equiv &
+   T \sum_{\mathbf{k},\varepsilon_n\nu\alpha\nu^{\prime}\alpha^{\prime}}
+  \Sigma^{(1)}_{\nu\alpha;\nu^{\prime}\alpha^{\prime}}\, 
+G_{\nu^{\prime}\alpha^{\prime};\nu\alpha}(\varepsilon_n,\mathbf{k})
+\\
+& = & \sum_{\nu\alpha\nu^{\prime}\alpha^{\prime}} 
+\Sigma^{(1)}_{\nu\alpha;\nu^{\prime}\alpha^{\prime}} T \sum_{\mathbf{k},\varepsilon_n} 
+G_{\nu^{\prime}\alpha^{\prime};\nu\alpha}(\varepsilon_n,\mathbf{k}) \\
+& = & 
+\sum_{\nu\alpha,\nu^{\prime}\alpha^{\prime}}
+\Sigma^{(1)}_{\nu\alpha,\nu^{\prime}\alpha^{\prime}}
+G_{\nu^{\prime}\alpha^{\prime},\nu\alpha}(\tau=0,\mathbf{r}=\mathbf{0})
+\end{eqnarray}
+
+In the one-band case we have the following
 \begin{eqnarray}
 \mathrm{Tr}\; \Sigma^{(1)} G & \equiv &
       T \sum_{\mathbf{k},\varepsilon_n}
