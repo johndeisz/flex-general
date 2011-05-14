@@ -98,7 +98,7 @@ c Output
       CHARACTER*10 convergence_text
 
 c Thermodynamic quantities
-      REAL kinetic
+      REAL kinetic, e_hf
       COMPLEX so_energy, glocal
 
 #ifdef USE_MPI

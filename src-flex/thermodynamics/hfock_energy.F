@@ -5,7 +5,7 @@
 #include "../constants.F"
 
       COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: sigma1
-      COMPLEX g_tau0(0:4*nb-1,0:4*nb-1,0:nl-1)
+      COMPLEX g_tau0_local(0:4*nb-1,0:4*nb-1)
       REAL e_hf
 
       INTEGER nua, nuap

@@ -481,7 +481,9 @@ C$$$#endif /* THIRD_ORDER */
         enddo
 
         write(6,*) 'Spin-orbit energy = ', so_energy
-    
+
+        call hfock_energy(sigma1, g_tau0_local, e_hf)
+        write(6,*) 'Hartree-fock energy = ', e_hf
 
         if (m_psi .gt. 1.0d-12) then
           call analyze_psi(psi, tij)
