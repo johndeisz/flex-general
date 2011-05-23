@@ -544,16 +544,16 @@ the correlation energy and other thermodynamic
 quantities we need to determine the following quantity:
 \begin{equation}
 \mathrm{Tr}\;\Sigma^{ph} \; G =
-   \sum_{\alpha\alpha^{\prime}} \int dx dx^{\prime}\;
-  \Sigma_{\alpha\alpha^{\prime}}(x,x^{\prime})\;
-G_{\alpha^{\prime}\alpha}(x^{\prime},x).
+   \sum_{\nu\alpha\nu^{\prime}\alpha^{\prime}} \int dx dx^{\prime}\;
+  \Sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(x,x^{\prime})\;
+G_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(x^{\prime},x).
 \end{equation}
 On account of translation invariance, we can write
 \begin{equation}
-\mathrm{Tr}\;\Sigma^{ph} \; G = N \sum_{\alpha\alpha^{\prime}} 
+\mathrm{Tr}\;\Sigma^{ph} \; G = N \sum_{\nu\alpha\nu^{\prime}\alpha^{\prime}} 
 \sum_{\mathbf{r}} \int_0^{\beta} d\tau \;
-\Sigma_{\alpha\alpha^{\prime}}(\tau,\mathbf{r})\,
-G_{\alpha^{\prime}\alpha}(-\tau,-\mathbf{r}).
+\Sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r})\,
+G_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(-\tau,-\mathbf{r}).
 \end{equation}
 Thus, having results for $\Sigma^{ph}$ and $G$ as
 a function of $\tau$ and $\mathbf{r}$, we can construct
@@ -568,34 +568,36 @@ using analytic methods.  To do this we write
 \begin{equation}
 \begin{split}
 \mathrm{Tr}\;\Sigma^{ph} \; G = & 
-N \sum_{\alpha\alpha^{\prime}} 
+N \sum_{\nu\alpha\nu^{\prime}\alpha^{\prime}} 
 \sum_{\mathbf{r}} \int_0^{\beta} d\tau 
-\left[ \Sigma_{\alpha\alpha^{\prime}}(\tau,\mathbf{r})
-\, G_{\alpha^{\prime}\alpha}(-\tau,-\mathbf{r})
--  \sigma_{\alpha\alpha^{\prime}}(\tau,\mathbf{r})
-g_{\alpha^{\prime}\alpha}(-\tau,-\mathbf{r}) \right]  \\
-& + N \sum_{\alpha\alpha^{\prime}} 
+\left[ \Sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r})
+\, G_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(-\tau,-\mathbf{r})
+-  \sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r})
+g_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(-\tau,-\mathbf{r}) \right]  \\
+& + N \sum_{\nu\alpha\nu^{\prime}\alpha^{\prime}} 
 \sum_{\mathbf{r}} \int_0^{\beta} d\tau\;
- \sigma_{\alpha\alpha^{\prime}}(\tau,\mathbf{r})
-\, g_{\alpha^{\prime}\alpha}(-\tau,-\mathbf{r}) \\
+ \sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r})
+\, g_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(-\tau,-\mathbf{r}) \\
 = &  
-N \sum_{\alpha\alpha^{\prime}} 
+N \sum_{\nu\alpha\nu^{\prime}\alpha^{\prime}} 
 \sum_{\mathbf{r}} \int_0^{\beta} d\tau 
-\left[ \Sigma_{\alpha\alpha^{\prime}}(\tau,\mathbf{r})
-\, G_{\alpha^{\prime}\alpha}(-\tau,-\mathbf{r})
--  \sigma_{\alpha\alpha^{\prime}}(\tau,\mathbf{r})
-g_{\alpha^{\prime}\alpha}(-\tau,-\mathbf{r}) \right]  \\
+\left[ \Sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r})
+\, G_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(-\tau,-\mathbf{r})
+-  \sigma_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r})
+g_{\nu^{\prime}\alpha^{\prime}\nu\alpha}(-\tau,-\mathbf{r}) \right]  \\
 & + \mathrm{Tr}\;\sigma^{ph}\,g
 \end{split}
 \end{equation}
 Recall that
 \begin{equation}
-\sigma^{ph}_{\alpha\alpha^{\prime}}(\tau,\mathbf{r}) =
+\sigma^{ph}_{\nu\alpha\nu^{\prime}\alpha^{\prime}}(\tau,\mathbf{r}) =
 -\sum_{\alpha_0 \beta_0}
 g_{\beta_0 \alpha_0}(\tau,\mathbf{r})\; 
-t^{ph}_{\alpha \beta_0; \alpha^{\prime}\alpha_0}(\tau,\mathbf{r})
+t^{ph}_{\alpha \beta_0; \alpha^{\prime}\alpha_0}(\tau,\mathbf{r}).
 \end{equation}
-so that
+For the expressions in the sum we have suppressed the explicit orbital
+indices so that the $\alpha$ and $\beta$ indices actually represent a 
+combined spin/orbital indices. Thus,
 \begin{equation}
 \mathrm{Tr}\;\sigma^{ph}\,g = -
 N \sum_{\alpha\alpha^{\prime}} \sum_{\alpha_0\beta_0}
