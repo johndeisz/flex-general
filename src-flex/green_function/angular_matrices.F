@@ -38,42 +38,45 @@ c Define spatial wave functions
       L_plus = 0.0d0;
       L_minus = 0.0d0;
 
-      do ml = -2, 2
-        Lvec_ml(3,ml,ml) = float(ml)
-      enddo
+      if (nb .eq. 3) then
 
-      do ml = -2,1
-       L_plus(ml+1,ml) = sqrt(6.0d0 - float(ml*(ml+1)))
-      enddo
+        do ml = -2, 2
+          Lvec_ml(3,ml,ml) = float(ml)
+        enddo
 
-      do ml = -1, 2
-       L_minus(ml-1,ml) = sqrt(6.0d0 - float(ml*(ml-1)))
-      enddo
+        do ml = -2,1
+          L_plus(ml+1,ml) = sqrt(6.0d0 - float(ml*(ml+1)))
+        enddo
 
-      Lvec_ml(1,:,:) = 0.5d0*cmplx(L_plus+L_minus,0.0d0)
-      Lvec_ml(2,:,:) = 0.5d0*cmplx(0.0d0,L_minus-L_plus)
+        do ml = -1, 2
+          L_minus(ml-1,ml) = sqrt(6.0d0 - float(ml*(ml-1)))
+        enddo
+
+        Lvec_ml(1,:,:) = 0.5d0*cmplx(L_plus+L_minus,0.0d0)
+        Lvec_ml(2,:,:) = 0.5d0*cmplx(0.0d0,L_minus-L_plus)
 
 c Compute the spin-orbit matrix elements
 	
-      do nu1=0,2
-        do nu2 = 0,2
+        do nu1=0,2
+          do nu2 = 0,2
 
-          sum = 0.0d0
+            sum = 0.0d0
 
-          do ml1 = -2,2
-            do ml2 = -2,2
+            do ml1 = -2,2
+              do ml2 = -2,2
 
-              sum = sum + conjg(psi(ml1,nu1))*
-     $           Lvec_ml(:,ml1,ml2)*psi(ml2,nu2)
+                sum = sum + conjg(psi(ml1,nu1))*
+     $             Lvec_ml(:,ml1,ml2)*psi(ml2,nu2)
               
+              enddo
             enddo
-          enddo
             
-          Lvec(:,nu1,nu2) = sum
+            Lvec(:,nu1,nu2) = sum
 
+          enddo
         enddo
-      enddo
  
+      endif
      
 
       return
