@@ -60,15 +60,18 @@ c     Initialize a random pair wave function.
         call sigma_input(sigma_input_file, uu, sigma1, psi)
 #endif
       endif
+      write(6,*) 'leave sigma_input'
 
 #ifdef SECOND_ORDER
       iteration = 0
       call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
      $   prfld, prfld_pert, mu, sigma1, h_so, iteration)
+      write(6,*) 'leave h0_generate'
       call discontinuities(h0, delta_g_r, delta_g_k,
      $   delta_gp_r, delta_gp_k)
       call parameter_init(x, c_r, delta_g_r, delta_gp_r, y)
 #endif
+      write(6,*) 'leave parameter init' 
 
 c     Prepare for self-consistency loop.
 
@@ -77,9 +80,12 @@ c     Prepare for self-consistency loop.
       iteration = 1
       density_converged = .false.
       density_iteration = 0
+      ft_sigma = .true.
 
       mu_min = ek_min - 30.0d0
       mu_max = 20.0d0
+
+      write(6,*) 'start loop' 
 
       do while ( (iteration .le. max_it) .and.
      $   (.not. density_converged) )
@@ -145,7 +151,7 @@ c     Prepare for self-consistency loop.
      $       c_r, tau, epsilon, q_tau, q_epsilon, x, y,
      $       r_tau, r_omega, a_int, gamma0_ph,
      $       overall_eigenvalue_max,  dominant_chi_eigenvector,
-     $       dominant_chi_index)
+     $       dominant_chi_index, ft_sigma, d_r)
 
           if ( (alpha_scheme .eq. 2) .and.
      $       (iteration .gt. 1) ) then
@@ -376,17 +382,23 @@ C$$$#endif /* THIRD_ORDER */
 
         mag = 0.0d0
         magb = 0.0d0
+        mag_energy = 0.0d0
+
         denb = 0.0d0
+        pot_energy = 0.0d0
 
         do ib = 0, nb-1
           denb(ib) = real( g_tau0_local(4*ib+0,4*ib+0) + 
      $       g_tau0_local(4*ib+1,4*ib+1) + 2.0d0 ) 
+          pot_energy = pot_energy + ed(ib)*denb(ib)
         enddo
 
         do ib = 0, nb-1
           magb(ib,1) = real( g_tau0_local(4*ib+1,4*ib+0) + 
      $       g_tau0_local(4*ib+0,4*ib+1) ) 
           mag = mag + magb(ib,1)
+          mag_energy = mag_energy - 
+     $       mub*(gs/2.0d0)*h(ib,1)*magb(ib,1)
         enddo
         write(6,*) 'Mx_spin per atom/((g/2)*mub) = ', mag,
      $     convergence_text
@@ -397,6 +409,8 @@ C$$$#endif /* THIRD_ORDER */
      $       (-g_tau0_local(4*ib+1,4*ib+0) +
      $       g_tau0_local(4*ib+0,4*ib+1)) ) 
           mag = mag + magb(ib,2)
+          mag_energy = mag_energy - 
+     $       mub*(gs/2.0d0)*h(ib,2)*magb(ib,2)
         enddo
         write(6,*) 'My_spin per atom/((g/2)*mub) ', mag,
      $     convergence_text
@@ -406,10 +420,11 @@ C$$$#endif /* THIRD_ORDER */
           magb(ib,3) =  real( g_tau0_local(4*ib,4*ib) - 
      $       g_tau0_local(4*ib+1,4*ib+1) )
           mag = mag + magb(ib,3)
+          mag_energy = mag_energy - 
+     $       mub*(gs/2.0d0)*h(ib,3)*magb(ib,3)
         enddo
         write(6,*) 'Mz_spin per atom/((g/2)*mub) ', mag,
      $       convergence_text
-
 
         write(6,*) 'Density and magnetization by band'
         write(6,*) 'band  rho     mx       my      mz'
@@ -445,15 +460,22 @@ C$$$#endif /* THIRD_ORDER */
 
  225    format(i3,2x,d16.8,2x,d16.8,2x,d16.8,2x,d16.8)
 
-
         write(6,*)
-        alpha = 1.0d0
+ 
+
       endif
-        call  pair_wave(psi, g_tau0, alpha, m_psi)
+ 
+      if (rank .eq. 0) then
+        call pair_field_energy(g_tau0, prfld, psi, pair_energy)
+        write(6,*) 'Pair field energy = ', pair_energy
+      endif
+        
+      alpha = 1.0d0
+      call  pair_wave(psi, g_tau0, alpha, m_psi)
   
       if (rank .eq. 0) then
         write(6,*) 'Pair amplitude = ', m_psi,
-     $    convergence_text
+     $     convergence_text
 
         write(6,*)
         call kinetic_energy(g_tau0, ek, kinetic)
@@ -481,27 +503,41 @@ C$$$#endif /* THIRD_ORDER */
         enddo
 
         write(6,*) 'Spin-orbit energy = ', so_energy
-
+        write(6,*) 'Potential energy = ', pot_energy
+        write(6,*) 'Note: magnetic energy neglects orbital terms'
+        write(6,*) 'Magnetic energy = ', mag_energy
         call hfock_energy(sigma1, g_tau0_local, e_hf)
         write(6,*) 'Hartree-fock energy = ', e_hf
+      endif
 
+      cor_energy = 0.0d0
+
+#ifdef SECOND_ORDER
+      ft_sigma = .false.
+      call sigma_calc(rank, t, sigma, chi, g, g_mtau,
+     $   c_r, tau, epsilon, q_tau, q_epsilon, x, y,
+     $   r_tau, r_omega, a_int, gamma0_ph,
+     $   overall_eigenvalue_max,  dominant_chi_eigenvector,
+     $   dominant_chi_index, ft_sigma, d_r)
+        
+      call eval_tr_sigph_g(rank, tr_sig_g, sigma, g_mtau, t,
+     $   c_r, d_r, q_tau, q_mtau, r_tau, x, y)
+
+      cor_energy = 0.25d0 * real(tr_sig_g)
+
+      if (rank .eq. 0) then
+        write(6,*) 'Correlation energy = ', cor_energy
+      endif
+#endif /* SECOND_ORDER */
+
+      if (rank .eq. 0) then
         if (m_psi .gt. 1.0d-12) then
           call analyze_psi(psi, tij)
-
-c$$$          write(6,*) 'Reanalyze pair wave function using hole basis'
-c$$$
-c$$$          alpha = 1.0d0
-c$$$          call pair_wave_test(psi, g_tau0, alpha, m_psi)
-c$$$
-c$$$          write(6,*) 'Pair amplitude = ', m_psi
-c$$$
-c$$$          call analyze_psi(psi, tij)
-          
-         endif 
-
-        endif
+        endif 
+      endif
 
       call cpu_time(end_time)
+
       if (rank .eq. 0) then
         write(6,*)
         write(6,*) 'Execution time = ',

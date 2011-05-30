@@ -34,7 +34,8 @@ OBJECTS_COMMON = \
 	analyze_psi_2D_ortho.o \
 	pair_wave_test.o \
 	angular_matrices.o \
-	hfock_energy.o
+	hfock_energy.o \
+	pair_energy.o
 #	analyze_psi_3D_cubic.o \
 #	analyze_psi_3D_tet.o \
 #	sig_output.o \
@@ -69,6 +70,8 @@ OBJECTS_SECOND = \
 	pade.o \
 	sigma_out.o \
         symmetrize.o \
+	eval_tr_sigph_g.o \
+	l_ints.o \
 
 OBJECTS_THIRD = \
 	transform_chi.o \
@@ -281,6 +284,15 @@ angular_matrices.o : green_function/angular_matrices.F constants.F
 
 hfock_energy.o : thermodynamics/hfock_energy.F constants.F
 	$(CC) -c thermodynamics/hfock_energy.F $(defines)
+
+eval_tr_sigph_g.o : thermodynamics/eval_tr_sigph_g.F constants.F
+	$(CC) -c thermodynamics/eval_tr_sigph_g.F $(defines)
+
+l_ints.o : init/l_ints.F constants.F
+	$(CC) -c init/l_ints.F $(defines)
+
+pair_energy.o : thermodynamics/pair_energy.F constants.F
+	$(CC) -c thermodynamics/pair_energy.F $(defines)
 
 clean :
 	rm $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD)

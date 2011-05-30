@@ -64,7 +64,7 @@ c     Chemical potential, density, and interaction strength
       REAL mu_old, mu_current, dn_dmu, mu_min, mu_max
       REAL density, density_old, delta_mu
       INTEGER ib, jb, is, js
-      LOGICAL density_converged
+      LOGICAL density_converged, ft_sigma
       REAL m_psi, mag
       REAL denb(0:nb-1), magb(0:nb-1,1:3)
 
@@ -98,8 +98,13 @@ c Output
       CHARACTER*10 convergence_text
 
 c Thermodynamic quantities
-      REAL kinetic, e_hf
+      REAL kinetic, e_hf, cor_energy, pair_energy
+      REAL mag_energy, pot_energy
       COMPLEX so_energy, glocal
+#ifdef SECOND_ORDER
+      COMPLEX tr_sig_g
+      COMPLEX d_r(0:1,0:1,0:16*nb*nb-1,0:16*nb*nb-1,0:nc1)
+#endif /* SECOND_ORDER */
 
 #ifdef USE_MPI
       INTEGER ierr
