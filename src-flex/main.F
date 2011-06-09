@@ -60,18 +60,15 @@ c     Initialize a random pair wave function.
         call sigma_input(sigma_input_file, uu, sigma1, psi)
 #endif
       endif
-      write(6,*) 'leave sigma_input'
 
 #ifdef SECOND_ORDER
       iteration = 0
       call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
      $   prfld, prfld_pert, mu, sigma1, h_so, iteration)
-      write(6,*) 'leave h0_generate'
       call discontinuities(h0, delta_g_r, delta_g_k,
      $   delta_gp_r, delta_gp_k)
       call parameter_init(x, c_r, delta_g_r, delta_gp_r, y)
 #endif
-      write(6,*) 'leave parameter init' 
 
 c     Prepare for self-consistency loop.
 
@@ -84,8 +81,6 @@ c     Prepare for self-consistency loop.
 
       mu_min = ek_min - 30.0d0
       mu_max = 20.0d0
-
-      write(6,*) 'start loop' 
 
       do while ( (iteration .le. max_it) .and.
      $   (.not. density_converged) )
@@ -529,6 +524,11 @@ C$$$#endif /* THIRD_ORDER */
         write(6,*) 'Correlation energy = ', cor_energy
       endif
 #endif /* SECOND_ORDER */
+      if (rank .eq. 0) then
+       write(6,*) 'Total energy = ', kinetic + pot_energy + 
+     $   mag_energy + real(so_energy) + pair_energy +
+     $   e_hf + cor_energy
+      endif
 
       if (rank .eq. 0) then
         if (m_psi .gt. 1.0d-12) then
