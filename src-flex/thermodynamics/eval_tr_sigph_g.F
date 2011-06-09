@@ -113,7 +113,7 @@ c     Now subtract the analytic part of the integrand
         dummy = 0
 
 #ifdef USE_MPI
-        do i = 1, n_proc - 1
+        do i = 1, np - 1
 
           call MPI_Send(dummy, 1, MPI_INTEGER, i, 0, 
      $       MPI_COMM_WORLD, ierr)
