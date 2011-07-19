@@ -8,6 +8,12 @@
 
 #include "../constants.F"
 
+
+#ifdef USE_MPI
+      include 'mpif.h'
+#endif /* USE_MPI */
+
+
       INTEGER rank
       REAL t
       COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) ::
@@ -46,6 +52,17 @@
       COMPLEX dominant_chi_eigenvector(0:16*nb*nb-1)
       REAL overall_eigenvalue_max
       INTEGER dominant_chi_index(0:1)
+
+
+c Test of phase 
+      INTEGER ib, ibp, is, isp, ind, indp
+      REAL phase, phase_fix, d_phase
+      COMPLEX fac
+
+#ifdef USE_MPI
+      INTEGER ierr
+#endif
+
 
       pi = 4.0d0 * atan(1.0d0)
       delta_tau = (1.0d0 / t) / float(m)
@@ -95,6 +112,50 @@ c     Form sigma(tau, r)
 
         enddo
       enddo
+
+
+c     if (rank. eq. 0) then
+
+c        phase = atan2(imag(sigma(8,11,0,1)), 
+c    $   real(sigma(8,11,0,1)))  
+
+     
+c      write(6,*)
+c      write(6,*) 'phase = ', phase
+c      phase_fix = 0.32d0
+c      d_phase = 0.1d0*(phase_fix - phase)
+c      write(6,*) 'd_phase = ', d_phase
+c      fac = cexp(cmplx(0.0d0,d_phase))
+c      write(6,*) 'fac = ', fac
+c     endif
+
+#ifdef USE_MPI
+c     call MPI_Bcast(fac, 1, MPI_COMPLEX, 0,
+c    $   MPI_COMM_WORLD, ierr)
+#endif /* USE_MPI */
+
+
+c     do ib = 0, nb-1
+c      do is = 0, 1
+c        do ibp = 0, nb-1
+c          do isp = 0,1
+
+c            ind = 4*ib+is
+c            indp = 4*ibp + isp + 2
+
+c            sigma(ind,indp,:,:) = sigma(ind,indp,:,:)*fac
+
+c            ind = 4*ib+is + 2
+c            indp = 4*ibp + isp
+
+c            sigma(ind,indp,:,:) = sigma(ind,indp,:,:)*conjg(fac)
+ 
+c          enddo
+c        enddo
+c     enddo
+c     enddo
+             
+
 
       if (ft_sigma) then 
 c     Subtract analytic portion from Sigma(tau, r)
