@@ -497,12 +497,16 @@ C$$$#endif /* THIRD_ORDER */
          enddo
         enddo
 
-        write(6,*) 'Spin-orbit energy = ', so_energy
-        write(6,*) 'Potential energy = ', pot_energy
+        write(6,*) 'Spin-orbit energy = ', real(so_energy),
+     $    convergence_text
+        write(6,*) 'Potential energy = ', pot_energy,
+     $    convergence_text
         write(6,*) 'Note: magnetic energy neglects orbital terms'
-        write(6,*) 'Magnetic energy = ', mag_energy
+        write(6,*) 'Magnetic energy = ', mag_energy,
+     $     convergence_text 
         call hfock_energy(sigma1, g_tau0_local, e_hf)
-        write(6,*) 'Hartree-fock energy = ', e_hf
+        write(6,*) 'Hartree-fock energy = ', e_hf,
+     $     convergence_text
       endif
 
       cor_energy = 0.0d0
@@ -521,13 +525,14 @@ C$$$#endif /* THIRD_ORDER */
       cor_energy = 0.25d0 * real(tr_sig_g)
 
       if (rank .eq. 0) then
-        write(6,*) 'Correlation energy = ', cor_energy
+        write(6,*) 'Correlation energy = ', cor_energy, 
+     $ convergence_text
       endif
 #endif /* SECOND_ORDER */
       if (rank .eq. 0) then
        write(6,*) 'Total energy = ', kinetic + pot_energy + 
      $   mag_energy + real(so_energy) + pair_energy +
-     $   e_hf + cor_energy
+     $   e_hf + cor_energy, convergence_text
       endif
 
       if (rank .eq. 0) then
