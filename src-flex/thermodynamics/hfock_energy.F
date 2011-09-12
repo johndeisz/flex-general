@@ -24,7 +24,7 @@
               g0 = g0 + 1.0d0
             endif
 
-            if ( (mod(nua,4) .le. 1) then
+            if ( mod(nua,4) .le. 1) then
               e_hf_temp = e_hf_temp + sigma1(nua,nuap)*g0
             else
               e_hf_temp2 = e_hf_temp2 + sigma1(nua,nuap)*g0 
