@@ -134,6 +134,7 @@ c     Read pade coefficients
       write(6,*) "1 - Spectral function"
       write(6,*) "2 - A(k,w) vs. k,w scans"
       write(6,*) "3 - QP energy and width vs. k"
+      write(6,*) "4 - DOS"
       read(5,*) itype
 
       if (itype .eq. 1) then
@@ -446,6 +447,100 @@ c     Read pade coefficients
         close(unit=40)
         
       endif
+
+      if (itype .eq. 4) then
+
+        write(6,*)
+        write(6,*) "Input minimum energy value "
+        read(5,*) w_min
+        write(6,*) "Input maximum energy value "
+        read(5,*) w_max
+        write(6,*) "Num energy points "
+        read(5,*) n_w 
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
+
+        write(6,*) "Resolution parameter - ",
+     $     "should be larger than energy increment."
+        read(5,*) eta
+
+        write(6,*) "Base output file name "
+        read(5,*) base_out_file
+        open(unit=90, file='dos_'//base_out_file, status="unknown")
+
+        write(6,*) "Write spin-dependent DOS? 1=yes, 0 =no"
+        read(5,*) i_spin_dos
+        if (i_spin_dos .eq. 1) then
+          open(unit=91, file='dos_up_'//base_out_file,
+     $       status="unknown")
+          open(unit=92, file='dos_down_'//base_out_file,
+     $       status="unknown")
+        endif
+
+        write(6,*) "Write band dependent DOS? 1=yes, 0 =no"
+        read(5,*) i_band_dos
+        if (i_band_spin_dos .eq. 1) then
+          open(unit=93, file='dos_band0_'//base_out_file,
+     $       status="unknown")
+          open(unit=94, file='dos_band1_'//base_out_file,
+     $       status="unknown")
+          open(unit=95, file='dos_band2_'//base_out_file,
+     $       status="unknown")
+        endif 
+
+        write(6,*) "Write band-dependent DOS? 1=yes, 0 =no"
+        read(5,*) i_band_spin_dos
+        if (i_band_spin_dos .eq. 1) then
+          open(unit=80, file='dos_band0_up_'//base_out_file,
+     $       status="unknown")
+          open(unit=81, file='dos_band0_down_'//base_out_file,
+     $       status="unknown")
+          open(unit=82, file='dos_band1_up_'//base_out_file,
+     $       status="unknown")
+          open(unit=83, file='dos_band1_down_'//base_out_file,
+     $       status="unknown")
+          open(unit=84, file='dos_band2_up_'//base_out_file,
+     $       status="unknown")
+          open(unit=85, file='dos_band2_down_'//base_out_file,
+     $       status="unknown")
+        endif      
+  
+
+
+        do ikx = 0, llx/2
+
+          if (i_sc_type .eq. 1) then
+            iky = 0
+          endif
+          if (i_sc_type .eq. 2) then
+            iky = ikx
+          endif
+          if (i_sc_type .eq. 3) then
+            iky = llx/2
+          endif
+
+          ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $       mod(ikz+llz,llz)*llx*lly
+
+          h0k = h0(:,:,ik)
+
+          do l = 1, n_w
+            
+            w = w_min + dw*dfloat(l-1)
+            z = dcmplx(w, eta)
+
+            call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+
+            write(40,*) pi*float(ikx)/float(llx/2), w, a
+
+          enddo
+
+        enddo
+
+        close(unit=40)
+
+      endif
+
 
  200  format("kx index, [",i4,",",i4,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")
