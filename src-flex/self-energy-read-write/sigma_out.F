@@ -196,7 +196,7 @@ c     parts of sigma.  (diagonal determined by causality)
                 if (ind1 .ne. ind2) then
 
                   do l = 0, m/2 - 1
-                    if (cabs(tempcol(l,k)) .gt. 1.0d-7) then
+                    if (cabs(tempcol(l,k)) .gt. 1.0d-10) then
                       k_count = k_count + 1
                     endif
                   enddo
