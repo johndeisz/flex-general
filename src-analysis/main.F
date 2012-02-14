@@ -70,6 +70,18 @@
 
       INTEGER ii,jj
 
+      DOUBLE PRECISION up0, up1, up2, down0, down1, down2
+      DOUBLE PRECISION wx(-llx/lcx: llx/lcx)
+      DOUBLE PRECISION wy(-lly/lcy: lly/lcy)
+
+      COMPLEX, dimension (0:4*nb-1,0:4*nb-1) ::
+     $   identity, temp_gc, temp_gl2, temp_gl
+
+      CHARACTER*128 base_out_file
+      INTEGER ipiv(4*nb)
+      INTEGER ix, ix_max, iy, iy_max
+      INTEGER klx, kly, kl, kx, ky
+
       lwork2 = 16*nb + 32*nb**2
       lrwork2 = 2+20*nb+64*nb**2
       liwork2= 6+20*nb
@@ -451,6 +463,36 @@ c     Read pade coefficients
       if (itype .eq. 4) then
 
         write(6,*)
+
+        write(6,*) "Base output file name "
+        read(5,*) base_out_file
+        open(unit=90, file='dos_'//base_out_file, status="unknown")
+
+        open(unit=80, file='dos_up_'//base_out_file,
+     $     status="unknown")
+        open(unit=81, file='dos_down_'//base_out_file,
+     $     status="unknown")
+
+        open(unit=70, file='dos_band0_'//base_out_file,
+     $     status="unknown")
+        open(unit=71, file='dos_band1_'//base_out_file,
+     $     status="unknown")
+        open(unit=72, file='dos_band2_'//base_out_file,
+     $     status="unknown")
+
+        open(unit=60, file='dos_band0_up_'//base_out_file,
+     $     status="unknown")
+        open(unit=61, file='dos_band0_down_'//base_out_file,
+     $     status="unknown")
+        open(unit=62, file='dos_band1_up_'//base_out_file,
+     $     status="unknown")
+        open(unit=63, file='dos_band1_down_'//base_out_file,
+     $     status="unknown")
+        open(unit=64, file='dos_band2_up_'//base_out_file,
+     $     status="unknown")
+        open(unit=65, file='dos_band2_down_'//base_out_file,
+     $     status="unknown")
+
         write(6,*) "Input minimum energy value "
         read(5,*) w_min
         write(6,*) "Input maximum energy value "
@@ -464,81 +506,128 @@ c     Read pade coefficients
      $     "should be larger than energy increment."
         read(5,*) eta
 
-        write(6,*) "Base output file name "
-        read(5,*) base_out_file
-        open(unit=90, file='dos_'//base_out_file, status="unknown")
+        x_stretch = llx / lcx
+        y_stretch = lly / lcy
 
-        write(6,*) "Write spin-dependent DOS? 1=yes, 0 =no"
-        read(5,*) i_spin_dos
-        if (i_spin_dos .eq. 1) then
-          open(unit=91, file='dos_up_'//base_out_file,
-     $       status="unknown")
-          open(unit=92, file='dos_down_'//base_out_file,
-     $       status="unknown")
+        if (x_stretch .gt. 1) then
+          ix_max = x_stretch/2
+          do ix = 0, ix_max - 1
+            wx(ix) = 1.0d0
+            wx(-ix) = 1.0d0
+          enddo
+          wx(ix_max) = 0.5d0
+          wx(-ix_max) = 0.5d0
+        else
+          ix_max = 0
+          wx(0) = 1.0d0
         endif
 
-        write(6,*) "Write band dependent DOS? 1=yes, 0 =no"
-        read(5,*) i_band_dos
-        if (i_band_spin_dos .eq. 1) then
-          open(unit=93, file='dos_band0_'//base_out_file,
-     $       status="unknown")
-          open(unit=94, file='dos_band1_'//base_out_file,
-     $       status="unknown")
-          open(unit=95, file='dos_band2_'//base_out_file,
-     $       status="unknown")
-        endif 
-
-        write(6,*) "Write band-dependent DOS? 1=yes, 0 =no"
-        read(5,*) i_band_spin_dos
-        if (i_band_spin_dos .eq. 1) then
-          open(unit=80, file='dos_band0_up_'//base_out_file,
-     $       status="unknown")
-          open(unit=81, file='dos_band0_down_'//base_out_file,
-     $       status="unknown")
-          open(unit=82, file='dos_band1_up_'//base_out_file,
-     $       status="unknown")
-          open(unit=83, file='dos_band1_down_'//base_out_file,
-     $       status="unknown")
-          open(unit=84, file='dos_band2_up_'//base_out_file,
-     $       status="unknown")
-          open(unit=85, file='dos_band2_down_'//base_out_file,
-     $       status="unknown")
-        endif      
-  
-
-
-        do ikx = 0, llx/2
-
-          if (i_sc_type .eq. 1) then
-            iky = 0
-          endif
-          if (i_sc_type .eq. 2) then
-            iky = ikx
-          endif
-          if (i_sc_type .eq. 3) then
-            iky = llx/2
-          endif
-
-          ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
-     $       mod(ikz+llz,llz)*llx*lly
-
-          h0k = h0(:,:,ik)
-
-          do l = 1, n_w
-            
-            w = w_min + dw*dfloat(l-1)
-            z = dcmplx(w, eta)
-
-            call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
-
-            write(40,*) pi*float(ikx)/float(llx/2), w, a
-
+        if (y_stretch .gt. 1) then
+          iy_max = y_stretch/2
+          do iy = 0, iy_max - 1
+            wy(iy) = 1.0d0
+            wy(-iy) = 1.0d0
           enddo
+          wy(iy_max) = 0.5d0
+          wy(-iy_max) = 0.50d0
+        else
+          iy_max = 0
+          wy(0) = 1.0d0
+        endif
 
+        do i = 0, 4*nb-1
+          do j = 0, 4*nb-1
+            if (i .eq. j) then
+              identity(i,j) = cmplx(1.0d0, 0.0d0)
+            else
+              identity(i,j) = cmplx(0.0d0, 0.0d0)
+            endif
+          enddo
         enddo
 
-        close(unit=40)
 
+        do l = 1, n_w
+            
+          w = w_min + dw*dfloat(l-1)
+          z = dcmplx(w, eta)
+  
+          temp_gc = cmplx(0.0d0, 0.0d0)
+
+          do kx = 0, lcx-1
+            do ky = 0, lcy-1
+
+              k = kx + ky*lcx 
+
+              do i = 0, 4*nb-1
+                do j = 0, 4*nb-1
+
+                  if ( (sigma_flag .eq. 1) .and.
+     $               (n_pade(i,j,k) .gt. 0)) then
+
+                    sigma(i,j) = pade_evaluate(z,n_pade(i,j,k),
+     $                 p(i,j,k,:), q(i,j,k,:))
+                    
+                  else
+                    sigma(i,j) = dcmplx(0.0d0,0.0d0)
+                  endif
+
+                enddo
+              enddo
+                
+c     For each cluster k-point, sum over all points in the
+c     coarse-graining cell.
+
+              do ix = -ix_max, ix_max
+                do iy = -iy_max, iy_max
+
+                  klx = mod(kx*x_stretch + ix + llx, llx)
+                  kly = mod(ky*y_stretch + iy + lly, lly)
+
+                  kl = klx + kly*llx 
+
+                  temp_gl2 = z*identity - h0(:,:,kl) - sigma
+                  temp_gl = identity
+
+                  call cgesv(4*nb, 4*nb, temp_gl2, 4*nb,
+     $               ipiv, temp_gl, 4*nb, info)
+
+                  if (info .ne. 0) then
+                    write(6,*) 'info not equal to zero'
+                  endif
+
+                  temp_gc = temp_gc +
+     $               wx(ix) * wy(iy) * temp_gl
+
+                enddo
+              enddo
+
+            enddo
+          enddo
+
+          up0 = -aimag(temp_gc(0,0))/pi/float(llx*lly)
+          down0 = -aimag(temp_gc(1,1))/pi/float(llx*lly)
+          up1 = -aimag(temp_gc(4,4))/pi/float(llx*lly)
+          down1 = -aimag(temp_gc(5,5))/pi/float(llx*lly)
+          up2 = -aimag(temp_gc(8,8))/pi/float(llx*lly)
+          down2= -aimag(temp_gc(9,9))/pi/float(llx*lly)
+
+          write(60,*) w, up0
+          write(61,*) w, down0
+          write(62,*) w, up1
+          write(63,*) w, down1
+          write(64,*) w, up2
+          write(65,*) w, down2
+          
+          write(70,*) w, 0.5d0*(up0+down0)
+          write(71,*) w, 0.5d0*(up1+down1)
+          write(72,*) w, 0.5d0*(up2+down2)
+
+          write(80,*) w, (up0+up1+up2)/3.0d0
+          write(81,*) w, (down0+down1+down2)/3.0d0
+
+          write(90,*) w, (up0+up1+up2+down0+down1+down2)/6.0d0
+
+        enddo
       endif
 
 
