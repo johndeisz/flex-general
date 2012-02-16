@@ -62,8 +62,8 @@
       INTEGER ic, icx, icy
       INTEGER x_stretch, y_stretch
 
-      DOUBLE COMPLEX pade_evaluate
-      EXTERNAL pade_evaluate
+      DOUBLE COMPLEX pade_evaluate, pade_prime
+      EXTERNAL pade_evaluate, pade_prime
       
       INTEGER out_type
       DOUBLE COMPLEX gamma
@@ -85,6 +85,16 @@
       lwork2 = 16*nb + 32*nb**2
       lrwork2 = 2+20*nb+64*nb**2
       liwork2= 6+20*nb
+
+       do i = 0, 4*nb-1
+          do j = 0, 4*nb-1
+            if (i .eq. j) then
+              identity(i,j) = cmplx(1.0d0, 0.0d0)
+            else
+              identity(i,j) = cmplx(0.0d0, 0.0d0)
+            endif
+          enddo
+        enddo
 
       write(6,*) "Self-energy file to be used"
       read(5,*) sigma_input_file
@@ -147,6 +157,7 @@ c     Read pade coefficients
       write(6,*) "2 - A(k,w) vs. k,w scans"
       write(6,*) "3 - QP energy and width vs. k"
       write(6,*) "4 - DOS"
+      write(6,*) "5 - Z vs QP energy"
       read(5,*) itype
 
       if (itype .eq. 1) then
@@ -535,15 +546,7 @@ c     Read pade coefficients
           wy(0) = 1.0d0
         endif
 
-        do i = 0, 4*nb-1
-          do j = 0, 4*nb-1
-            if (i .eq. j) then
-              identity(i,j) = cmplx(1.0d0, 0.0d0)
-            else
-              identity(i,j) = cmplx(0.0d0, 0.0d0)
-            endif
-          enddo
-        enddo
+ 
 
 
         do l = 1, n_w
@@ -630,6 +633,197 @@ c     coarse-graining cell.
         enddo
       endif
 
+      if (itype .eq. 5) then
+
+        write(6,*) '1 - Gamma-M scan'
+        write(6,*) '2 - Gamma-X scan'
+        write(6,*) '3 - M-X scan'
+        write(6,*) '4 - ky = 2*kx scan'
+        write(6,*) '5 - Fixed ky scan'
+        read(5,*) i_sc_type
+        if (i_sc_type .eq. 5) then
+          write(6,201) -lly/2, lly/2, lly/2
+          read(5,*) iky
+        endif
+        write(6,*)
+        write(6,*) "Input minimum energy value "
+        read(5,*) w_min
+        write(6,*) "Input maximum energy value "
+        read(5,*) w_max
+        write(6,*) "Num energy points "
+        read(5,*) n_w 
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
+
+        write(6,*) "Resolution parameter - ",
+     $     "should be larger than energy increment."
+        read(5,*) eta
+
+        write(6,*) 'Name of output file'
+        read(5,*) output_file
+        open(unit=40, file=output_file, status="unknown")
+
+        x_stretch = llx / lcx
+        y_stretch = lly / lcy
+
+        if (i_sc_type .eq. 4) then
+          ikx_max = llx/4
+        else
+          ikx_max = llx/2
+        endif
+
+        do ikx = 0, ikx_max
+
+          if ((2*mod(ikx, x_stretch) .ne. x_stretch) .or.
+     $       lcx .eq. 1) then
+
+            icx = nint(float(ikx)/float(x_stretch))
+            icx = mod(icx,lcx)
+           
+            if (i_sc_type .eq. 1) then
+              iky = 0
+            endif
+            if (i_sc_type .eq. 2) then
+              iky = ikx
+            endif
+            if (i_sc_type .eq. 3) then
+              iky = lly/2
+            endif
+            if (i_sc_type .eq. 4) then
+              iky = 2*ikx
+            endif
+
+            if ( (2*mod(iky, y_stretch) .ne. y_stretch) .or.
+     $         lcy .eq. 1) then
+
+              icy = nint(float(iky)/float(y_stretch))
+              icy = mod(icy,lcy)
+
+              ik = ikx + iky*llx 
+
+              h0k = h0(:,:,ik)
+
+              ic = icx + icy*lcx
+
+              eigs_smaller_old = 0
+
+              do l = 1, n_w
+            
+                w = w_min + dw*dfloat(l-1)
+                z = dcmplx(w, eta)
+
+                do i = 0, 4*nb-1
+                  do j = 0, 4*nb-1
+
+                    if ( (sigma_flag .eq. 1) .and.
+     $                 (n_pade(i,j,ic) .gt. 0)) then
+
+                      sigma(i,j) = pade_evaluate(z,n_pade(i,j,ic),
+     $                   p(i,j,ic,:), q(i,j,ic,:))
+
+                    else
+                      sigma(i,j) = dcmplx(0.0d0,0.0d0)
+                    endif
+
+                  enddo
+                enddo
+
+                hk = h0k + sigma
+
+                do i = 0, 4*nb-1
+                  do j= 0, 4*nb-1
+
+                    hk_herm(i,j) = 
+     $                 0.5d0*(hk(i,j) + conjg(hk(j,i)))
+
+                  enddo
+                enddo
+
+                call zheevd('V','U',4*nb,hk_herm,4*nb,eigs,work2,
+     $             lwork2,rwork2,lrwork2,iwork2,liwork2,info2)
+
+                if (info2 .ne. 0) then
+                  write(6,*) "zheevd failed. stopping."
+                endif
+
+                eigs_smaller_new = 0
+
+                do i = 0, 4*nb-1
+
+                  if (eigs(i) .lt. w) then
+                    eigs_smaller_new = eigs_smaller_new + 1
+                  endif
+
+                enddo
+
+                if ( (l .gt. 1) .and. (eigs_smaller_new .gt. 
+     $             eigs_smaller_old) ) then
+
+                  do j = eigs_smaller_old, eigs_smaller_new - 1
+
+                    a_up_spin = 0.0d0
+
+                    do ib = 0, nb-1
+
+                      a_up_spin = a_up_spin + hk_herm(4*ib,j)*
+     $                   conjg(hk_herm(4*ib,j))
+
+                    enddo
+
+                    if (dreal(a_up_spin) .gt. 0.1d0) then
+
+                    do ii = 0, 4*nb-1
+                        do jj = 0, 4*nb-1
+
+                        if ( (sigma_flag .eq. 1) .and.
+     $                      (n_pade(ii,jj,ic) .gt. 0)) then
+
+                        sigma(ii,jj) = pade_prime(z,n_pade(ii,jj,ic),
+     $                   p(ii,jj,ic,:), q(ii,jj,ic,:))
+
+                        else    
+                          sigma(ii,jj) = dcmplx(0.0d0,0.0d0)
+                        endif   
+
+                      enddo   
+                    enddo   
+c     
+c     temp_gl2 = identity - sigma
+                    temp_gl2 = identity - real(sigma)
+                    temp_gl = identity
+
+                 call cgesv(4*nb, 4*nb, temp_gl2, 4*nb,
+     $               ipiv, temp_gl, 4*nb, info)
+
+                      gamma = 0
+
+                      do ii = 0, 4*nb-1
+                        do jj = 0, 4*nb-1
+                          gamma = gamma + conjg(hk_herm(ii,j))*
+     $                       temp_gl(ii,jj)*hk_herm(jj,j)
+                        enddo
+                      enddo
+                    
+                      write(40,*) eigs(j), real(gamma)
+
+                    endif
+
+                  enddo
+                endif
+
+                eigs_smaller_old = eigs_smaller_new
+                  
+              enddo
+
+            endif
+
+          endif
+
+        enddo
+      
+        close(unit=40)
+        
+      endif
 
  200  format("kx index, [",i4,",",i4,"]:: 0 -> kx = 0, ", 
      $   i3, "-> kx = pi/a")

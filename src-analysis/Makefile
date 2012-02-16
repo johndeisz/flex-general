@@ -10,7 +10,8 @@ OBJECTS = \
 	fft_3D_lattice.o \
 	h0_generate.o \
 	dyson.o \
-	pade_evaluate.o
+	pade_evaluate.o \
+	pade_prime.o
 
 quasi : $(OBJECTS)
 	$(CC) -o quasi.exe $(OBJECTS) $(LIBRARIES)
@@ -35,6 +36,9 @@ dyson.o : dyson.F constants.F
 
 pade_evaluate.o : pade_evaluate.F constants.F
 	$(CC) -c pade_evaluate.F
+
+pade_prime.o : pade_prime.F constants.F
+	$(CC) -c pade_prime.F
 
 clean :
 	rm $(OBJECTS) 
