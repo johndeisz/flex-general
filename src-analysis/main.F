@@ -67,7 +67,7 @@
       EXTERNAL pade_evaluate, pade_prime
       
       INTEGER out_type
-      DOUBLE COMPLEX gamma, Z_qp, e_qp
+      DOUBLE COMPLEX gamma, Z_qp, e_qp, eqp_help
 
       INTEGER ii,jj, iii
 
@@ -773,69 +773,72 @@ c     coarse-graining cell.
 
                     if (dreal(a_up_spin) .gt. 0.1d0) then
 
-			z = cmplx(w, eta)
+                      z = dcmplx(w, eta)
 
-		        do iii = 1,100
+c$$$		        do iii = 1,100
 
-                        do ii = 0, 4*nb-1
-                          do jj = 0, 4*nb-1
+                      do ii = 0, 4*nb-1
+                        do jj = 0, 4*nb-1
 			   
 
-                       if ( (sigma_flag .eq. 1) .and.
-     $                      (n_pade(ii,jj,ic) .gt. 0)) then
+                          if ( (sigma_flag .eq. 1) .and.
+     $                       (n_pade(ii,jj,ic) .gt. 0)) then
 
-                        sigmaz(ii,jj) = pade_prime(z,n_pade(ii,jj,ic),
-     $                   p(ii,jj,ic,:), q(ii,jj,ic,:))
+                            sigmaz(ii,jj) = 
+     $                         pade_evaluate(z,n_pade(ii,jj,ic),
+     $                         p(ii,jj,ic,:), q(ii,jj,ic,:))
 
-                        else    
-                          sigmaz(ii,jj) = dcmplx(0.0d0,0.0d0)
-                        endif  
+                          else    
+                            sigmaz(ii,jj) = dcmplx(0.0d0,0.0d0)
+                          endif  
 
-                          enddo
-                         enddo
+                        enddo
+                      enddo
 
+                      e_qp = dcmplx(0.0d0, 0.0d0)
 
-			e_qp = dcmplx(0.0d0, 0.0d0)
-
-                        hkz = h0k + sigmaz
+                      hkz = h0k + sigmaz
 
                       do ii = 0, 4*nb-1
                         do jj = 0, 4*nb-1
                           e_qp = e_qp + conjg(hk_herm(ii,j))*
-     $                       hkz(ii,jj)*hk_herm(jj,j)
+     $                       hkz(ii,jj)* hk_herm(jj,j)
                         enddo
-                      enddo	
-
-			write(6,*) iii, cdabs(e_qp - z)
-			z = 0.8*z + 0.2*e_qp
-
                       enddo
+
+                      eqp_help = dconjg(e_qp)
+
+c$$$                      write(6,*) iii, cdabs(eqp_help - z)
+c$$$                      z = 0.6*z + 0.4*eqp_help
+
+c$$$                    enddo
 		
 
-                    do ii = 0, 4*nb-1
+                      do ii = 0, 4*nb-1
                         do jj = 0, 4*nb-1
 
-                        if ( (sigma_flag .eq. 1) .and.
-     $                      (n_pade(ii,jj,ic) .gt. 0)) then
+                          if ( (sigma_flag .eq. 1) .and.
+     $                       (n_pade(ii,jj,ic) .gt. 0)) then
 
-                        sigma_p(ii,jj) = pade_prime(z,n_pade(ii,jj,ic),
-     $                   p(ii,jj,ic,:), q(ii,jj,ic,:))
+                            sigma_p(ii,jj) = 
+     $                         pade_prime(z,n_pade(ii,jj,ic),
+     $                         p(ii,jj,ic,:), q(ii,jj,ic,:))
 
-                        else    
-                          sigma_p(ii,jj) = dcmplx(0.0d0,0.0d0)
-                        endif   
+                          else    
+                            sigma_p(ii,jj) = dcmplx(0.0d0,0.0d0)
+                          endif   
 
+                        enddo   
                       enddo   
-                    enddo   
 c     
 c     temp_gl2 = identity - sigma
-                    temp_gl2 = identity - real(sigma_p)
-                    temp_gl = identity
+                      temp_gl2 = identity - sigma_p
+                      temp_gl = identity
 
-                 call cgesv(4*nb, 4*nb, temp_gl2, 4*nb,
-     $               ipiv, temp_gl, 4*nb, info)
+                      call cgesv(4*nb, 4*nb, temp_gl2, 4*nb,
+     $                   ipiv, temp_gl, 4*nb, info)
 
-                      Z_qp = 0
+                      Z_qp = dcmplx(0.0d0, 0.0d0)
 
                       do ii = 0, 4*nb-1
                         do jj = 0, 4*nb-1
@@ -844,9 +847,11 @@ c     temp_gl2 = identity - sigma
                         enddo
                       enddo
                     
-c                     write(40,*) eigs(j), real(Z_qp)
-                      write(40,*) dreal(e_qp), dimag(e_qp),
-     $                      real(Z_qp) 
+c     write(40,*) eigs(j), real(Z_qp)
+                      write(40,*) 
+     $                   2.0d0*float(ikx)/float(llx), 
+     $                   dreal(e_qp), -dimag(e_qp),
+     $                   dreal(Z_qp), dimag(Z_qp) 
 
                     endif
 
