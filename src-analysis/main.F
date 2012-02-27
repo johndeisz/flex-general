@@ -44,8 +44,9 @@
       INTEGER itype, i_sc_type
 
 
-      DOUBLE COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: hk, hk_herm,
-     $   sigma
+      DOUBLE COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: hk, 
+     $   hk_herm, hkz,
+     $   sigma, sigma_p, sigmaz
       DOUBLE PRECISION eigs(0:4*nb-1)
       DOUBLE COMPLEX work2(16*nb+32*nb**2)
       INTEGER lwork2
@@ -66,9 +67,9 @@
       EXTERNAL pade_evaluate, pade_prime
       
       INTEGER out_type
-      DOUBLE COMPLEX gamma
+      DOUBLE COMPLEX gamma, Z_qp, e_qp
 
-      INTEGER ii,jj
+      INTEGER ii,jj, iii
 
       DOUBLE PRECISION up0, up1, up2, down0, down1, down2
       DOUBLE PRECISION wx(-llx/lcx: llx/lcx)
@@ -772,39 +773,80 @@ c     coarse-graining cell.
 
                     if (dreal(a_up_spin) .gt. 0.1d0) then
 
+			z = cmplx(w, eta)
+
+		        do iii = 1,100
+
+                        do ii = 0, 4*nb-1
+                          do jj = 0, 4*nb-1
+			   
+
+                       if ( (sigma_flag .eq. 1) .and.
+     $                      (n_pade(ii,jj,ic) .gt. 0)) then
+
+                        sigmaz(ii,jj) = pade_prime(z,n_pade(ii,jj,ic),
+     $                   p(ii,jj,ic,:), q(ii,jj,ic,:))
+
+                        else    
+                          sigmaz(ii,jj) = dcmplx(0.0d0,0.0d0)
+                        endif  
+
+                          enddo
+                         enddo
+
+
+			e_qp = dcmplx(0.0d0, 0.0d0)
+
+                        hkz = h0k + sigmaz
+
+                      do ii = 0, 4*nb-1
+                        do jj = 0, 4*nb-1
+                          e_qp = e_qp + conjg(hk_herm(ii,j))*
+     $                       hkz(ii,jj)*hk_herm(jj,j)
+                        enddo
+                      enddo	
+
+			write(6,*) iii, cdabs(e_qp - z)
+			z = 0.8*z + 0.2*e_qp
+
+                      enddo
+		
+
                     do ii = 0, 4*nb-1
                         do jj = 0, 4*nb-1
 
                         if ( (sigma_flag .eq. 1) .and.
      $                      (n_pade(ii,jj,ic) .gt. 0)) then
 
-                        sigma(ii,jj) = pade_prime(z,n_pade(ii,jj,ic),
+                        sigma_p(ii,jj) = pade_prime(z,n_pade(ii,jj,ic),
      $                   p(ii,jj,ic,:), q(ii,jj,ic,:))
 
                         else    
-                          sigma(ii,jj) = dcmplx(0.0d0,0.0d0)
+                          sigma_p(ii,jj) = dcmplx(0.0d0,0.0d0)
                         endif   
 
                       enddo   
                     enddo   
 c     
 c     temp_gl2 = identity - sigma
-                    temp_gl2 = identity - real(sigma)
+                    temp_gl2 = identity - real(sigma_p)
                     temp_gl = identity
 
                  call cgesv(4*nb, 4*nb, temp_gl2, 4*nb,
      $               ipiv, temp_gl, 4*nb, info)
 
-                      gamma = 0
+                      Z_qp = 0
 
                       do ii = 0, 4*nb-1
                         do jj = 0, 4*nb-1
-                          gamma = gamma + conjg(hk_herm(ii,j))*
+                          Z_qp = Z_qp + conjg(hk_herm(ii,j))*
      $                       temp_gl(ii,jj)*hk_herm(jj,j)
                         enddo
                       enddo
                     
-                      write(40,*) eigs(j), real(gamma)
+c                     write(40,*) eigs(j), real(Z_qp)
+                      write(40,*) dreal(e_qp), dimag(e_qp),
+     $                      real(Z_qp) 
 
                     endif
 
