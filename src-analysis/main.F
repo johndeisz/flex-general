@@ -806,11 +806,11 @@ c$$$		        do iii = 1,100
                         enddo
                       enddo
 
-                      eqp_help = dconjg(e_qp)
+c$$$                      eqp_help = dconjg(e_qp)
 
-c$$$                      write(6,*) iii, cdabs(eqp_help - z)
-c$$$                      z = 0.6*z + 0.4*eqp_help
-
+c$$$                      write(6,*) iii, cdabs(e_qp - z)
+c$$$                      z = 0.9*z + 0.1*e_qp
+c$$$
 c$$$                    enddo
 		
 
