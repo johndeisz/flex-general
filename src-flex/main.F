@@ -63,8 +63,11 @@ c     Initialize a random pair wave function.
 
 #ifdef SECOND_ORDER
       iteration = 0
-      call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
-     $   prfld, prfld_pert, mu, sigma1, h_so, iteration)
+      call effective_field(iteration, 
+     $   v_pert, h, h_pert, prfld, 
+     $   prfld_pert, v_pert_eff, h_eff, prfld_eff)
+      call h0_generate(h0, ek, v_pert_eff, psi, h_eff, 	
+     $   prfld_eff, mu, sigma1, h_so, iteration)
       call discontinuities(h0, delta_g_r, delta_g_k,
      $   delta_gp_r, delta_gp_k)
       call parameter_init(x, c_r, delta_g_r, delta_gp_r, y)
@@ -116,8 +119,12 @@ c     Prepare for self-consistency loop.
 
           sigma_converged = .true.
 
-          call h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
-     $       prfld, prfld_pert, mu, sigma1, h_so, iteration)
+          call effective_field(iteration, 
+     $       v_pert, h, h_pert, prfld, 
+     $       prfld_pert, v_pert_eff, h_eff, prfld_eff)
+
+          call h0_generate(h0, ek, v_pert_eff, psi, h_eff, 	
+     $       prfld_eff, mu, sigma1, h_so, iteration)
 
 #ifdef SECOND_ORDER
           call discon_lat(h0, delta_gl_k, delta_glp_k)

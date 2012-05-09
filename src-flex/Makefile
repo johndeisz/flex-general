@@ -19,6 +19,7 @@ OBJECTS_COMMON = \
 	init_pair_wave.o \
 	psi_transform.o \
 	gamma0_define.o \
+	effective_field.o \
 	h0_generate.o \
 	calc_g_tau0.o \
 	sigma_first.o \
@@ -158,6 +159,9 @@ gamma0_define.o : init/gamma0_define.F constants.F
 
 psi_transform.o : green_function/psi_transform.F constants.F
 	$(CC) -c green_function/psi_transform.F $(defines)
+
+effective_field.o : green_function/effective_field.F constants.F
+	$(CC) -c green_function/effective_field.F  $(defines)
 
 h0_generate.o : green_function/h0_generate.F constants.F
 	$(CC) -c green_function/h0_generate.F  $(defines)
