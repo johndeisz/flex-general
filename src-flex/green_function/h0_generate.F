@@ -1,7 +1,7 @@
 #include "../convert.F"
 
-      subroutine h0_generate(h0, ek, v_pert, psi, h, h_pert, 	
-     $   prfld, prfld_pert, mu, sigma1, h_so, iteration)
+      subroutine h0_generate(h0, ek, v_pert_eff, psi, h_eff,  	
+     $   prfld_eff, mu, sigma1, h_so, iteration)
 
 c /**************************************************************
 c * H0 -- program to calculate the H0 array                    *
@@ -13,10 +13,7 @@ c  **************************************************************/
 
       COMPLEX h0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
       COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
-      REAL v_pert(0:nb-1)
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
-      REAL, dimension (0:nb-1,1:3) :: h, h_pert
-      REAL prfld, prfld_pert
       REAL mu
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
       COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
@@ -38,21 +35,6 @@ c  **************************************************************/
       do nu1 = 0, nb-1
         delta(nu1,nu1) = 1.0d0
       enddo
-
-      if (iteration .le. 10) then
-
-        h_eff = h + h_pert * float(10-iteration) / 10.0d0
-        prfld_eff = prfld +
-     $     prfld_pert * float(10-iteration) / 10.0d0
-        v_pert_eff = v_pert * float(10-iteration) / 10.0d0
-
-      else 
-
-        h_eff = h
-        prfld_eff = prfld
-        v_pert_eff = 0.0d0
-
-      endif
 
 c Include anomolous part of the g-factor for spin coupling
       h_eff = h_eff * (gs/2.0d0)
