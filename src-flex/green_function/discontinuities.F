@@ -1,11 +1,23 @@
 #include "../convert.F"
 
-      subroutine discontinuities(h0, delta_g_r, delta_g_k,
-     $  delta_gp_r, delta_gp_k)
+      subroutine discontinuities(ek, v_pert_eff, psi, h_eff, 	
+     $   prfld_eff, mu, sigma1, h_so,  
+     $   delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
 
 #include "../constants.F"
 
-      COMPLEX h0(0:4*nb-1,0:4*nb-1,0:nl-1)
+      EXTERNAL h0
+      COMPLEX h0(0:4*nb-1,0:4*nb-1)
+
+      COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+      REAL v_pert_eff(0:nb-1)
+      COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
+      REAL h_eff(0:nb-1,1:3)
+      REAL prfld_eff
+      REAL mu
+      COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: sigma1
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
+
       COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nc-1) ::
      $   delta_g_r, delta_g_k, delta_gp_r, delta_gp_k
 
@@ -114,7 +126,8 @@ c     course-graining cell.
  
                   temp_gp_k = temp_gp_k +
      $               wx(ix) * wy(iy) * wz(iz) *
-     $               h0(:, :, kl)
+     $               h0(kl,  ek, v_pert_eff, psi, h_eff,  	
+     $               prfld_eff, mu, sigma1, h_so)
 
                 enddo
               enddo

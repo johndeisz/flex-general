@@ -66,9 +66,9 @@ c     Initialize a random pair wave function.
       call effective_field(iteration, 
      $   v_pert, h, h_pert, prfld, 
      $   prfld_pert, v_pert_eff, h_eff, prfld_eff)
-      call h0_generate(h0, ek, v_pert_eff, psi, h_eff, 	
-     $   prfld_eff, mu, sigma1, h_so, iteration)
-      call discontinuities(h0, delta_g_r, delta_g_k,
+      call discontinuities(ek, v_pert_eff, psi, h_eff, 	
+     $   prfld_eff, mu, sigma1, h_so,
+     $   delta_g_r, delta_g_k,
      $   delta_gp_r, delta_gp_k)
       call parameter_init(x, c_r, delta_g_r, delta_gp_r, y)
 #endif
@@ -123,18 +123,21 @@ c     Prepare for self-consistency loop.
      $       v_pert, h, h_pert, prfld, 
      $       prfld_pert, v_pert_eff, h_eff, prfld_eff)
 
-          call h0_generate(h0, ek, v_pert_eff, psi, h_eff, 	
-     $       prfld_eff, mu, sigma1, h_so, iteration)
-
 #ifdef SECOND_ORDER
-          call discon_lat(h0, delta_gl_k, delta_glp_k)
-          call discontinuities(h0, delta_g_r, delta_g_k,
+          call discon_lat(ek, v_pert_eff, psi, h_eff, 	
+     $       prfld_eff, mu, sigma1, h_so, 
+     $       delta_gl_k, delta_glp_k)
+          call discontinuities(ek, v_pert_eff, psi, h_eff, 	
+     $       prfld_eff, mu, sigma1, h_so, 
+     $       delta_g_r, delta_g_k,
      $       delta_gp_r, delta_gp_k)
-
+          
           call green_param_lat(cl_k, delta_gl_k, delta_glp_k)
           sigma_old = sigma
 
-	  call dyson(rank, g, g_tau0, q_tau, q_epsilon, h0,
+	  call dyson(rank, g, g_tau0, q_tau, q_epsilon, 
+     $       ek, v_pert_eff, psi, h_eff, 	
+     $       prfld_eff, mu, sigma1, h_so, 
      $       sigma, epsilon, t, cl_k)
 
           g_mtau = g
@@ -179,7 +182,9 @@ c     Prepare for self-consistency loop.
           g_tau0_local = g(:,:,0,0)
 
 #else
-          call calc_g_tau0( h0, t, g_tau0, g_tau0_local)
+          call calc_g_tau0(ek, v_pert_eff, psi, h_eff, 	
+     $       prfld_eff, mu, sigma1, h_so, 
+     $       t, g_tau0, g_tau0_local)
 #endif
           call sigma_first(sigma1, sigma1_old, delta_sigma1,
      $       delta_sigma1_old, alpha, g_tau0_local, gamma0_ph,

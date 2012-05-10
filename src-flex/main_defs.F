@@ -77,7 +77,7 @@ c     Self-consistency loop variables
 
 c Green function and related
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
-      COMPLEX h0(0:4*nb-1,0:4*nb-1,0:nl-1)
+
       COMPLEX g_tau0(0:4*nb-1,0:4*nb-1,0:nl-1)
       COMPLEX g_tau0_local(0:4*nb-1,0:4*nb-1)
 #ifdef SECOND_ORDER

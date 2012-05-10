@@ -1,10 +1,24 @@
 #include "../convert.F"
 
-      subroutine calc_g_tau0( h0, t, g_tau0, g_tau0_local)
+      subroutine calc_g_tau0( ek, v_pert_eff, psi, h_eff, 	
+     $   prfld_eff, mu, sigma1, h_so,
+     $   t, g_tau0, g_tau0_local)
 
 #include "../constants.F"
 
-      COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nl-1) :: h0,
+      COMPLEX, external, dimension (0:4*nb-1,0:4*nb-1) ::
+     $   h0
+
+      COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+      REAL v_pert_eff(0:nb-1)
+      COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
+      REAL h_eff(0:nb-1,1:3)
+      REAL prfld_eff
+      REAL mu
+      COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: sigma1
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
+
+      COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nl-1) :: 
      $   g_tau0
       COMPLEX g_tau0_local(0:4*nb-1,0:4*nb-1)
       REAL t
@@ -42,7 +56,8 @@ c     Loop over all lattice k-points.
 
 c     Diagonalize h0 for each k-point.
 
-            h_temp = h0(:,:,k)
+            h_temp = h0(k,ek, v_pert_eff, psi, h_eff,  	
+     $         prfld_eff, mu, sigma1, h_so)
             id = identity
 
             call chegv(1,'V','U', 4*nb, h_temp, 4*nb, id, 4*nb, 

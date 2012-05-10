@@ -1,6 +1,8 @@
 #include "../convert.F"
 
-      subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, h0,  
+      subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, 
+     $   ek, v_pert_eff, psi, h_eff, 	
+     $   prfld_eff, mu, sigma1, h_so,   
      $   sigma, epsilon, t, cl_k)
 
 #include "../constants.F"
@@ -14,7 +16,20 @@
       COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) :: 
      $   g,sigma
       COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nl-1) ::
-     $   g_ktau0, h0
+     $   g_ktau0
+
+      EXTERNAL h0
+      COMPLEX h0(0:4*nb-1,0:4*nb-1)
+
+      COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+      REAL v_pert_eff(0:nb-1)
+      COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
+      REAL h_eff(0:nb-1,1:3)
+      REAL prfld_eff
+      REAL mu
+      COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: sigma1
+      COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
+
       REAL q_tau(0:1,0:1,0:mp1)
       COMPLEX q_epsilon(0:1,0:1,0:mp1)
       REAL epsilon(0:mp1)
@@ -142,7 +157,9 @@ c     coarse-graining cell.
 
                     kl = klx + kly*llx + klz*llx*lly
 
-                    temp_gl2 = e_n - h0(:,:,kl) -
+                    temp_gl2 = e_n - 
+     $                 h0(kl,ek, v_pert_eff, psi, h_eff,  	
+     $                 prfld_eff, mu, sigma1, h_so)  -
      $                 sigma(:,:,l,k)
                     temp_gl = identity
 
