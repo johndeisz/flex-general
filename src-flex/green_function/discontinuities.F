@@ -1,6 +1,6 @@
 #include "../convert.F"
 
-      subroutine discontinuities(ek, v_pert_eff, psi, h_eff, 	
+      subroutine discontinuities(ek, v_pert_eff, psi, h_eff,
      $   prfld_eff, mu, sigma1, h_so,  
      $   delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
 

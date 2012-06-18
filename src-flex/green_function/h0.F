@@ -1,9 +1,14 @@
+MODULE one_electron_hamiltonian
+ 
 #include "../convert.F"
 
-      function h0(k, ek, v_pert_eff, psi, h_eff,  	
+CONTAINS
+
+     function h0(k, ek, v_pert_eff, psi, h_eff,  	
      $   prfld_eff, mu, sigma1, h_so)
 
 #include "../constants.F"
+
       COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0
       INTEGER k
       COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
@@ -154,3 +159,5 @@ c     Add spin-orbit interaction
       enddo
               
       end function h0
+
+END MODULE one_electron_hamiltonian

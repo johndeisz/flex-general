@@ -6,7 +6,8 @@
 
 #include "../constants.F"
 
-      COMPLEX, external, dimension (0:4*nb-1,0:4*nb-1) ::
+      EXTERNAL h0
+      COMPLEX, dimension (0:4*nb-1,0:4*nb-1) ::
      $   h0
 
       COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
@@ -56,7 +57,7 @@ c     Loop over all lattice k-points.
 
 c     Diagonalize h0 for each k-point.
 
-            h_temp = h0(k,ek, v_pert_eff, psi, h_eff,  	
+            h_temp = h0(k,ek, v_pert_eff, psi, h_eff,
      $         prfld_eff, mu, sigma1, h_so)
             id = identity
 
