@@ -6,7 +6,14 @@
 
 #include "../constants.F"
 
-      EXTERNAL h0
+     INTERFACE 
+        FUNCTION Factorial(n)
+          INTEGER :: Factorial
+          INTEGER, INTENT(IN) :: n
+        END FUNCTION Factorial
+     END INTERFACE
+
+     EXTERNAL h0
       COMPLEX, dimension (0:4*nb-1,0:4*nb-1) ::
      $   h0
 
