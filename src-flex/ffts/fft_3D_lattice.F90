@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine fft_3D_lattice (mat, isignv)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX mat(0:nl-1)
       INTEGER isignv(0:3)

@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine fft_3D (mat, isignv)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX mat(0:nc-1)
       INTEGER isignv(0:3)

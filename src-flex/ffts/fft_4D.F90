@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine fft_4D (myid, a, isignv)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       INTEGER myid
       COMPLEX a(0:mp1,0:nc1)

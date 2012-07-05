@@ -1,8 +1,8 @@
-#include "convert.F"
+#include "convert.F90"
 
       program multiband_flex_dca
 
-#include "constants.F"
+#include "constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

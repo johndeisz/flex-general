@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine chi_calc(rank, t, chi, g, g_mtau, delta_chi,
      $   delta_chi_prime, gamma_ph)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

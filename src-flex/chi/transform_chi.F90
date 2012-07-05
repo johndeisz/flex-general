@@ -1,4 +1,4 @@
-#include "../convert.F"	
+#include "../convert.F90"	
 
 c/**************************************************************
 c * transform_chi -- program to transform                      *
@@ -12,7 +12,7 @@ c **************************************************************/
      $   overall_eigenvalue_max, dominant_chi_eigenvector, 
      $   dominant_chi_index)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'
