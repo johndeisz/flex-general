@@ -1,10 +1,10 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine sigma_first(sigma1, sigma1_old, delta_sigma1, 
      $   delta_sigma1_old, alpha, g_tau0_local, gamma0_ph, sigma_tol,
      $   sigma_converged, alpha_scheme, iteration)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

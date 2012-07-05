@@ -1,4 +1,4 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine sigma_calc(rank, t, sigma, chi, g, g_mtau,
      $   c_r, tau, epsilon, q_tau, q_epsilon, x, y, 
@@ -6,8 +6,7 @@
      $   overall_eigenvalue_max,  dominant_chi_eigenvector,
      $   dominant_chi_index, ft_sigma, d)
 
-#include "../constants.F"
-
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

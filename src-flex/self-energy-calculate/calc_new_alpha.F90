@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine calc_new_alpha(alpha, delta_sigma_e0_old, sigma,
      $   sigma_old)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       REAL alpha
       COMPLEX delta_sigma_e0_old(0:4*nb-1,0:4*nb-1,0:nc1)

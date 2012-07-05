@@ -1,8 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       COMPLEX function pade_evaluate(z, n_pade, p, q)
 
-#include "../constants.F"
+#include "../constants.F90"
+
       COMPLEX z
       INTEGER n_pade 
       COMPLEX p(0:m/2-1), q(0:m/2-1)

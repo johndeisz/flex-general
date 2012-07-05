@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine convergence_test(convergence, rank, iteration, 
      $   sigma, sigma_old, convg_crit, last_it_time)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include "mpif.h"

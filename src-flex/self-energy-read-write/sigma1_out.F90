@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine sigma1_out(t, mu, flux, prfld, ed, h,  
      $   tij, uu, up, uj, psi, h_so, sigma1)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       REAL t, mu, flux(1:3)
       REAL prfld, ed(0:nb-1), h(0:nb-1,1:3)

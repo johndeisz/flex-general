@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine pade(nmax, a, z, p, q)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       INTEGER nmax
       COMPLEX a(0:m/2-1)

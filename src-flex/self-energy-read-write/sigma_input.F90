@@ -1,4 +1,4 @@
-#include "../convert.F"
+#include "../convert.F90"
 
 #ifdef SECOND_ORDER
       subroutine sigma_input(sigma_input_file, uu, sigma1, psi, 
@@ -7,7 +7,7 @@
       subroutine sigma_input(sigma_input_file, uu, sigma1, psi) 
 #endif
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'
