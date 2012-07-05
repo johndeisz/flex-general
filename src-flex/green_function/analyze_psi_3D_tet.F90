@@ -1,16 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine analyze_psi_3D_tet(psi)
 
-c /**************************************************************
-c * Sym -- Program that takes a given wavefunction and         *
-c *        determines its symmetry to predict which orbital    *
-c *        the electrons are currently in                      *
-c *						              *
-c * Author: Tom Slife	                 		      *
-c  **************************************************************/
-
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX psi(0:1, 0:1, 0:nlx1, 0:nly1, 0:nlz1)
 

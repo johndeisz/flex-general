@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       function h0(k, ek, v_pert_eff, psi, h_eff,  	
      $     prfld_eff, mu, sigma1, h_so)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0
       INTEGER k

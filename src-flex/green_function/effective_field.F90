@@ -1,10 +1,10 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine effective_field(iteration, 
      $   v_pert, h, h_pert, prfld, 
      $   prfld_pert, v_pert_eff, h_eff, prfld_eff)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       INTEGER iteration
       REAL v_pert(0:nb-1)

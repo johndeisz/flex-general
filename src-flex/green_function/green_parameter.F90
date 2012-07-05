@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine green_parameter(rank, g, t, x, c_r, delta_g_r, 
      $ delta_gp_r)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

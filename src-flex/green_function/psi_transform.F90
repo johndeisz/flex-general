@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine psi_transform(psi, isignv)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
       INTEGER isignv(0:3)

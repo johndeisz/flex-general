@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine angular_matrices(Lvec)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX Lvec(1:3,0:nb-1,0:nb-1)
 

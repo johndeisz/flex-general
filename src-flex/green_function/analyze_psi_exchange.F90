@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine analyze_psi_exchange(psi, overall)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
       REAL overall

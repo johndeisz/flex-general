@@ -1,11 +1,11 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, 
      $   ek, v_pert_eff, psi, h_eff, 	
      $   prfld_eff, mu, sigma1, h_so,   
      $   sigma, epsilon, t, cl_k)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

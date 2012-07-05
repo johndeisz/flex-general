@@ -1,10 +1,10 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine discon_lat(ek, v_pert_eff, psi, h_eff, 	
      $   prfld_eff, mu, sigma1, h_so, 
      $   delta_gl_k, delta_glp_k)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       EXTERNAL h0
       COMPLEX h0(0:4*nb-1,0:4*nb-1)

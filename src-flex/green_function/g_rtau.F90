@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine g_rtau(rank, g, t, c_r, q_epsilon, q_tau, tau)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       INTEGER rank
       COMPLEX g(0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) 

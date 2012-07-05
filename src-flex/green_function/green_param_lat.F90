@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine green_param_lat(cl_k, delta_gl_k, delta_glp_k)  
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX cl_k(0:1,0:1,0:4*nb-1,0:4*nb-1,0:nl-1)
       COMPLEX, dimension (0:4*nb-1,0:4*nb-1, 0:nl-1) ::

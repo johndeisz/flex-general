@@ -1,10 +1,10 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine calc_g_tau0( ek, v_pert_eff, psi, h_eff, 	
      $   prfld_eff, mu, sigma1, h_so,
      $   t, g_tau0, g_tau0_local)
 
-#include "../constants.F"
+#include "../constants.F90"
 
      INTERFACE 
         FUNCTION Factorial(n)
