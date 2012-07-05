@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine init_pair_wave(psi)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

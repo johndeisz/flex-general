@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine bare_dispersion(tij, ed, ek, ek_min)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1) :: tij, ek
       REAL, dimension (0:nb-1) :: ed

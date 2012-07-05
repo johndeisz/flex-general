@@ -1,14 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine gamma0_define(gamma0_ph, uu, up, uj)
 
-#include "../constants.F"
-
-c /***************************************************************
-c * gamma_chi -- program to calculate the gamma and chi arrays  *
-c *                                                             *
-c * Author: Tom Slife                                           *
-c ***************************************************************/
+#include "../constants.F90"
 
       COMPLEX gamma0_ph(0:16*nb*nb-1, 0:16*nb*nb-1)
       REAL uu, up, uj

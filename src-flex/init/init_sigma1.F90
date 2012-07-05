@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine init_sigma1( uu, density, sigma1)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       REAL uu, density
       COMPLEX sigma1(0:4*nb-1,0:4*nb-1)

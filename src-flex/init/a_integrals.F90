@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine a_integrals( t, x, y, epsilon, a_int)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       REAL t, x(0:1,0:1), y(0:1,0:1), epsilon(0:mp1)
       COMPLEX a_int(0:1,0:1,0:1,0:1,0:mp1)

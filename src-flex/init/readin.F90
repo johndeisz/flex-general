@@ -1,4 +1,4 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine readin(t, flux, prfld, h,
      $   target_density, density_tol, mu, uu, up, uj, 
@@ -7,7 +7,7 @@
      $   write_output, sigma_output_file, max_pade_order,
      $   sigma_tol,  max_it, alpha, alpha_scheme)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine parameter_init(x, c_r, delta_g_r, delta_gp_r, y)  
 
-#include "../constants.F"
+#include "../constants.F90"
 
       REAL x(0:1,0:1) 
       COMPLEX c_r(0:1,0:1,0:4*nb-1,0:4*nb-1,0:nc-1)

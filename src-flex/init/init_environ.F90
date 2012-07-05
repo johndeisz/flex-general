@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
        subroutine init_environ(rank, size, starttime)
 
-#include "../constants.F"
+#include "../constants.F90"
        
 #ifdef USE_MPI
        include 'mpif.h'
