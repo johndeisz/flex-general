@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine kinetic_energy(g_tau0, ek, kinetic)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX g_tau0(0:4*nb-1,0:4*nb-1,0:nl-1)
       COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)

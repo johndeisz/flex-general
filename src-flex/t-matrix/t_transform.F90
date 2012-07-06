@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine t_transform(rank, t, t_mat, delta_t, 
      $   delta_t_prime, y, r_tau, r_omega)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       INTEGER rank
       REAL t

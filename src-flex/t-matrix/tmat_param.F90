@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine tmat_param(rank, method, t_mat, t, y, 
      $  d, delta_t, delta_t_prime)
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

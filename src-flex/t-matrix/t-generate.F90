@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine t_generate(t_mat, gamma_ph, delta_t,
      $   delta_t_prime)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX t_mat(0:16*nb*nb-1, 0:16*nb*nb-1,0:mp1,0:nc1)
       COMPLEX gamma_ph(0:16*nb*nb-1, 0:16*nb*nb-1)

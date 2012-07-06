@@ -1,9 +1,9 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine eval_tr_sigph_g(rank, tr_sig_g, sigma, 
      $   g_mtau, t, c_r, d_r, q_tau, q_mtau, r_tau, x, y) 
 
-#include "../constants.F"
+#include "../constants.F90"
 
 #ifdef USE_MPI
       include 'mpif.h'

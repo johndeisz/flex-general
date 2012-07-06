@@ -1,8 +1,8 @@
-#include "../convert.F"
+#include "../convert.F90"
 
       subroutine hfock_energy(sigma1, g_tau0_local, e_hf)
 
-#include "../constants.F"
+#include "../constants.F90"
 
       COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: sigma1
       COMPLEX g_tau0_local(0:4*nb-1,0:4*nb-1)
