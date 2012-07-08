@@ -2,7 +2,7 @@
 
 program multiband_flex_dca
 
-#include "constants.F90"
+  USE CONSTANTS
 
 #ifdef USE_MPI
   include 'mpif.h'

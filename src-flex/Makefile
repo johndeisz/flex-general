@@ -10,6 +10,7 @@ ifdef SYS
 endif
 
 OBJECTS_COMMON = \
+	constants.o \
 	main.o \
 	init_environ.o \
 	readin.o \
@@ -123,6 +124,9 @@ flex-mpi : $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD)
 1st-order : OBJECTS = $(OBJECTS_COMMON) 
 1st-order : $(OBJECTS_COMMON)
 	$(CC) -o 1st-order-$(prec_tag) $(OBJECTS) $(LIBRARIES)
+
+constants.o : constants.F90
+	$(CC) -c constants.F90 $(defines)
 
 main.o : main.F90 main_defs.F90 constants.F90
 	$(CC) -c main.F90 $(defines)
