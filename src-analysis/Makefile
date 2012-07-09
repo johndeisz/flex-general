@@ -9,6 +9,7 @@ OBJECTS = \
 	bare_dispersion.o \
 	fft_3D_lattice.o \
 	h0_generate.o \
+	angular_matrices.o \
 	dyson.o \
 	pade_evaluate.o \
 	pade_prime.o
@@ -30,6 +31,9 @@ fft_3D_lattice.o : fft_3D_lattice.F constants.F fftw3.f
 
 h0_generate.o : h0_generate.F constants.F
 	$(CC) -c h0_generate.F
+
+angular_matrices.o : angular_matrices.F constants.F
+	$(CC) -c angular_matrices.F
 
 dyson.o : dyson.F constants.F
 	$(CC) -c dyson.F

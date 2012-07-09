@@ -39,6 +39,8 @@ c Convenience constants
 
 c Mathematical and physical constants
 
-      DOUBLE PRECISION kb, pi
+      DOUBLE PRECISION gs, kb, pi
       parameter( kb = 8.61734315d-05)  ! eV/K
       parameter( pi = 3.14159265358979323)
+      parameter( gs = 2.002319)
+

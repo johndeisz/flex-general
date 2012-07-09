@@ -11,6 +11,7 @@
       DOUBLE COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
 
       DOUBLE PRECISION, dimension (0:nb-1, 0:nb-1) :: delta
+      DOUBLE COMPLEX Lvec(1:3,0:nb-1,0:nb-1)
 
       INTEGER nu1, nu2, k, k_minus, k1, k2, k3
       INTEGER is1, is2
@@ -99,6 +100,31 @@
 
             h0(:,:,k) = h0(:,:,k) + sigma1
 
+          enddo
+        enddo
+      enddo
+
+c    Remove spin g-factor correction from magnetic field:
+      h = h / (gs/2.0d0)
+
+      call angular_matrices(Lvec)
+
+      do nu1 = 0, nb-1
+        do nu2 = 0, nb-1
+          do is1 = 0, 1
+
+            h0(4*nu1+is1, 4*nu2+is1,:) =
+     $         h0(4*nu1+is1, 4*nu2+is1,:) -
+     $         h(nu1,1)*Lvec(1,nu1,nu2) -
+     $         h(nu1,2)*Lvec(2,nu1,nu2) -
+     $         h(nu1,3)*Lvec(3,nu1,nu2)
+
+
+            h0(4*nu1+is1+2, 4*nu2+is1+2,:) =
+     $         h0(4*nu1+is1+2, 4*nu2+is1+2,:) +
+     $         h(nu1,1)*conjg(Lvec(1,nu1,nu2)) +
+     $         h(nu1,2)*conjg(Lvec(2,nu1,nu2)) +
+     $         h(nu1,3)*conjg(Lvec(3,nu1,nu2))
           enddo
         enddo
       enddo
