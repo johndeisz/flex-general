@@ -3,22 +3,23 @@
 subroutine calc_g_tau0( ek, v_pert_eff, psi, h_eff, prfld_eff, mu, &
      sigma1, h_so, t, g_tau0, g_tau0_local)
 
-#include "../constants.F90"
+  USE CONSTANTS
+  USE h_zero
 
-  INTERFACE
-     FUNCTION h0(k, ek, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so)
-       COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0
-       INTEGER, INTENT(IN) :: k 
-       COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1), INTENT(IN) :: ek
-       REAL, dimension (0:nb-1), INTENT(IN) :: v_pert_eff
-       COMPLEX, dimension (0:2*nb-1, 0:2*nb-1, 0:nl-1), INTENT(IN) :: psi
-       REAL, dimension (0:nb-1,1:3), INTENT(IN) :: h_eff
-       REAL, INTENT(IN) :: prfld_eff
-       REAL, INTENT(IN) :: mu
-       COMPLEX, dimension (0:4*nb-1,0:4*nb-1), INTENT(IN) :: sigma1
-       COMPLEX, dimension (0:2*nb-1, 0:2*nb-1), INTENT(IN) :: h_so
-     END FUNCTION h0 !section
-  END INTERFACE
+!!$  INTERFACE
+!!$     FUNCTION h0(k, ek, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so)
+!!$       COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0
+!!$       INTEGER, INTENT(IN) :: k 
+!!$       COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1), INTENT(IN) :: ek
+!!$       REAL, dimension (0:nb-1), INTENT(IN) :: v_pert_eff
+!!$       COMPLEX, dimension (0:2*nb-1, 0:2*nb-1, 0:nl-1), INTENT(IN) :: psi
+!!$       REAL, dimension (0:nb-1,1:3), INTENT(IN) :: h_eff
+!!$       REAL, INTENT(IN) :: prfld_eff
+!!$       REAL, INTENT(IN) :: mu
+!!$       COMPLEX, dimension (0:4*nb-1,0:4*nb-1), INTENT(IN) :: sigma1
+!!$       COMPLEX, dimension (0:2*nb-1, 0:2*nb-1), INTENT(IN) :: h_so
+!!$     END FUNCTION h0 !section
+!!$  END INTERFACE
   !  EXTERNAL h0
   ! COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0
 

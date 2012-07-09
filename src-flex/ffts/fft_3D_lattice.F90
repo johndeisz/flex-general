@@ -2,7 +2,7 @@
 
 subroutine fft_3D_lattice (mat, isignv)
 
-#include "../constants.F90"
+  USE CONSTANTS
 
   COMPLEX mat(0:nl-1)
   INTEGER isignv(0:3)

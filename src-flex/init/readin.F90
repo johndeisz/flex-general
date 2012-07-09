@@ -5,7 +5,7 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
      read_input, sigma_input_file, write_output, sigma_output_file, & 
      max_pade_order, sigma_tol,  max_it, alpha, alpha_scheme)
 
-#include "../constants.F90"
+  USE CONSTANTS
 
 #ifdef USE_MPI
   include 'mpif.h'

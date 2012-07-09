@@ -2,7 +2,7 @@
 
 subroutine init_environ(rank, size, starttime)
 
-#include "../constants.F90"
+  USE CONSTANTS
        
 #ifdef USE_MPI
   include 'mpif.h'

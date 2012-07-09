@@ -2,7 +2,7 @@
 
 subroutine init_pair_wave(psi)
 
-#include "../constants.F90"
+  USE CONSTANTS
 
 #ifdef USE_MPI
   include 'mpif.h'

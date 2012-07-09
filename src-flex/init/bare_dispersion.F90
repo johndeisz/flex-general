@@ -2,7 +2,7 @@
 
 subroutine bare_dispersion(tij, ed, ek, ek_min)
 
-#include "../constants.F90"
+  USE CONSTANTS
 
   COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1) :: tij, ek
   REAL, dimension (0:nb-1) :: ed
