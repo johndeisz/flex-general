@@ -9,18 +9,18 @@ MODULE Constants
   ! Lattice and frequency grid parameters. (all must be 2^n!)
   integer, parameter :: m=1024
   
-  integer, parameter :: lcx = 4
-  integer, parameter :: lcy = 4
+  integer, parameter :: lcx = 1
+  integer, parameter :: lcy = 1
   integer, parameter :: lcz = 1
   integer, parameter :: nc = lcx*lcy*lcz  
 
-  integer, parameter :: llx = 128     ! lattice dimension >=lcx 
-  integer, parameter :: lly = 128
+  integer, parameter :: llx = 256     ! lattice dimension >=lcx 
+  integer, parameter :: lly = 256 
   integer, parameter :: llz = 1
   integer, parameter :: nl = llx*lly*llz
 
   ! MPI related constants.
-  integer, parameter :: np = 16 ! Total number of processes
+  integer, parameter :: np = 1 ! Total number of processes
   integer, parameter :: mp = m/np  ! must be an integer
   integer, parameter :: ncp = nc/np  ! must be an integer
 
