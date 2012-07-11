@@ -1,60 +1,104 @@
 #include "../convert.F90"
 
-subroutine bare_dispersion(tij, ed, ek, ek_min)
+MODULE bare_dispersion
 
-  USE CONSTANTS
+CONTAINS
 
-  COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1) :: tij, ek
-  REAL, dimension (0:nb-1) :: ed
-  REAL ek_min, pi
+  FUNCTION ekl(kl, tij, ed)
 
-  INTEGER ll(1:3)
+    USE CONSTANTS
+    IMPLICIT NONE
+    INTEGER kl
+    COMPLEX, dimension (0:nb-1,0:nb-1) :: ekl
+    COMPLEX, dimension (0:nb-1,0:nb-1,-2:2,-2:2,-2:2) :: tij   
+    REAL, dimension (0:nb-1) :: ed
 
-  INTEGER ib, ibp
-  INTEGER il
-  INTEGER isignv(0:3)
+    REAL pi
+    INTEGER k1, k2, k3
+    REAL kx, ky, kz
+    INTEGER ib, ibp
 
-  COMPLEX, dimension (0:nl-1) :: tij_tmp
+    INTEGER max_x, max_y, max_z
 
-  pi = acos(-1.0d0)
+    COMPLEX ffx, ffy, ffz
+    INTEGER ix, iy, iz
 
-  ll = (/ llx, lly, llz /)
+    pi = acos(-1.0d0)
 
-  ! Perform a 3D Fourier transform to put the hopping matrix into k-space
-  ! Include the on-site potential energy, ed
+    k3 = int(kl/(llx*lly))
+    k2 = int( (kl-k3*llx*lly) / llx )
+    k1 = kl - k3*llx*lly - k2*llx
+    
+    kx = k1 * (2.0d0*pi/float(llx))
+    ky = k2 * (2.0d0*pi/float(lly))
+    kz = k3 * (2.0d0*pi/float(llz))
 
-  isignv(0) = 0
-  isignv(1) = -1
-  isignv(2) = -1
-  isignv(3) = -1
+    if (llx .gt. 2) then
+       max_x = 2
+    else
+       max_x = llx - 1
+    endif
 
-  do ib = 0, nb-1
-     do ibp = 0, nb-1
-          
-        tij_tmp = tij(ib,ibp,:)
+    if (lly .gt. 2) then
+       max_y = 2
+    else
+       max_y = lly - 1
+    endif
 
-        if (ib .eq. ibp) then
-           tij_tmp(0) = tij_tmp(0) + ed(ib)
-        endif
+    if (llz .gt. 2) then
+       max_z = 2
+    else
+       max_z = llz - 1
+    endif
 
-        call fft_3D_lattice (tij_tmp, isignv)      
-        ek(ib,ibp,:) = tij_tmp
+    ekl = cmplx(0.0d0, 0.0d0)
 
-     enddo
-  enddo
+    do ix = -max_x, max_x
+       ffx = cexp(cmplx(0.0d0,-1.0d0)*kx*float(ix))
 
-  ! Determine the smallest value along the band-diagonal
+       do iy = -max_y, max_y
+          ffy = cexp(cmplx(0.0d0,-1.0d0)*ky*float(iy))        
 
-  ek_min = 1.0d8
+          do iz = -max_z, max_z
+             ffz = cexp(cmplx(0.0d0,-1.0d0)*kz*float(iz))   
 
-  do ib = 0, nb-1
-     do il = 0, nl-1
-        if ( real( ek(ib,ib,il) ) .lt. ek_min) then
-           ek_min = real( ek(ib,ib,il) )
-           !            write(6,*) ib, il, ek_min
-        endif
-     enddo
-  enddo
+             ekl = ekl + ffx*ffy*ffz*tij(:,:,ix,iy,iz)
 
-  return
-end subroutine bare_dispersion
+
+          enddo
+       enddo
+    enddo
+
+    do ib = 0, nb-1
+       ekl(ib,ib) = ekl(ib,ib) + ed(ib)
+    enddo
+
+    return
+
+  END FUNCTION ekl
+
+  REAL FUNCTION ek_minimum(tij, ed)
+ 
+    USE CONSTANTS
+    IMPLICIT NONE
+    COMPLEX, dimension (0:nb-1,0:nb-1,-2:2,-2:2,-2:2) :: tij
+    REAL, dimension (0:nb-1) :: ed
+    COMPLEX, dimension (0:nb-1, 0:nb-1) :: ek
+    INTEGER il, ib
+
+    ! Determine the smallest value along the band-diagonal
+
+    ek_minimum = 1.0d8
+ 
+    do il = 0, nl-1
+       ek = ekl(il, tij, ed)
+       do ib = 0, nb-1 
+          if ( real( ek(ib,ib) ) .lt. ek_minimum) then
+             ek_minimum = real( ek(ib,ib) )
+          endif
+       enddo
+    enddo
+    return
+  END FUNCTION ek_minimum
+
+END MODULE bare_dispersion

@@ -3,6 +3,7 @@
 program multiband_flex_dca
 
   USE CONSTANTS
+  USE bare_dispersion
 
 #ifdef USE_MPI
   include 'mpif.h'
@@ -26,7 +27,7 @@ program multiband_flex_dca
   h_pert = mub*h_pert 
 
   !     Bare bandstructure and vertex
-  call bare_dispersion(tij, ed, ek, ek_min)
+  ek_min = ek_minimum(tij, ed)
   call gamma0_define(gamma0_ph, uu, up, uj)
 
 #ifdef SECOND_ORDER
@@ -62,7 +63,7 @@ program multiband_flex_dca
   iteration = 0
   call effective_field(iteration, v_pert, h, h_pert, prfld, & 
        prfld_pert, v_pert_eff, h_eff, prfld_eff)
-  call discontinuities(ek, v_pert_eff, psi, h_eff, prfld_eff, &
+  call discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
        mu, sigma1, h_so, delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
   call parameter_init(x, c_r, delta_g_r, delta_gp_r, y)
 #endif
@@ -112,16 +113,16 @@ program multiband_flex_dca
              prfld_pert, v_pert_eff, h_eff, prfld_eff)
 
 #ifdef SECOND_ORDER
-        call discon_lat(ek, v_pert_eff, psi, h_eff, prfld_eff, &
+        call discon_lat(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
              mu, sigma1, h_so, delta_gl_k, delta_glp_k)
-        call discontinuities(ek, v_pert_eff, psi, h_eff, prfld_eff, &
+        call discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
              mu, sigma1, h_so, delta_g_r, delta_g_k, &
              delta_gp_r, delta_gp_k)
           
         call green_param_lat(cl_k, delta_gl_k, delta_glp_k)
         sigma_old = sigma
           
-        call dyson(rank, g, g_tau0, q_tau, q_epsilon, ek, &
+        call dyson(rank, g, g_tau0, q_tau, q_epsilon, tij, ed, &
              v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
              sigma, epsilon, t, cl_k)
 
@@ -161,7 +162,7 @@ program multiband_flex_dca
         g_tau0_local = g(:,:,0,0)
 
 #else
-        call calc_g_tau0(ek, v_pert_eff, psi, h_eff, prfld_eff, mu, &
+        call calc_g_tau0(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, &
              sigma1, h_so, t, g_tau0, g_tau0_local)
 #endif
         call sigma_first(sigma1, sigma1_old, delta_sigma1, &
@@ -450,7 +451,7 @@ program multiband_flex_dca
      write(6,*) 'Pair amplitude = ', m_psi, convergence_text
      
      write(6,*)
-     call kinetic_energy(g_tau0, ek, kinetic)
+     call kinetic_energy(g_tau0, tij, ed, kinetic)
      write(6,*) 'kinetic energy = ', kinetic
 
      so_energy = cmplx(0.0d0, 0.0d0)

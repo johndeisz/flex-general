@@ -1,12 +1,13 @@
 #include "../convert.F90"
 
-subroutine discon_lat(ek, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, &
-     h_so, delta_gl_k, delta_glp_k)
+subroutine discon_lat(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, &
+     sigma1, h_so, delta_gl_k, delta_glp_k)
 
   USE CONSTANTS
   USE h_zero
 
-  COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+  REAL ed(0:nb-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   REAL v_pert_eff(0:nb-1)
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
   REAL h_eff(0:nb-1,1:3)
@@ -23,7 +24,7 @@ subroutine discon_lat(ek, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, &
   !     Express the discontinuities in k-space
       
   do k = 0, nl - 1
-     delta_glp_k(:,:,k) = h0(k, ek, v_pert_eff, psi, h_eff, & 	
+     delta_glp_k(:,:,k) = h0(k, tij, ed, v_pert_eff, psi, h_eff, & 	
           prfld_eff, mu, sigma1, h_so)
   end do
 

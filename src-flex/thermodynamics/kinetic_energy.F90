@@ -1,11 +1,14 @@
 #include "../convert.F90"
 
-subroutine kinetic_energy(g_tau0, ek, kinetic)
+subroutine kinetic_energy(g_tau0, tij, ed, kinetic)
 
   USE CONSTANTS
+  USE bare_dispersion
 
   COMPLEX g_tau0(0:4*nb-1,0:4*nb-1,0:nl-1)
-  COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+  REAL ed(0:nb-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
+  COMPLEX ek(0:nb-1,0:nb-1)
   COMPLEX delta(0:nb-1, 0:nb-1)
   REAL kinetic
 
@@ -20,13 +23,14 @@ subroutine kinetic_energy(g_tau0, ek, kinetic)
 
   kin_temp = cmplx(0.0d0, 0.0d0)
   
-  do nu1 = 0, nb-1
-     do nu2 = 0, nb-1
-        do is = 0, 1
+  do k = 0, nl-1
+     ek = ekl(k, tij, ed)
 
-           do k = 0, nl-1
+     do nu1 = 0, nb-1
+        do nu2 = 0, nb-1
+           do is = 0, 1
 
-              kin_temp = kin_temp + ek(nu1, nu2, k) * &
+              kin_temp = kin_temp + ek(nu1, nu2) * &
                    ( g_tau0(4*nu2+is, 4*nu1+is, k) + delta(nu1,nu2) )
 
            enddo
@@ -43,21 +47,23 @@ subroutine kinetic_energy(g_tau0, ek, kinetic)
 
   kin_temp = 0.0d0
 
-  do nu1 = 0, nb-1
-     do nu2 = 0, nb-1
+  do klx = 0, llx-1
+     do kly = 0, lly - 1
+        do klz = 0, llz - 1
 
-        do is = 0, 1
+           k = klz*llx*lly + kly*llx + klx
 
-           do klx = 0, llx-1
-              do kly = 0, lly - 1
-                 do klz = 0, llz - 1
+           k_minus = mod(llz-klz,llz)*llx*lly + &
+                mod(lly-kly,lly)*llx + mod(llx-klx,llx)
 
-                    k = klz*llx*lly + kly*llx + klx
+           ek = ekl(k, tij, ed)
 
-                    k_minus = mod(llz-klz,llz)*llx*lly + &
-                         mod(lly-kly,lly)*llx + mod(llx-klx,llx)
+           do nu1 = 0, nb-1
+              do nu2 = 0, nb-1
 
-                    kin_temp = kin_temp -  ek(nu1, nu2, k) * &
+                 do is = 0, 1
+
+                    kin_temp = kin_temp -  ek(nu1, nu2) * &
                          g_tau0(4*nu1+2+is, 4*nu2+2+is, k_minus)
 
                  enddo

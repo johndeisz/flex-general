@@ -1,12 +1,14 @@
 #include "../convert.F90"
 
-subroutine discontinuities(ek, v_pert_eff, psi, h_eff, prfld_eff, &
+subroutine discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
      mu, sigma1, h_so, delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
 
   USE CONSTANTS
   USE h_zero
+  USE bare_dispersion
   
-  COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+  REAL ed(0:nb-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   REAL v_pert_eff(0:nb-1)
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
   REAL h_eff(0:nb-1,1:3)
@@ -122,7 +124,7 @@ subroutine discontinuities(ek, v_pert_eff, psi, h_eff, prfld_eff, &
                     kl = klx + kly*llx + klz*llx*lly
  
                     temp_gp_k = temp_gp_k +  wx(ix) * wy(iy) * wz(iz) * &
-                         h0(kl,  ek, v_pert_eff, psi, h_eff, &  	
+                         h0(kl,  tij, ed, v_pert_eff, psi, h_eff, &  	
                          prfld_eff, mu, sigma1, h_so)
 
                  enddo

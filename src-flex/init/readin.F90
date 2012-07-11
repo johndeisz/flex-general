@@ -22,7 +22,7 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
   REAL uu, up, uj 
 
   REAL ed(0:nb-1)
-  COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
   REAL prfld_pert
   REAL h_pert_amp(1:3)
@@ -270,14 +270,14 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
               write(6,*) 
               write(6,200) ix, iy, iz
               
-              k = mod(ix+llx,llx) + mod(iy+lly,lly)*llx + &
-                   mod(iz+llz,llz)*llx*lly
+!!$              k = mod(ix+llx,llx) + mod(iy+lly,lly)*llx + &
+!!$                   mod(iz+llz,llz)*llx*lly
 
               do ib = 0, nb-1
                  do ibp = 0, nb-1
-                    read(5,*) id, idp, tij(ib,ibp,k)
-                    write(6,300) ib, ibp, real(tij(ib,ibp,k)), &
-                         aimag(tij(ib,ibp,k))
+                    read(5,*) id, idp, tij(ib,ibp,ix,iy,iz)
+                    write(6,300) ib, ibp, real(tij(ib,ibp,ix,iy,iz)), &
+                         aimag(tij(ib,ibp,ix,iy,iz))
                  enddo
               enddo
 
@@ -290,7 +290,7 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
 #ifdef USE_MPI
   call MPI_Bcast(flux, 3, MPI_REAL, 0, MPI_COMM_WORLD, ierr)
   call MPI_Bcast(ed, nb, MPI_REAL, 0, MPI_COMM_WORLD, ierr)
-  call MPI_Bcast(tij, nb*nb*nl, MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+  call MPI_Bcast(tij, nb*nb*125, MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
 #endif 
 
   if (rank .eq. 0) then

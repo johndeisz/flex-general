@@ -7,7 +7,7 @@ subroutine sigma1_out(t, mu, flux, prfld, ed, h, &
 
   REAL t, mu, flux(1:3)
   REAL prfld, ed(0:nb-1), h(0:nb-1,1:3)
-  COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   REAL uu, up, uj
   COMPLEX psi(0:2*nb-1,0:2*nb-1,0:nl-1)
   COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
@@ -78,8 +78,8 @@ subroutine sigma1_out(t, mu, flux, prfld, ed, h, &
             
            do ib = 0, nb-1
               do ibp = 0, nb-1
-                 write(40,300) ib, ibp, real(tij(ib,ibp,k)), &
-                      aimag(tij(ib,ibp,k))
+                 write(40,300) ib, ibp, real(tij(ib,ibp,ix,iy,iz)), &
+                      aimag(tij(ib,ibp,ix,iy,iz))
               enddo
            enddo
 

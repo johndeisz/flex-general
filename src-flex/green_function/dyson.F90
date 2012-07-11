@@ -1,6 +1,6 @@
 #include "../convert.F90"
 
-subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, ek, v_pert_eff, &
+subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, tij, ed, v_pert_eff, &
      psi, h_eff, prfld_eff, mu, sigma1, h_so, sigma, epsilon, t, cl_k)
 
   USE CONSTANTS
@@ -14,7 +14,8 @@ subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, ek, v_pert_eff, &
   COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) :: g,sigma
   COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nl-1) :: g_ktau0
 
-  COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+  REAL ed(0:nb-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   REAL v_pert_eff(0:nb-1)
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
   REAL h_eff(0:nb-1,1:3)
@@ -151,7 +152,7 @@ subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, ek, v_pert_eff, &
                        kl = klx + kly*llx + klz*llx*lly
 
                        temp_gl2 = e_n - & 
-                            h0(kl,ek, v_pert_eff, psi, h_eff, &  	
+                            h0(kl,tij, ed, v_pert_eff, psi, h_eff, &  	
                             prfld_eff, mu, sigma1, h_so)  -  sigma(:,:,l,k)
                        temp_gl = identity
 

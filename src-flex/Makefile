@@ -11,21 +11,22 @@ endif
 
 OBJECTS_COMMON = \
 	constants.o \
+	bare_dispersion.o \
+	h0.o \
 	main.o \
 	init_environ.o \
 	readin.o \
-	bare_dispersion.o \
 	fft_3D_lattice.o \
 	init_sigma1.o \
 	init_pair_wave.o \
 	psi_transform.o \
 	gamma0_define.o \
 	effective_field.o \
-	h0.o \
 	calc_g_tau0.o \
 	sigma_first.o \
 	pair_wave.o \
 	sigma1_out.o \
+	pade_evaluate.o \
 	sigma_input.o \
 	kinetic_energy.o \
 	analyze_psi.o \
@@ -50,7 +51,6 @@ OBJECTS_SECOND = \
 	generate_tau_eps_omega.o \
 	analytic_functions.o \
 	a_integrals.o \
-	pade_evaluate.o \
 	discontinuities.o \
 	fft_3D.o \
 	parameter_init.o \

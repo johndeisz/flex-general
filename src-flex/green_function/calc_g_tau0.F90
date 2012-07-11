@@ -1,28 +1,13 @@
 #include "../convert.F90"
 
-subroutine calc_g_tau0( ek, v_pert_eff, psi, h_eff, prfld_eff, mu, &
+subroutine calc_g_tau0( tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, &
      sigma1, h_so, t, g_tau0, g_tau0_local)
 
   USE CONSTANTS
   USE h_zero
 
-!!$  INTERFACE
-!!$     FUNCTION h0(k, ek, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so)
-!!$       COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0
-!!$       INTEGER, INTENT(IN) :: k 
-!!$       COMPLEX, dimension (0:nb-1,0:nb-1,0:nl-1), INTENT(IN) :: ek
-!!$       REAL, dimension (0:nb-1), INTENT(IN) :: v_pert_eff
-!!$       COMPLEX, dimension (0:2*nb-1, 0:2*nb-1, 0:nl-1), INTENT(IN) :: psi
-!!$       REAL, dimension (0:nb-1,1:3), INTENT(IN) :: h_eff
-!!$       REAL, INTENT(IN) :: prfld_eff
-!!$       REAL, INTENT(IN) :: mu
-!!$       COMPLEX, dimension (0:4*nb-1,0:4*nb-1), INTENT(IN) :: sigma1
-!!$       COMPLEX, dimension (0:2*nb-1, 0:2*nb-1), INTENT(IN) :: h_so
-!!$     END FUNCTION h0 !section
-!!$  END INTERFACE
-  !  EXTERNAL h0
-  ! COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: h0
-
+  REAL ed(0:nb-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
   REAL v_pert_eff(0:nb-1)
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
@@ -67,7 +52,7 @@ subroutine calc_g_tau0( ek, v_pert_eff, psi, h_eff, prfld_eff, mu, &
 
            !     Diagonalize h0 for each k-point.
 
-           h_temp = h0(k,ek, v_pert_eff, psi, h_eff, prfld_eff, mu, &
+           h_temp = h0(k,tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, &
                 sigma1, h_so)
            id = identity
 

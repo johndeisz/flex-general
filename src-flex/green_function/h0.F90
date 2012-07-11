@@ -4,13 +4,16 @@ module h_zero
 
 contains
 
-  function h0(k, ek, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so)
+  function h0(k, tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so)
 
     USE CONSTANTS
+    USE bare_dispersion
 
     COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0
     INTEGER k
-    COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
+    REAL ed(0:nb-1)
+    COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
+    COMPLEX ek(0:nb-1,0:nb-1), ek_minus(0:nb-1, 0:nb-1)
     COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
     REAL mu
     COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
@@ -42,6 +45,8 @@ contains
     k1 = k - k3*llx*lly - k2*llx
 
     k_minus = mod(llz-k3,llz)*(llx*lly) + mod(lly-k2,lly)*llx + mod(llx-k1,llx)
+    ek = ekl(k, tij, ed)
+    ek_minus = ekl(k_minus, tij, ed)
 
     do nu1 = 0, nb-1
        do nu2 = 0, nb-1
@@ -49,7 +54,7 @@ contains
           ind1 = 4 * nu1
           ind2 = 4 * nu2
 
-          h0(ind1 + 0, ind2 + 0) = ek(nu1,nu2,k)  + &
+          h0(ind1 + 0, ind2 + 0) = ek(nu1,nu2)  + &
                cmplx((v_pert_eff(nu1)-mu -h_eff(nu1,3))* &
                delta(nu1,nu2), 0.0d0)
 
@@ -65,7 +70,7 @@ contains
           h0(ind1 + 1, ind2 + 0) = & 
                cmplx(-h_eff(nu1,1),-h_eff(nu1,2))* delta(nu1,nu2)
 
-          h0(ind1 + 1, ind2 + 1) =  ek(nu1,nu2,k) + &
+          h0(ind1 + 1, ind2 + 1) =  ek(nu1,nu2) + &
                cmplx( (v_pert_eff(nu1)-mu + h_eff(nu1,3))* &
                delta(nu1,nu2), 0.0d0)
 
@@ -81,7 +86,7 @@ contains
           h0(ind1 + 2, ind2 + 1) = prfld_eff * &
                psi( 2*nu2+1, 2*nu1, k_minus)
 
-          h0(ind1 + 2, ind2 + 2) = -ek(nu2,nu1,k_minus) & 
+          h0(ind1 + 2, ind2 + 2) = -ek_minus(nu2,nu1) & 
                + cmplx((-v_pert_eff(nu1)+mu + h_eff(nu1,3))* &
                delta(nu1,nu2), 0.0d0 )
 
@@ -98,7 +103,7 @@ contains
                cmplx(h_eff(nu1,1),-h_eff(nu1,2))* delta(nu1,nu2)
 
           h0(ind1 + 3, ind2 + 3) = &
-               -ek(nu2,nu1,k_minus) + &  
+               -ek_minus(nu2,nu1) + &  
                cmplx((-v_pert_eff(nu1)+mu - h_eff(nu1,3))* &
                delta(nu1,nu2), 0.0d0 )
 

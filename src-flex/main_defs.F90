@@ -14,7 +14,7 @@
   REAL uu, up, uj
 
   REAL ed(0:nb-1)
-  COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
   COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
   COMPLEX Lvec(1:3,0:nb-1, 0:nb-1)
   COMPLEX Lorb(1:3)
@@ -34,7 +34,7 @@
   INTEGER alpha_scheme
 
   !     Dispersion and bare vertex
-  COMPLEX ek(0:nb-1,0:nb-1,0:nl-1), ek_min
+  COMPLEX ek_min
   COMPLEX gamma0_ph(0:16*nb*nb-1, 0:16*nb*nb-1)
 
   ! Time and frequency arrays
