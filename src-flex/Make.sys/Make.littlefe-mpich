@@ -1,3 +1,0 @@
-# RedHat w/o MPI (single processor only)
-CC = mpif90 -O3 
-LIBRARIES= -lfftw3 -lblas -llapack

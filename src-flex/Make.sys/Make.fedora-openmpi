@@ -1,2 +1,0 @@
-# Fedora with openmpi MPI (single processor only)
-CC = mpif90 -O3
