@@ -7,6 +7,9 @@ subroutine sigma_input(sigma_input_file, uu, sigma1, psi, sigma, mu, epsilon)
 #endif
 
     USE CONSTANTS
+#ifdef SECOND_ORDER
+    USE pade_eval
+#endif
 
 #ifdef USE_MPI
     include 'mpif.h'
@@ -47,8 +50,6 @@ subroutine sigma_input(sigma_input_file, uu, sigma1, psi, sigma, mu, epsilon)
     COMPLEX p(0:m/2-1), q(0:m/2-1)
     INTEGER n_pade
     COMPLEX z
-    COMPLEX pade_evaluate
-    EXTERNAL pade_evaluate
     COMPLEX temp_pade
 #endif /* SECOND_ORDER */
 
