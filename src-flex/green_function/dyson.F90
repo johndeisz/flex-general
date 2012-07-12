@@ -1,10 +1,11 @@
 #include "../convert.F90"
 
 subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, tij, ed, v_pert_eff, &
-     psi, h_eff, prfld_eff, mu, sigma1, h_so, sigma, epsilon, t, cl_k)
+     psi, h_eff, prfld_eff, mu, sigma1, h_so, sigma, epsilon, t)
 
   USE CONSTANTS
   USE h_zero
+  USE green_param_lat
 
 #ifdef USE_MPI
   include 'mpif.h'
@@ -28,7 +29,7 @@ subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, tij, ed, v_pert_eff, &
   COMPLEX q_epsilon(0:1,0:1,0:mp1)
   REAL epsilon(0:mp1)
   REAL t
-  COMPLEX cl_k(0:1,0:1,0:4*nb-1,0:4*nb-1,0:nl-1)
+  COMPLEX cl_k(0:1,0:1,0:4*nb-1,0:4*nb-1)
 
   INTEGER x_stretch, y_stretch, z_stretch
   INTEGER coarse_grain_points
@@ -169,9 +170,12 @@ subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, tij, ed, v_pert_eff, &
                        !     Remove the analytic term so as to perform a trace
                        !     to get the tau=0+ lattice Green's function.
 
+                       cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+                            h_eff, prfld_eff, mu, sigma1, h_so)
+                       
                        do ia = 0, 1
                           do ib = 0, 1
-                             temp_gl = temp_gl - cl_k(ia,ib,:,:,kl) * &
+                             temp_gl = temp_gl - cl_k(ia,ib,:,:) * &
                                   q_epsilon(ia,ib,l)
                           enddo
                        enddo
@@ -230,14 +234,20 @@ subroutine dyson(myrank, g, g_ktau0, q_tau, q_epsilon, tij, ed, v_pert_eff, &
   !     Add back analytic contributions
   if (myrank .eq. 0) then
 
-     do ia = 0, 1
-        do ib = 0, 1
-           g_ktau0 =  g_ktau0 + &
-                cl_k(ia,ib,:,:,:) * q_tau(ia,ib,0)
+     do kl = 0, nl-1
+        cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+             h_eff, prfld_eff, mu, sigma1, h_so)
+  
+        do ia = 0, 1
+           do ib = 0, 1
+              g_ktau0(:,:,kl) =  g_ktau0(:,:,kl) + &
+                   cl_k(ia,ib,:,:) * q_tau(ia,ib,0)
+           enddo
         enddo
+    
      enddo
 
   endif
-
+  
   return
 end subroutine dyson
