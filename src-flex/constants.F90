@@ -9,13 +9,13 @@ MODULE Constants
   ! Lattice and frequency grid parameters. (all must be 2^n!)
   integer, parameter :: m=64
   
-  integer, parameter :: lcx = 1
-  integer, parameter :: lcy = 1
+  integer, parameter :: lcx = 4
+  integer, parameter :: lcy = 4
   integer, parameter :: lcz = 1
   integer, parameter :: nc = lcx*lcy*lcz  
 
-  integer, parameter :: llx = 256    ! lattice dimension >=lcx 
-  integer, parameter :: lly = 256 
+  integer, parameter :: llx = 16    ! lattice dimension >=lcx 
+  integer, parameter :: lly = 16 
   integer, parameter :: llz = 1
   integer, parameter :: nl = llx*lly*llz
 

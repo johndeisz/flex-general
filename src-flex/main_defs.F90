@@ -81,10 +81,8 @@
   COMPLEX g_tau0_local(0:4*nb-1,0:4*nb-1)
 #ifdef SECOND_ORDER
   COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) :: g, g_mtau
-  COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nl-1) :: delta_gl_k, delta_glp_k
   COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nc-1) :: &
        delta_g_r, delta_g_k, delta_gp_r, delta_gp_k
-  COMPLEX cl_k(0:1,0:1,0:4*nb-1,0:4*nb-1,0:nl-1)
   COMPLEX c_r(0:1,0:1,0:4*nb-1,0:4*nb-1,0:nc-1)
   COMPLEX dominant_chi_eigenvector(0:16*nb*nb-1)
   REAL overall_eigenvalue_max

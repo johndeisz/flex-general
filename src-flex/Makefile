@@ -54,7 +54,6 @@ OBJECTS_SECOND = \
 	discontinuities.o \
 	fft_3D.o \
 	parameter_init.o \
-	discon_lat.o \
 	green_param_lat.o \
 	dyson.o \
 	g_rtau.o \
@@ -74,6 +73,7 @@ OBJECTS_SECOND = \
         symmetrize.o \
 	eval_tr_sigph_g.o \
 	l_ints.o \
+#		discon_lat.o \
 
 OBJECTS_THIRD = \
 	transform_chi.o \
@@ -212,8 +212,8 @@ sigma1_out.o : self-energy-read-write/sigma1_out.F90 constants.F90
 sigma_input.o : self-energy-read-write/sigma_input.F90 constants.F90
 	$(CC) -c self-energy-read-write/sigma_input.F90 $(defines)
 
-discon_lat.o : green_function/discon_lat.F90 constants.F90
-	$(CC) -c green_function/discon_lat.F90 $(defines)
+# discon_lat.o : green_function/discon_lat.F90 constants.F90
+#	$(CC) -c green_function/discon_lat.F90 $(defines)
 
 discontinuities.o : green_function/discontinuities.F90 constants.F90
 	$(CC) -c green_function/discontinuities.F90 $(defines)
@@ -303,4 +303,4 @@ pair_energy.o : thermodynamics/pair_energy.F90 constants.F90
 	$(CC) -c thermodynamics/pair_energy.F90 $(defines)
 
 clean :
-	rm $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD)
+	rm $(OBJECTS_COMMON) $(OBJECTS_SECOND) $(OBJECTS_THIRD) constants.mod h_zero.mod pade_eval.mod bare_dispersion.mod green_param_lat.mod

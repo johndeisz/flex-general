@@ -113,23 +113,18 @@ program multiband_flex_dca
              prfld_pert, v_pert_eff, h_eff, prfld_eff)
 
 #ifdef SECOND_ORDER
-        call discon_lat(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
-             mu, sigma1, h_so, delta_gl_k, delta_glp_k)
         call discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
-             mu, sigma1, h_so, delta_g_r, delta_g_k, &
-             delta_gp_r, delta_gp_k)
+             mu, sigma1, h_so, delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
           
-        call green_param_lat(cl_k, delta_gl_k, delta_glp_k)
         sigma_old = sigma
           
         call dyson(rank, g, g_tau0, q_tau, q_epsilon, tij, ed, &
              v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
-             sigma, epsilon, t, cl_k)
+             sigma, epsilon, t)
 
         g_mtau = g
 
         call g_rtau(rank, g, t, c_r, q_epsilon, q_tau, tau)
-
         call g_minus_tau(rank, g_mtau, t, c_r, q_epsilon, q_tau, tau)
 
         call symmetrize(rank, g, g_mtau)
