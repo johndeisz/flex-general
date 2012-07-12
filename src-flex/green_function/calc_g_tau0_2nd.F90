@@ -1,17 +1,19 @@
 #include "../convert.F90"
 
-subroutine dyson(myrank, g, q_tau, q_epsilon, tij, ed, v_pert_eff, &
-     psi, h_eff, prfld_eff, mu, sigma1, h_so, sigma, epsilon, t)
+subroutine calc_g_tau0_2nd(myrank, g_ktau0, q_tau, q_epsilon, tij, ed, &
+     v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, sigma, epsilon, t)
 
   USE CONSTANTS
   USE h_zero
+  USE green_param_lat
 
 #ifdef USE_MPI
   include 'mpif.h'
 #endif /* USE_MPI */
 
   INTEGER myrank
-  COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) :: g,sigma
+  COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) :: sigma
+  COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:nl-1) :: g_ktau0
 
   REAL ed(0:nb-1)
   COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)
@@ -27,6 +29,7 @@ subroutine dyson(myrank, g, q_tau, q_epsilon, tij, ed, v_pert_eff, &
   COMPLEX q_epsilon(0:1,0:1,0:mp1)
   REAL epsilon(0:mp1)
   REAL t
+  COMPLEX cl_k(0:1,0:1,0:4*nb-1,0:4*nb-1)
 
   INTEGER x_stretch, y_stretch, z_stretch
   INTEGER coarse_grain_points
@@ -113,6 +116,8 @@ subroutine dyson(myrank, g, q_tau, q_epsilon, tij, ed, v_pert_eff, &
      enddo
   enddo
 
+  g_ktau0 = cmplx(0.0d0, 0.0d0)
+
   !     Loop over cluster k-points.
   do kx = 0, lcx-1
      do ky = 0, lcy-1
@@ -131,11 +136,6 @@ subroutine dyson(myrank, g, q_tau, q_epsilon, tij, ed, v_pert_eff, &
                     endif
                  enddo
               enddo
-
-              temp_gc = cmplx(0.0d0, 0.0d0)
-
-              !     For each cluster k-point, sum over all points in the
-              !     coarse-graining cell.
 
               do ix = -ix_max, ix_max
                  do iy = -iy_max, iy_max
@@ -160,18 +160,83 @@ subroutine dyson(myrank, g, q_tau, q_epsilon, tij, ed, v_pert_eff, &
                           write(6,*) 'info not equal to zero'
                        endif
 
-                       temp_gc = temp_gc + wx(ix) * wy(iy) * wz(iz) * temp_gl
+                       cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+                            h_eff, prfld_eff, mu, sigma1, h_so)
+                       
+                       do ia = 0, 1
+                          do ib = 0, 1
+                             temp_gl = temp_gl - cl_k(ia,ib,:,:) * &
+                                  q_epsilon(ia,ib,l)
+                          enddo
+                       enddo
+
+                       !     Obtain g_tau0 by summing over all frequencies.  
+                       !     Include
+                       !     weights wx,wy,wz as the lattice 
+                       !     greens function may appear
+                       !     in several course graining cells.
+
+                       g_ktau0(:,:,kl) =  g_ktau0(:,:,kl) + & 
+                            t * wx(ix) * wy(iy) * wz(iz) * temp_gl
 
                     enddo
                  enddo
               enddo
-
-              g(:,:,l,k) = temp_gc / float(coarse_grain_points)
 
            enddo
         enddo
      enddo
   enddo
 
+  !     If NP > 1 collect, let myrank = 0 collect all the contributions
+  !     to sum_e g(e,k)
+
+  !     Add contributions to g_tau0 from all other processes
+#ifdef USE_MPI
+  if (myrank .eq. 0) then
+
+     !     Copy g_temp0 contribution to cl_k(0,0)
+
+     dummy = 0
+
+     do i_proc = 1, np - 1
+
+        call MPI_Send(dummy, 1, MPI_INTEGER, i_proc, 0, MPI_COMM_WORLD, ierr)
+        
+        call MPI_Recv(g_temp0, 16*nb*nb*nl, MPI_COMPLEX, & 
+             i_proc, 1, MPI_COMM_WORLD, stat, ierr)
+
+        g_ktau0 = g_ktau0 + g_temp0
+
+     enddo
+
+  else 
+
+     call MPI_Recv(dummy, 1, MPI_INTEGER, 0, 0, MPI_COMM_WORLD, stat, ierr)
+     call MPI_Send(g_ktau0, 16*nb*nb*nl, MPI_COMPLEX, & 
+          0, 1, MPI_COMM_WORLD, ierr)
+
+  endif
+#endif /* USE_MPI */
+
+  !     Add back analytic contributions
+
+  if (myrank .eq. 0) then
+
+     do kl = 0, nl-1
+        cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+             h_eff, prfld_eff, mu, sigma1, h_so)
+  
+        do ia = 0, 1
+           do ib = 0, 1
+              g_ktau0(:,:,kl) =  g_ktau0(:,:,kl) + &
+                   cl_k(ia,ib,:,:) * q_tau(ia,ib,0)
+           enddo
+        enddo
+    
+     enddo
+
+  endif
+  
   return
-end subroutine dyson
+end subroutine calc_g_tau0_2nd

@@ -56,6 +56,7 @@ OBJECTS_SECOND = \
 	parameter_init.o \
 	green_param_lat.o \
 	dyson.o \
+	calc_g_tau0_2nd.o \
 	g_rtau.o \
 	fft_4D.o \
 	row_dist_to_col_dist.o \
@@ -73,7 +74,6 @@ OBJECTS_SECOND = \
         symmetrize.o \
 	eval_tr_sigph_g.o \
 	l_ints.o \
-#		discon_lat.o \
 
 OBJECTS_THIRD = \
 	transform_chi.o \
@@ -226,6 +226,9 @@ green_parameter.o : green_function/green_parameter.F90 constants.F90
 
 dyson.o : green_function/dyson.F90 constants.F90
 	$(CC) -c green_function/dyson.F90 $(defines)
+
+calc_g_tau0_2nd.o : green_function/calc_g_tau0_2nd.F90 constants.F90
+	$(CC) -c green_function/calc_g_tau0_2nd.F90 $(defines)
 
 fft_3D.o : ffts/fft_3D.F90 constants.F90
 	$(CC) -c ffts/fft_3D.F90 $(defines)

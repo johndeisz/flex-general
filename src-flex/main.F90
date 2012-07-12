@@ -9,6 +9,7 @@ program multiband_flex_dca
   include 'mpif.h'
 #endif /* USE_MPI */
 
+  IMPLICIT NONE
 #include "main_defs.F90"
 
   call init_environ(rank, size, start_time)
@@ -118,7 +119,11 @@ program multiband_flex_dca
           
         sigma_old = sigma
           
-        call dyson(rank, g, g_tau0, q_tau, q_epsilon, tij, ed, &
+        call dyson(rank, g, q_tau, q_epsilon, tij, ed, &
+             v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
+             sigma, epsilon, t)
+
+        call calc_g_tau0_2nd(rank, g_tau0, q_tau, q_epsilon, tij, ed, &
              v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
              sigma, epsilon, t)
 
@@ -154,8 +159,7 @@ program multiband_flex_dca
            sigma = alpha*sigma + (1.0d0 - alpha)*sigma_old
         endif
 
-        g_tau0_local = g(:,:,0,0)
-
+        g_tau0_local = g(:,:,0,0)    
 #else
         call calc_g_tau0(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, &
              sigma1, h_so, t, g_tau0, g_tau0_local)
