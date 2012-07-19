@@ -74,6 +74,10 @@ c Compute the spin-orbit matrix elements
           enddo
         enddo
  
+      else
+
+        Lvec = cmplx(0.0d0,0.0d0)
+
       endif
      
 
