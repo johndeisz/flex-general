@@ -46,10 +46,23 @@
         enddo
       enddo
 
-      do ix = -2,2
-        do iy = -1,1
-          t(0,0,iy,ix) = t(0,0,ix,iy)
+      do ix = -1,1
+        do iy = 1,2
+          t(0,0,ix,iy) = t(0,0,iy,ix)
+          t(1,1,ix,iy) = t(1,1,iy,ix)
+          t(0,1,ix,iy) = -t(0,1,iy,ix)
+          t(1,0,ix,iy) = -t(1,0,iy,ix)
+        enddo
+      enddo
 
+      do ix = -1,1
+        do iy = -2,-1
+          t(0,0,ix,iy) = t(0,0,iy,ix)
+          t(1,1,ix,iy) = t(1,1,iy,ix)
+          t(0,1,ix,iy) = -t(0,1,iy,ix)
+          t(1,0,ix,iy) = -t(1,0,iy,ix)
+        enddo
+      enddo
 
 
       write(6,*) '--------------flux values --------------'
