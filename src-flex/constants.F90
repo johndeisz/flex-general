@@ -20,7 +20,7 @@ MODULE Constants
   integer, parameter :: nl = llx*lly*llz
 
   ! MPI related constants.
-  integer, parameter :: np = 1 ! Total number of processes
+  integer, parameter :: np = 4 ! Total number of processes
   integer, parameter :: mp = m/np  ! must be an integer
   integer, parameter :: ncp = nc/np  ! must be an integer
 

@@ -9,7 +9,6 @@ program multiband_flex_dca
   include 'mpif.h'
 #endif /* USE_MPI */
 
-  IMPLICIT NONE
 #include "main_defs.F90"
 
   call init_environ(rank, size, start_time)
