@@ -29,9 +29,9 @@ CONTAINS
     k2 = int( (kl-k3*llx*lly) / llx )
     k1 = kl - k3*llx*lly - k2*llx
     
-    kx = k1 * (2.0d0*pi/float(llx))
-    ky = k2 * (2.0d0*pi/float(lly))
-    kz = k3 * (2.0d0*pi/float(llz))
+    kx = float(k1) * (2.0d0*pi/float(llx))
+    ky = float(k2) * (2.0d0*pi/float(lly))
+    kz = float(k3) * (2.0d0*pi/float(llz))
 
     if (llx .gt. 2) then
        max_x = 2
