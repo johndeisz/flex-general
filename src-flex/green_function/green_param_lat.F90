@@ -10,6 +10,8 @@ CONTAINS
     USE CONSTANTS
     USE h_zero
 
+    IMPLICIT NONE
+
     COMPLEX, DIMENSION (0:1,0:1,0:4*nb-1,0:4*nb-1) :: c_lattice_k
     INTEGER kl
     REAL ed(0:nb-1)
@@ -23,6 +25,7 @@ CONTAINS
     COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
     COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: delta_gl_k, delta_glp_k
     INTEGER na1
+    INTEGER ib, jb, is
     
     !     Express the discontinuities in k-space
       
@@ -39,6 +42,16 @@ CONTAINS
     c_lattice_k(0,1,:,:) = cmplx(0.0d0, 0.0d0)
     c_lattice_k(1,0,:,:) = delta_glp_k
     c_lattice_k(1,1,:,:) = cmplx(0.0d0, 0.0d0)
+
+!          ib = 1
+!          jb = 0
+!            is = 0
+!              write(6,*) "cl_k subroutine"
+!              write(6,*) "k, nu1, nu2, is ", kl, ib, jb, is
+!              write(6,*) "cl_k 00", c_lattice_k(0,0,4*ib+is, 4*jb+is)
+!             write(6,*) "cl_k 01", c_lattice_k(0,1,4*ib+is, 4*jb+is)
+!             write(6,*) "cl_k 10", c_lattice_k(1,0,4*ib+is, 4*jb+is)
+!             write(6,*) "cl_k 11", c_lattice_k(1,1,4*ib+is, 4*jb+is)
 
   END FUNCTION c_lattice_k
 

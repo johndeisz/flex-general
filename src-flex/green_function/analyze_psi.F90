@@ -5,7 +5,7 @@ subroutine analyze_psi(psi, tij)
   USE CONSTANTS
 
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
-  COMPLEX tij(0:nb-1,0:nb-1,0:nl-1)
+  COMPLEX tij(0:nb-1,0:nb-1,-2:2, -2:2, -2:2)
 
   INTEGER isignv(0:3)
 

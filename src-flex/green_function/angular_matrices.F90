@@ -3,7 +3,7 @@
 subroutine angular_matrices(Lvec)
 
   USE CONSTANTS
-
+  IMPLICIT NONE
   COMPLEX Lvec(1:3,0:nb-1,0:nb-1)
 
   COMPLEX Lvec_ml(1:3,-2:2,-2:2)
@@ -11,9 +11,11 @@ subroutine angular_matrices(Lvec)
   REAL L_plus(-2:2,-2:2)
   REAL L_minus(-2:2,-2:2)
 
-  COMPLEX psi(-2:2, 0:3)
+  COMPLEX psi(-2:2, 0:10) ! Fix this for multiband systems
 
   integer ml, nu1, nu2, ml1, ml2
+  
+  psi = cmplx(0.0d0, 0.0d0)
 
   ! Define spatial wave functions
   psi(-2,0) = cmplx(0.0d0, 0.0d0)
@@ -34,9 +36,11 @@ subroutine angular_matrices(Lvec)
   psi(1,2) = 0.d0
   psi(2,2) = cmplx( 0.0d0, -1.0d0 / sqrt(2.0d0))
 
-  Lvec_ml = cmplx(0.0d0, 0.d0);
-  L_plus = 0.0d0;
-  L_minus = 0.0d0;
+  Lvec_ml = cmplx(0.0d0, 0.d0)
+  L_plus = 0.0d0
+  L_minus = 0.0d0
+
+  Lvec = cmplx(0.0d0,0.0d0)
 
   if (nb .eq. 3) then
 
@@ -57,10 +61,10 @@ subroutine angular_matrices(Lvec)
 
      ! Compute the spin-orbit matrix elements
 	
-     do nu1=0,2
-        do nu2 = 0,2
+     do nu1=0,nb-1
+        do nu2 = 0,nb-1
 
-           sum = 0.0d0
+           sum = cmplx(0.0d0, 0.0d0)
 
            do ml1 = -2,2
               do ml2 = -2,2

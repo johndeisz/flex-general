@@ -7,6 +7,8 @@ subroutine calc_g_tau0_2nd(myrank, g_ktau0, q_tau, q_epsilon, tij, ed, &
   USE h_zero
   USE green_param_lat
 
+  IMPLICIT NONE
+
 #ifdef USE_MPI
   include 'mpif.h'
 #endif /* USE_MPI */
@@ -45,7 +47,7 @@ subroutine calc_g_tau0_2nd(myrank, g_ktau0, q_tau, q_epsilon, tij, ed, &
   INTEGER klx, kly, klz, kl
   INTEGER kx, ky, kz, k, l
   INTEGER k1, k2, k3
-  INTEGER ia, ib
+  INTEGER ia, ib, is, jb
 
   !     Arrays
   COMPLEX, dimension (0:4*nb-1,0:4*nb-1) :: identity, temp_gc, temp_gl2, &
@@ -160,15 +162,15 @@ subroutine calc_g_tau0_2nd(myrank, g_ktau0, q_tau, q_epsilon, tij, ed, &
                           write(6,*) 'info not equal to zero'
                        endif
 
-                       cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
-                            h_eff, prfld_eff, mu, sigma1, h_so)
+!                       cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+!                            h_eff, prfld_eff, mu, sigma1, h_so)
                        
-                       do ia = 0, 1
-                          do ib = 0, 1
-                             temp_gl = temp_gl - cl_k(ia,ib,:,:) * &
-                                  q_epsilon(ia,ib,l)
-                          enddo
-                       enddo
+!                       do ia = 0, 1
+!                          do ib = 0, 1
+!                             temp_gl = temp_gl - cl_k(ia,ib,:,:) * &
+!                                  q_epsilon(ia,ib,l)
+!                          enddo
+!                       enddo
 
                        !     Obtain g_tau0 by summing over all frequencies.  
                        !     Include
@@ -185,8 +187,31 @@ subroutine calc_g_tau0_2nd(myrank, g_ktau0, q_tau, q_epsilon, tij, ed, &
 
            enddo
         enddo
+
      enddo
   enddo
+
+
+
+       if (myrank .eq. 0) then
+    kl = 0
+       cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+                            h_eff, prfld_eff, mu, sigma1, h_so)
+
+          ib = 1
+         jb = 0
+           is =  0
+              write(6,*) "check 1"
+              write(6,*) "k, nu1, nu2, is ", 0, ib, jb, is
+              write(6,*) "cl_k 00", cl_k(0,0,4*ib+is, 4*jb+is)
+             write(6,*) "cl_k 01", cl_k(0,1,4*ib+is, 4*jb+is)
+             write(6,*) "cl_k 10", cl_k(1,0,4*ib+is, 4*jb+is)
+             write(6,*) "cl_k 11", cl_k(1,1,4*ib+is, 4*jb+is)
+              write(6,*) "g_tau0 = ", g_ktau0(4*ib+is, 4*jb+is, 0)
+
+        endif
+
+
 
   !     If NP > 1 collect, let myrank = 0 collect all the contributions
   !     to sum_e g(e,k)
@@ -221,22 +246,22 @@ subroutine calc_g_tau0_2nd(myrank, g_ktau0, q_tau, q_epsilon, tij, ed, &
 
   !     Add back analytic contributions
 
-  if (myrank .eq. 0) then
-
-     do kl = 0, nl-1
-        cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
-             h_eff, prfld_eff, mu, sigma1, h_so)
+!  if (myrank .eq. 0) then
+!
+!     do kl = 0, nl-1
+!        cl_k = c_lattice_k(kl,tij, ed, v_pert_eff, psi, &
+!             h_eff, prfld_eff, mu, sigma1, h_so)
   
-        do ia = 0, 1
-           do ib = 0, 1
-              g_ktau0(:,:,kl) =  g_ktau0(:,:,kl) + &
-                   cl_k(ia,ib,:,:) * q_tau(ia,ib,0)
-           enddo
-        enddo
+!        do ia = 0, 1
+!           do ib = 0, 1
+!              g_ktau0(:,:,kl) =  g_ktau0(:,:,kl) + &
+!                   cl_k(ia,ib,:,:) * q_tau(ia,ib,0)
+!           enddo
+!        enddo
     
-     enddo
+!     enddo
 
-  endif
-  
+!  endif
+
   return
 end subroutine calc_g_tau0_2nd
