@@ -34,7 +34,7 @@
   INTEGER alpha_scheme
 
   !     Dispersion and bare vertex
-  COMPLEX ek_min
+  REAL ek_min
   COMPLEX gamma0_ph(0:16*nb*nb-1, 0:16*nb*nb-1)
 
   ! Time and frequency arrays
