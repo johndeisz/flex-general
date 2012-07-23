@@ -5,6 +5,8 @@ program multiband_flex_dca
   USE CONSTANTS
   USE bare_dispersion
 
+  IMPLICIT NONE
+
 #ifdef USE_MPI
   include 'mpif.h'
 #endif /* USE_MPI */
@@ -28,6 +30,9 @@ program multiband_flex_dca
 
   !     Bare bandstructure and vertex
   ek_min = ek_minimum(tij, ed)
+  if (rank .eq. 0) then
+  write(6,*) "ek_min = ", ek_min
+  endif
   call gamma0_define(gamma0_ph, uu, up, uj)
 
 #ifdef SECOND_ORDER
@@ -406,7 +411,6 @@ program multiband_flex_dca
      do ib = 0, nb-1
         write(6,225) ib, denb(ib), magb(ib,1), magb(ib,2), magb(ib,3)
      enddo
-     write(6,*) 'testing' 
 
      Lorb = cmplx(0.0d0, 0.0d0)
      
