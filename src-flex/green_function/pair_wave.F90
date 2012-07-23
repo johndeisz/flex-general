@@ -4,6 +4,7 @@ subroutine pair_wave(psi, g_tau0, alpha, m_psi)
 
   USE CONSTANTS
 
+  IMPLICIT NONE
 #ifdef USE_MPI
   include 'mpif.h'
 #endif
