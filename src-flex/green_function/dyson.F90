@@ -6,6 +6,8 @@ subroutine dyson(myrank, g, q_tau, q_epsilon, tij, ed, v_pert_eff, &
   USE CONSTANTS
   USE h_zero
 
+  IMPLICIT NONE 
+
 #ifdef USE_MPI
   include 'mpif.h'
 #endif /* USE_MPI */
