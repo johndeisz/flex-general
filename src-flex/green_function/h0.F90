@@ -9,6 +9,8 @@ contains
     USE CONSTANTS
     USE bare_dispersion
 
+    IMPLICIT NONE
+
     COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0
     INTEGER k
     REAL ed(0:nb-1)
