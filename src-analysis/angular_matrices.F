@@ -9,7 +9,7 @@
       DOUBLE PRECISION L_plus(-2:2,-2:2)
       DOUBLE PRECISION L_minus(-2:2,-2:2)
 
-      DOUBLE COMPLEX psi(-2:2, 0:3)
+      DOUBLE COMPLEX psi(-2:2, 0:10)  ! Temporary - fix this 
 
       integer ml, nu1, nu2, ml1, ml2
 
@@ -55,8 +55,8 @@ c Define spatial wave functions
 
 c Compute the spin-orbit matrix elements
 	
-        do nu1=0,2
-          do nu2 = 0,2
+        do nu1=0,nb-1
+          do nu2 = 0,nb-1
 
             sum = 0.0d0
 
