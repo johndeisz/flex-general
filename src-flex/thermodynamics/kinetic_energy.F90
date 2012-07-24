@@ -24,10 +24,16 @@ subroutine kinetic_energy(g_tau0, tij, ed, kinetic)
   kin_temp = cmplx(0.0d0, 0.0d0)
   
   do k = 0, nl-1
+
      ek = ekl(k, tij, ed)
 
      do nu1 = 0, nb-1
+        ek(nu1,nu1) = ek(nu1,nu1) - ed(nu1)  ! Remove local potential
+     enddo
+
+     do nu1 = 0, nb-1
         do nu2 = 0, nb-1
+
            do is = 0, 1
 
               kin_temp = kin_temp + ek(nu1, nu2) * &
@@ -57,6 +63,10 @@ subroutine kinetic_energy(g_tau0, tij, ed, kinetic)
                 mod(lly-kly,lly)*llx + mod(llx-klx,llx)
 
            ek = ekl(k, tij, ed)
+
+           do nu1 = 0, nb-1
+              ek(nu1,nu1) = ek(nu1,nu1) - ed(nu1)  ! Remove local potential
+           enddo
 
            do nu1 = 0, nb-1
               do nu2 = 0, nb-1
