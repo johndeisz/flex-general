@@ -6,6 +6,7 @@ CONTAINS
   COMPLEX function pade_evaluate(z, n_pade, p, q)
 
     USE CONSTANTS
+    IMPLICIT NONE
 
     COMPLEX z
     INTEGER n_pade 
