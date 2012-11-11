@@ -3,6 +3,7 @@
 subroutine init_environ(rank, size, starttime)
 
   USE CONSTANTS
+  IMPLICIT NONE
        
 #ifdef USE_MPI
   include 'mpif.h'

@@ -6,6 +6,7 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
      max_pade_order, sigma_tol,  max_it, alpha, alpha_scheme)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'

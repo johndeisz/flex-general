@@ -3,6 +3,7 @@
 subroutine l_ints(l_integral, t, x, y)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL t
   REAL x(0:1, 0:1), y(0:1, 0:1)

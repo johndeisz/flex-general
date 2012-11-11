@@ -3,6 +3,7 @@
 subroutine gamma0_define(gamma0_ph, uu, up, uj)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   COMPLEX gamma0_ph(0:16*nb*nb-1, 0:16*nb*nb-1)
   REAL uu, up, uj

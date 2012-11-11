@@ -3,6 +3,7 @@
 subroutine a_integrals( t, x, y, epsilon, a_int)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL t, x(0:1,0:1), y(0:1,0:1), epsilon(0:mp1)
   COMPLEX a_int(0:1,0:1,0:1,0:1,0:mp1)

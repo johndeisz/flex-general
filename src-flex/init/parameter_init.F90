@@ -3,6 +3,7 @@
 subroutine parameter_init(x, c_r, delta_g_r, delta_gp_r, y)  
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL x(0:1,0:1) 
   COMPLEX c_r(0:1,0:1,0:4*nb-1,0:4*nb-1,0:nc-1)

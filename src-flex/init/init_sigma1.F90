@@ -3,6 +3,7 @@
 subroutine init_sigma1( uu, density, sigma1)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL uu, density
   COMPLEX sigma1(0:4*nb-1,0:4*nb-1)

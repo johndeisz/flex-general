@@ -4,6 +4,7 @@ subroutine analytic_functions(t, tau, epsilon, omega, x, y, &
      q_tau, q_mtau, q_epsilon, r_tau, r_omega)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL t
   REAL tau(0:mp1), epsilon(0:mp1), omega(0:mp1)

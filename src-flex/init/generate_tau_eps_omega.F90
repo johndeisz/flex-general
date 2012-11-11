@@ -3,6 +3,7 @@
 subroutine generate_tau_eps_omega(t, tau, epsilon, omega)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'
