@@ -10,6 +10,7 @@ subroutine sigma_input(sigma_input_file, uu, sigma1, psi, sigma, mu, epsilon)
 #ifdef SECOND_ORDER
     USE pade_eval
 #endif
+    IMPLICIT NONE
 
 #ifdef USE_MPI
     include 'mpif.h'
