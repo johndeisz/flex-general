@@ -209,6 +209,9 @@ analyze_psi_2D_ortho.o : green_function/analyze_psi_2D_ortho.F90 constants.F90
 sigma1_out.o : self-energy-read-write/sigma1_out.F90 constants.F90
 	$(CC) -c self-energy-read-write/sigma1_out.F90 $(defines)
 
+pade_evaluate.o : self-energy-read-write/pade_evaluate.F90 constants.F90
+	$(CC) -c self-energy-read-write/pade_evaluate.F90 $(defines)
+
 sigma_input.o : self-energy-read-write/sigma_input.F90 constants.F90
 	$(CC) -c self-energy-read-write/sigma_input.F90 $(defines)
 
@@ -280,9 +283,6 @@ sigma_out.o : self-energy-read-write/sigma_out.F90 constants.F90
 
 pade.o : self-energy-read-write/pade.F90 constants.F90
 	$(CC) -c self-energy-read-write/pade.F90 $(defines)
-
-pade_evaluate.o : self-energy-read-write/pade_evaluate.F90 constants.F90
-	$(CC) -c self-energy-read-write/pade_evaluate.F90 $(defines)
 
 pair_wave_test.o : green_function/pair_wave_test.F90 constants.F90
 	$(CC) -c green_function/pair_wave_test.F90 $(defines)
