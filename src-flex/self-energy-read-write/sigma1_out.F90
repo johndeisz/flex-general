@@ -4,6 +4,7 @@ subroutine sigma1_out(t, mu, flux, prfld, ed, h, &
      tij, uu, up, uj, psi, h_so, sigma1)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL t, mu, flux(1:3)
   REAL prfld, ed(0:nb-1), h(0:nb-1,1:3)
