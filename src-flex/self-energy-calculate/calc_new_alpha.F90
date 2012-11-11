@@ -3,6 +3,7 @@
 subroutine calc_new_alpha(alpha, delta_sigma_e0_old, sigma, sigma_old)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   REAL alpha
   COMPLEX delta_sigma_e0_old(0:4*nb-1,0:4*nb-1,0:nc1)

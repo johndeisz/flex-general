@@ -5,6 +5,7 @@ subroutine sigma_first(sigma1, sigma1_old, delta_sigma1, &
      sigma_converged, alpha_scheme, iteration)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'

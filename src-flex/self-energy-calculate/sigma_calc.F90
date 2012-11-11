@@ -6,6 +6,7 @@ subroutine sigma_calc(rank, t, sigma, chi, g, g_mtau, c_r, &
      dominant_chi_index, ft_sigma, d)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'

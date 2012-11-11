@@ -4,6 +4,7 @@ subroutine convergence_test(convergence, rank, iteration, &
      sigma, sigma_old, convg_crit, last_it_time)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include "mpif.h"
