@@ -3,6 +3,7 @@
 subroutine fft_3D_lattice (mat, isignv)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   COMPLEX mat(0:nl-1)
   INTEGER isignv(0:3)

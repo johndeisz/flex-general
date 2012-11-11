@@ -3,6 +3,7 @@
 subroutine row_dist_to_col_dist(myid, a, b )
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'

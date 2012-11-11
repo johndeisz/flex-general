@@ -3,6 +3,7 @@
 subroutine fft_3D (mat, isignv)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   COMPLEX mat(0:nc-1)
   INTEGER isignv(0:3)

@@ -3,6 +3,7 @@
 subroutine fft_4D (myid, a, isignv)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   INTEGER myid
   COMPLEX a(0:mp1,0:nc1)
