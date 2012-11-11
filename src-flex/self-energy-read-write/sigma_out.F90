@@ -4,6 +4,7 @@ subroutine sigma_out(rank, pade_max, sigma_output_file, t, sigma)
 
   USE CONSTANTS
   USE pade_eval
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'
