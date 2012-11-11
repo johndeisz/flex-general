@@ -5,6 +5,7 @@ subroutine transform_chi(rank, t, chi, delta_chi, delta_chi_prime, &
      dominant_chi_index)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'

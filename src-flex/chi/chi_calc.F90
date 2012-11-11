@@ -4,6 +4,7 @@ subroutine chi_calc(rank, t, chi, g, g_mtau, delta_chi, &
      delta_chi_prime, gamma_ph)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'
