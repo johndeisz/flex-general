@@ -3,6 +3,7 @@
 subroutine green_parameter(rank, g, t, x, c_r, delta_g_r, delta_gp_r)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
 #ifdef USE_MPI
   include 'mpif.h'

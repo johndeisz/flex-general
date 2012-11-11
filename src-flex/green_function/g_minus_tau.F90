@@ -3,6 +3,7 @@
 subroutine g_minus_tau(rank, g, t, c_r, q_epsilon, q_tau, tau)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   INTEGER rank
   COMPLEX g(0:4*nb-1, 0:4*nb-1, 0:mp1,0:nc1)

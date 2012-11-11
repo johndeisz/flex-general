@@ -3,6 +3,7 @@
 subroutine pair_wave_test(psi, g_tau0, alpha, m_psi)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
   COMPLEX g_tau0(0:4*nb-1, 0:4*nb-1, 0:nl-1)

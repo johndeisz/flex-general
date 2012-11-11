@@ -5,6 +5,7 @@ subroutine calc_g_tau0( tij, ed, v_pert_eff, psi, h_eff, prfld_eff, mu, &
 
   USE CONSTANTS
   USE h_zero
+  IMPLICIT NONE
 
   REAL ed(0:nb-1)
   COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)

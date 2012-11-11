@@ -3,6 +3,7 @@
 subroutine analyze_psi_1D(psi)
 
   USE CONSTANTS
+  IMPLICIT NONE
   
   COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
 

@@ -6,6 +6,7 @@ subroutine discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
   USE CONSTANTS
   USE h_zero
   USE bare_dispersion
+  IMPLICIT NONE
   
   REAL ed(0:nb-1)
   COMPLEX tij(0:nb-1,0:nb-1,-2:2,-2:2,-2:2)

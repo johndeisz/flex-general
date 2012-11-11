@@ -3,6 +3,7 @@
 subroutine symmetrize(rank,g, g_mtau)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   INTEGER rank
   COMPLEX g(0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) 
