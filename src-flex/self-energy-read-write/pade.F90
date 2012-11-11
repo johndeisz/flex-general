@@ -3,6 +3,7 @@
 subroutine pade(nmax, a, z, p, q)
 
   USE CONSTANTS
+  IMPLICIT NONE
 
   INTEGER nmax
   COMPLEX a(0:m/2-1)
