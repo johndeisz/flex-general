@@ -14,6 +14,7 @@ subroutine sigma_calc(rank, t, sigma, chi, g, g_mtau, c_r, &
 
 
   INTEGER rank
+  INTEGER method
   REAL t
   COMPLEX, dimension (0:4*nb-1,0:4*nb-1,0:mp1,0:nc1) :: sigma, g, g_mtau
   COMPLEX chi(0:16*nb*nb-1,0:16*nb*nb-1,0:mp1,0:nc1)
@@ -63,21 +64,65 @@ subroutine sigma_calc(rank, t, sigma, chi, g, g_mtau, c_r, &
   pi = 4.0d0 * atan(1.0d0)
   delta_tau = (1.0d0 / t) / float(m)
 
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  start sigma_calc'
+     close(unit=9)
+  endif
+
+
   call chi_calc(rank, t, chi, g, g_mtau, delta_chi, delta_chi_prime, gamma_ph)
+
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  chi_calc'
+     close(unit=9)
+  endif
+
 
 #ifdef THIRD_ORDER      
   call transform_chi(rank, t, chi, delta_chi, delta_chi_prime, &
        r_tau, r_omega, overall_eigenvalue_max, dominant_chi_eigenvector, & 
        dominant_chi_index)
+
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  transform_chi'
+     close(unit=9)
+  endif
+
+
 #endif /* THIRD_ORDER */
 
   call t_generate(chi, gamma_ph, delta_chi, delta_chi_prime)
 
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  t_generate'
+     close(unit=9)
+  endif
+
+
 #ifdef THIRD_ORDER
   call t_transform(rank, t, chi, delta_chi, delta_chi_prime, y, r_tau, r_omega)
+
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  t_transform'
+     close(unit=9)
+  endif
+
 #endif /* THIRD_ORDER */
 
-  call tmat_param(rank, 1, chi, t, y, d, delta_chi, delta_chi_prime)
+  method = 1
+  call tmat_param(rank, method, chi, t, y, d, delta_chi, delta_chi_prime)
+
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  tmat_param'
+     close(unit=9)
+  endif
+
 
   !     Form sigma(tau, r)
   do l = 0, mp1
@@ -102,6 +147,13 @@ subroutine sigma_calc(rank, t, sigma, chi, g, g_mtau, c_r, &
 
      enddo
   enddo
+
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  form sigma_tau'
+     close(unit=9)
+  endif
+
 
 
 !!$c     if (rank. eq. 0) then
@@ -224,6 +276,13 @@ subroutine sigma_calc(rank, t, sigma, chi, g, g_mtau, c_r, &
      enddo
 
   endif
+
+ if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '  finish sigma_calc'
+     close(unit=9)
+  endif
+
 
   return
 end subroutine sigma_calc

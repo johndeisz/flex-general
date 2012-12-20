@@ -1,10 +1,11 @@
 #include "../convert.F90"
 
-subroutine gamma0_define(gamma0_ph, uu, up, uj)
+subroutine gamma0_define(rank, gamma0_ph, uu, up, uj)
 
   USE CONSTANTS
   IMPLICIT NONE
 
+  INTEGER rank
   COMPLEX gamma0_ph(0:16*nb*nb-1, 0:16*nb*nb-1)
   REAL uu, up, uj
 
@@ -18,6 +19,8 @@ subroutine gamma0_define(gamma0_ph, uu, up, uj)
 
   COMPLEX, dimension (1:3, 0:1, 0:1) :: pauli
   REAL, dimension (0:1, 0:1) :: dirac
+  REAL, dimension (0:nb-1) :: uum
+  REAL, dimension (0:nb-1, 0:nb-1) :: upm, ujm
 
   REAL s0, c0
 
@@ -44,6 +47,46 @@ subroutine gamma0_define(gamma0_ph, uu, up, uj)
   pauli(3,0,1) = 0.0d0
   pauli(3,1,1) = -1.d0
 
+! if (rank .eq. 0) then
+!   write(6,*) 'Cubic symmetrized vertex used'
+! endif
+!  do nu1 = 0, nb-1
+!    uum(nu1) = uu
+!  enddo
+
+!  do nu1 = 0, nb-1
+!   do nu2= 0, nb-1
+!     upm(nu1,nu2) = up
+!     ujm(nu1,nu2) = uj
+!   enddo
+!  enddo
+
+  if (rank .eq. 0) then
+    write(6,*) 'Band-dependent vertex used'
+  endif
+  if (nb .ne. 3) then
+   if (rank .eq. 0) then
+     write(6,*) 'Nb does not equal 3 - stopping'
+   endif
+  endif
+  uum(0) = 0.969d0*uu
+  uum(1) = 0.969d0*uu
+  uum(2) = 1.063d0*uu
+
+  upm(0,1) = 0.974d0*up
+  upm(1,0) = upm(0,1)
+  upm(0,2) = 1.015d0*up
+  upm(2,0) = upm(0,2)
+  upm(1,2) = upm(0,2)
+  upm(2,1) = upm(0,2)
+
+  ujm(0,1) = 0.923d0*uj
+  ujm(1,0) = ujm(0,1)
+  ujm(0,2) = 1.000d0*uj
+  ujm(2,0) = ujm(0,2)
+  ujm(1,2) = ujm(0,2)
+  ujm(2,1) = ujm(0,2)
+
   do nu1 = 0, nb-1
      do nu2 = 0, nb-1
         do nu3 = 0, nb-1
@@ -56,15 +99,15 @@ subroutine gamma0_define(gamma0_ph, uu, up, uj)
                  if (nu3 .eq. nu2) then
                     if (nu4 .eq. nu3) then
 
-                       s0 = uu
-                       c0 = uu
+                       s0 = uum(nu1)
+                       c0 = uum(nu1)
 
                     endif
                  else
                     if (nu4 .eq. nu3) then
 
-                       s0 = uj
-                       c0 = uj
+                       s0 = ujm(nu1,nu3)
+                       c0 = ujm(nu1,nu3)
 
                     endif
                  endif
@@ -74,16 +117,16 @@ subroutine gamma0_define(gamma0_ph, uu, up, uj)
                  if (nu1 .eq. nu3) then
                     if (nu2 .eq. nu4) then
 
-                       s0 = uj
-                       c0 = -uj + 2.0d0*up
+                       s0 = ujm(nu1,nu2)
+                       c0 = -ujm(nu1,nu2) + 2.0d0*upm(nu1,nu2)
                     
                     endif
                  else
                     if (nu1 .eq. nu4) then
                        if (nu2 .eq. nu3) then
 
-                          s0 = up
-                          c0 = 2.0*uj - up
+                          s0 = upm(nu1,nu2)
+                          c0 = 2.0*ujm(nu1,nu2) - upm(nu1,nu2)
 
                        endif
                     endif

@@ -113,10 +113,18 @@ subroutine chi_calc(rank, t, chi, g, g_mtau, delta_chi, &
   endif
       
 #ifdef USE_MPI
-  call MPI_Bcast(delta_chi, 16*16*nb*nb*nb*nb*nc, &
-       MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
-  call MPI_Bcast(delta_chi_prime, 16*16*nb*nb*nb*nb*nc, &
-       MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+  do i=0, 16*nb*nb-1 
+    do j=0, 16*nb*nb-1
+!      call MPI_Bcast(delta_chi, 16*16*nb*nb*nb*nb*nc, &
+!         MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+!      call MPI_Bcast(delta_chi_prime, 16*16*nb*nb*nb*nb*nc, &
+!         MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+      call MPI_Bcast(delta_chi(i,j,:), nc, &
+         MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+      call MPI_Bcast(delta_chi_prime(i,j,:), nc, &
+         MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+    enddo
+   enddo
 #endif
 
   !     Multiply chi by gamma

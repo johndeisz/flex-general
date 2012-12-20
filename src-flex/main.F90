@@ -15,6 +15,12 @@ program multiband_flex_dca
 
   call init_environ(rank, size, start_time)
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='unknown')
+     write(9,*) 'Environment intialized'
+     close(unit=9)
+  endif
+
   ! Gather all the data from the input file
   call readin(t, flux, prfld, h, target_density, density_tol, mu, &
        uu, up, uj, ed, tij, prfld_pert, h_pert, v_pert, h_so, &
@@ -33,7 +39,7 @@ program multiband_flex_dca
   if (rank .eq. 0) then
   write(6,*) "ek_min = ", ek_min
   endif
-  call gamma0_define(gamma0_ph, uu, up, uj)
+  call gamma0_define(rank, gamma0_ph, uu, up, uj)
 
 #ifdef SECOND_ORDER
   !     generate the tau and epsilon matrices
@@ -114,12 +120,33 @@ program multiband_flex_dca
 
         sigma_converged = .true.
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'start iteration = ', iteration
+     close(unit=9)
+  endif
+
+
         call effective_field(iteration, v_pert, h, h_pert, prfld, & 
              prfld_pert, v_pert_eff, h_eff, prfld_eff)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'effective field'
+     close(unit=9)
+  endif
+
 
 #ifdef SECOND_ORDER
         call discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
              mu, sigma1, h_so, delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'discontinuities'
+     close(unit=9)
+  endif
+
           
         sigma_old = sigma
           
@@ -127,23 +154,74 @@ program multiband_flex_dca
              v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
              sigma, epsilon, t)
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'dyson'
+     close(unit=9)
+  endif
+
+
         call calc_g_tau0_2nd(rank, g_tau0, q_tau, q_epsilon, tij, ed, &
              v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
              sigma, epsilon, t)
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'calc_g_tau0'
+     close(unit=9)
+  endif
+
+
         g_mtau = g
 
         call g_rtau(rank, g, t, c_r, q_epsilon, q_tau, tau)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'calc_g_rtau'
+     close(unit=9)
+  endif
+
+
+
         call g_minus_tau(rank, g_mtau, t, c_r, q_epsilon, q_tau, tau)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'g_minus_tau'
+     close(unit=9)
+  endif
+
 
         call symmetrize(rank, g, g_mtau)
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'symmetrize'
+     close(unit=9)
+  endif
+
+
         call green_parameter(rank, g, t, x, c_r, delta_g_r, delta_gp_r)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'green_parameter'
+     close(unit=9)
+  endif
+
 
         call sigma_calc(rank, t, sigma, chi, g, g_mtau, c_r, &
              tau, epsilon, q_tau, q_epsilon, x, y, r_tau, r_omega, &
              a_int, gamma0_ph, overall_eigenvalue_max, &
              dominant_chi_eigenvector, dominant_chi_index, ft_sigma, d_r)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'sigma_calc'
+     close(unit=9)
+  endif
+
 
         if ( (alpha_scheme .eq. 2) .and. (iteration .gt. 1) ) then
 
@@ -159,6 +237,13 @@ program multiband_flex_dca
         call convergence_test(sigma_converged, rank, iteration, &
              sigma, sigma_old, sigma_tol, last_it_time)
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'convergence test'
+     close(unit=9)
+  endif
+
+
         if ( (iteration .gt. 1) .or. read_input) then
            sigma = alpha*sigma + (1.0d0 - alpha)*sigma_old
         endif
@@ -172,8 +257,22 @@ program multiband_flex_dca
              delta_sigma1_old, alpha, g_tau0_local, gamma0_ph, sigma_tol, &
              sigma_converged, alpha_scheme, iteration)
 
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'sigma first'
+     close(unit=9)
+  endif
+
+
         iteration = iteration + 1
         call  pair_wave(psi, g_tau0, alpha, m_psi)
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'pair wave'
+     close(unit=9)
+  endif
+
 
         call cpu_time(this_it_time)
         if (rank .eq. 0) then
@@ -189,6 +288,13 @@ program multiband_flex_dca
            endif
         endif
 #endif
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'iteration completed'
+     close(unit=9)
+  endif
+
 
      enddo
 
@@ -239,6 +345,8 @@ program multiband_flex_dca
 
         endif
 
+
+
      endif
 
 #ifdef USE_MPI
@@ -248,6 +356,12 @@ program multiband_flex_dca
 #endif /* USE_MPI */
 
      density_iteration = density_iteration + 1
+
+  if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) 'density iteration completed'
+     close(unit=9)
+  endif
 
   enddo
 

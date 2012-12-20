@@ -24,14 +24,22 @@ subroutine tmat_param(rank, method, t_mat, t, y, d, delta_t, delta_t_prime)
 
   INTEGER ierr
 
+   if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '    starting tmat_param'
+     close(unit=9)
+  endif
+
+
   delta_tau = (1.0d0 / t) / float(m)
 
+  if (rank .eq. 0) then
   do k = 0, nc1
 
      do i = 0, 16*nb*nb-1
         do j = 0, 16*nb*nb-1
 
-           if (rank .eq. 0) then
+!           if (rank .eq. 0) then
 
               if (method .eq. 1) then
 
@@ -69,11 +77,11 @@ subroutine tmat_param(rank, method, t_mat, t, y, d, delta_t, delta_t_prime)
 
               temp_d(0,0) = -delta_t(i,j,k) - temp_d(0,1)
 
-           endif
+!           endif
 
-#ifdef USE_MPI
-           call MPI_Bcast( temp_d, 4, MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
-#endif	/* USE_MPI */
+! #ifdef USE_MPI
+!            call MPI_Bcast( temp_d, 4, MPI_COMPLEX, 0, MPI_COMM_WORLD, ierr)
+! #endif	/* USE_MPI */
            
            do i1 = 0, 1
               do j1 = 0, 1
@@ -87,6 +95,18 @@ subroutine tmat_param(rank, method, t_mat, t, y, d, delta_t, delta_t_prime)
      enddo
 
   enddo
+ endif
+
+#ifdef USE_MPI
+  call MPI_Bcast( d, 4*16*nb*nb*16*nb*nb*nc, MPI_COMPLEX, 0, &
+    MPI_COMM_WORLD, ierr)
+#endif
+
+   if (rank .eq. 0) then
+     open(unit=9,file='my_error_file',status='old', access='append')
+     write(9,*) '    leaving tmat_param'
+     close(unit=9)
+  endif
 
   return
 end subroutine tmat_param
