@@ -65,7 +65,7 @@
   !     Chemical potential, density, and interaction strength
   REAL mu_old, mu_current, dn_dmu, mu_min, mu_max
   REAL density, density_old, delta_mu
-  INTEGER ib, jb, is, js
+  INTEGER ib, jb, is, js, nu1, nu2
   LOGICAL density_converged, ft_sigma
   REAL m_psi, mag
   REAL denb(0:nb-1), magb(0:nb-1,1:3)

@@ -149,6 +149,21 @@ program multiband_flex_dca
 
           
         sigma_old = sigma
+
+! Include these lines to supress off-diagonal terms
+!        do nu1 = 0, nb-1
+!         do nu2 = 0, nb-1
+!          sigma(4*nu1, 4*nu2+2,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1, 4*nu2+3,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1+1, 4*nu2+2,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1+1, 4*nu2+3,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1+2, 4*nu2,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1+2, 4*nu2+1,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1+3, 4*nu2,:,:) = cmplx(0.0d0, 0.0d0)
+!          sigma(4*nu1+3, 4*nu2+1,:,:) = cmplx(0.0d0, 0.0d0)
+!         enddo
+!        enddo
+
           
         call dyson(rank, g, q_tau, q_epsilon, tij, ed, &
              v_pert_eff, psi, h_eff, prfld_eff, mu, sigma1, h_so, &
