@@ -9,12 +9,12 @@
       DOUBLE COMPLEX psi(0:2*nb-1, 0:2*nb-1, 0:nl-1)
       DOUBLE COMPLEX sigma1(0:4*nb-1,0:4*nb-1)
 
-      INTEGER ib
+      INTEGER ib, ibp
       DOUBLE COMPLEX ek(0:nb-1,0:nb-1,0:nl-1)
       DOUBLE COMPLEX h_so(0:2*nb-1, 0:2*nb-1)
       DOUBLE COMPLEX h0(0:4*nb-1, 0:4*nb-1, 0:nl-1)
 
-      INTEGER ikx, iky, ikz, ik, ikx_max
+      INTEGER ikx, iky, ikz, ik, ikx_max, is, isp
 
       DOUBLE COMPLEX, dimension (0:4*nb-1, 0:4*nb-1) :: h0k, 
      $   tmp_h0k
@@ -38,8 +38,8 @@
       INTEGER id1, id2, id3, id4, id5
 
       INTEGER l
-      DOUBLE COMPLEX z
-      DOUBLE PRECISION w, a
+      DOUBLE COMPLEX z, sigmaij
+      DOUBLE PRECISION w, a, a00, a11, a22
 
       INTEGER itype, i_sc_type
 
@@ -154,12 +154,94 @@ c     Read pade coefficients
       close(unit=50)
 
       write(6,*) "Calculation type:"
+      write(6,*) "0 - Self-energy"
       write(6,*) "1 - Spectral function"
       write(6,*) "2 - A(k,w) vs. k,w scans"
       write(6,*) "3 - QP energy and width vs. k"
       write(6,*) "4 - DOS"
       write(6,*) "5 - Z vs QP energy"
       read(5,*) itype
+
+      if (itype .eq. 0) then
+
+        write(6,200) -lcx/2,lcx/2, lcx/2 
+        read(5,*) ikx
+        write(6,201) -lcy/2,lcy/2,lcy/2 
+        read(5,*) iky
+        write(6,202) -lcz/2,lcz/2,lcz/2 
+        read(5,*) ikz
+
+        if ( (ikx .lt. -lcx/2) .or. (ikx .gt. lcx/2) .or.
+     $     (iky .lt. -lcy/2) .or. (iky .gt. lcy/2) .or.
+     $     (ikz .lt. -lcz/2) .or. (ikz .gt. lcz/2) ) then
+          write(6,*)
+          write(6,*) "k-index out of range. Stopping."
+          write(6,*)
+          stop
+        endif
+
+        ik = mod(ikx+lcx,lcx) + mod(iky+lcy,lcy)*lcx + 
+     $     mod(ikz+lcz,lcz)*lcx*lcy
+
+
+       write(6,*) 'Outgoing band index (0,1,2)'
+       read(5,*) ib
+       write(6,*) 'Outoing spin index (0,1)'
+       read(5,*) is
+       write(6,*) 'Incoming band index (0,1,2)'
+       read(5,*) ibp
+       write(6,*) 'Incoming spin index (0,1)'
+       read(5,*) isp
+       i = 4*ib+is
+       j = 4*ibp + isp
+
+
+        write(6,*)
+        write(6,*) "Input minimum energy value "
+        read(5,*) w_min
+        write(6,*) "Input maximum energy value "
+        read(5,*) w_max
+        write(6,*) "Num energy points "
+        read(5,*) n_w 
+        dw = (w_max - w_min) / dfloat(n_w - 1)
+        write(6,*) "energy increment = ", dw
+
+        write(6,*) "Resolution parameter - ",
+     $     "should be larger than energy increment."
+        read(5,*) eta
+        if ( eta .lt. dw ) then
+          write(6,*) "Resolution paramater too small. Stopping."
+          stop
+        endif
+
+        write(6,*) 'Name of base output file for sigma'
+        read(5,*) base_out_file
+        open(unit=91, file='real_'//base_out_file,
+     $     status="unknown")
+        open(unit=92, file='imag_'//base_out_file,
+     $     status="unknown")
+
+        do l = 1, n_w
+
+          w = w_min + dw*dfloat(l-1)
+          z = dcmplx(w, eta)
+
+          if ( (sigma_flag .eq. 1) .and.
+     $      (n_pade(i,j,ik) .gt. 0)) then
+               sigmaij = pade_evaluate(z,n_pade(i,j,ik),
+     $                  p(i,j,ik,:), q(i,j,ik,:))
+          else
+             sigmaij = dcmplx(0.0d0,0.0d0)
+          endif
+          write(91,*) w, dreal(sigmaij)
+          write(92,*) w, dimag(sigmaij)
+
+        enddo
+
+        close(unit=91)
+        close(unit=92)
+
+      endif
 
       if (itype .eq. 1) then
 
@@ -256,9 +338,16 @@ c     Read pade coefficients
      $     "should be larger than energy increment."
         read(5,*) eta
 
-        write(6,*) 'Name of output file'
-        read(5,*) output_file
-        open(unit=40, file=output_file, status="unknown")
+        write(6,*) "Base output file name "
+        read(5,*) base_out_file
+        open(unit=40, file='all_'//base_out_file, status="unknown")
+
+        open(unit=91, file='band0_'//base_out_file,
+     $     status="unknown")
+        open(unit=92, file='band1_'//base_out_file,
+     $     status="unknown")
+        open(unit=93, file='band2_'//base_out_file,
+     $     status="unknown")
 
         do ikx = 0, llx/2
 
@@ -282,15 +371,28 @@ c     Read pade coefficients
             w = w_min + dw*dfloat(l-1)
             z = dcmplx(w, eta)
 
-            call dyson(h0k, ik, p, q, n_pade, sigma_flag, z, a)
+            call dyson2(h0k, ik, p, q, n_pade, sigma_flag, z, a,
+     $         a00, a11, a22)
 
             write(40,*) pi*float(ikx)/float(llx/2), w, a
+            write(91,*) pi*float(ikx)/float(llx/2), w, a00
+            write(92,*) pi*float(ikx)/float(llx/2), w, a11
+            write(93,*) pi*float(ikx)/float(llx/2), w, a22
 
           enddo
+
+            write(40,*) 
+            write(91,*)
+            write(92,*) 
+            write(93,*)
+
 
         enddo
 
         close(unit=40)
+        close(unit=91)
+        close(unit=92)
+        close(unit=93)
 
       endif
 

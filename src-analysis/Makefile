@@ -12,7 +12,8 @@ OBJECTS = \
 	angular_matrices.o \
 	dyson.o \
 	pade_evaluate.o \
-	pade_prime.o
+	pade_prime.o \
+	dyson2.o 
 
 quasi : $(OBJECTS)
 	$(CC) -o quasi.exe $(OBJECTS) $(LIBRARIES)
@@ -37,6 +38,9 @@ angular_matrices.o : angular_matrices.F constants.F
 
 dyson.o : dyson.F constants.F
 	$(CC) -c dyson.F
+
+dyson2.o : dyson2.F constants.F
+	$(CC) -c dyson2.F
 
 pade_evaluate.o : pade_evaluate.F constants.F
 	$(CC) -c pade_evaluate.F
