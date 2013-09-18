@@ -160,6 +160,7 @@ c     Read pade coefficients
       write(6,*) "3 - QP energy and width vs. k"
       write(6,*) "4 - DOS"
       write(6,*) "5 - Z vs QP energy"
+      write(6,*) "6 - MDC"
       read(5,*) itype
 
       if (itype .eq. 0) then
@@ -386,6 +387,66 @@ c     Read pade coefficients
             write(92,*) 
             write(93,*)
 
+
+        enddo
+
+        close(unit=40)
+        close(unit=91)
+        close(unit=92)
+        close(unit=93)
+
+      endif
+
+      if (itype .eq. 6) then
+
+        write(6,*) '1 - Gamma-M scan'
+        write(6,*) '2 - Gamma-X scan'
+        write(6,*) '3 - M-x scan'
+        read(5,*) i_sc_type
+
+        write(6,*)
+        write(6,*) "Input energy value "
+        read(5,*) w
+        write(6,*) "Energy broadening "
+        read(5,*) eta
+
+        write(6,*) "Base output file name "
+        read(5,*) base_out_file
+        open(unit=40, file='all_'//base_out_file, status="unknown")
+
+        open(unit=91, file='band0_'//base_out_file,
+     $     status="unknown")
+        open(unit=92, file='band1_'//base_out_file,
+     $     status="unknown")
+        open(unit=93, file='band2_'//base_out_file,
+     $     status="unknown")
+
+        do ikx = 0, llx/2
+
+          if (i_sc_type .eq. 1) then
+            iky = 0
+          endif
+          if (i_sc_type .eq. 2) then
+            iky = ikx
+          endif
+          if (i_sc_type .eq. 3) then
+            iky = llx/2
+          endif
+
+          ik = mod(ikx+llx,llx) + mod(iky+lly,lly)*llx + 
+     $       mod(ikz+llz,llz)*llx*lly
+
+          h0k = h0(:,:,ik)
+
+            z = dcmplx(w, eta)
+
+            call dyson2(h0k, ik, p, q, n_pade, sigma_flag, z, a,
+     $         a00, a11, a22)
+
+            write(40,*) pi*float(ikx)/float(llx/2), a
+            write(91,*) pi*float(ikx)/float(llx/2), a00
+            write(92,*) pi*float(ikx)/float(llx/2), a11
+            write(93,*) pi*float(ikx)/float(llx/2), a22
 
         enddo
 
