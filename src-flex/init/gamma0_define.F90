@@ -47,45 +47,45 @@ subroutine gamma0_define(rank, gamma0_ph, uu, up, uj)
   pauli(3,0,1) = 0.0d0
   pauli(3,1,1) = -1.d0
 
-! if (rank .eq. 0) then
-!   write(6,*) 'Cubic symmetrized vertex used'
-! endif
-!  do nu1 = 0, nb-1
-!    uum(nu1) = uu
-!  enddo
-
-!  do nu1 = 0, nb-1
-!   do nu2= 0, nb-1
-!     upm(nu1,nu2) = up
-!     ujm(nu1,nu2) = uj
-!   enddo
-!  enddo
-
   if (rank .eq. 0) then
-    write(6,*) 'Band-dependent vertex used'
+    write(6,*) 'Cubic symmetrized vertex used'
   endif
-  if (nb .ne. 3) then
-   if (rank .eq. 0) then
-     write(6,*) 'Nb does not equal 3 - stopping'
-   endif
-  endif
-  uum(0) = 0.969d0*uu
-  uum(1) = 0.969d0*uu
-  uum(2) = 1.063d0*uu
+  do nu1 = 0, nb-1
+    uum(nu1) = uu
+  enddo
 
-  upm(0,1) = 0.974d0*up
-  upm(1,0) = upm(0,1)
-  upm(0,2) = 1.015d0*up
-  upm(2,0) = upm(0,2)
-  upm(1,2) = upm(0,2)
-  upm(2,1) = upm(0,2)
+  do nu1 = 0, nb-1
+   do nu2= 0, nb-1
+     upm(nu1,nu2) = up
+     ujm(nu1,nu2) = uj
+   enddo
+  enddo
 
-  ujm(0,1) = 0.923d0*uj
-  ujm(1,0) = ujm(0,1)
-  ujm(0,2) = 1.000d0*uj
-  ujm(2,0) = ujm(0,2)
-  ujm(1,2) = ujm(0,2)
-  ujm(2,1) = ujm(0,2)
+!  if (rank .eq. 0) then
+!    write(6,*) 'Band-dependent vertex used'
+!  endif
+!  if (nb .ne. 3) then
+!   if (rank .eq. 0) then
+!     write(6,*) 'Nb does not equal 3 - stopping'
+!   endif
+!  endif
+!  uum(0) = 0.969d0*uu
+!  uum(1) = 0.969d0*uu
+!  uum(2) = 1.063d0*uu
+
+!  upm(0,1) = 0.974d0*up
+!  upm(1,0) = upm(0,1)
+!  upm(0,2) = 1.015d0*up
+!  upm(2,0) = upm(0,2)
+!  upm(1,2) = upm(0,2)
+!  upm(2,1) = upm(0,2)
+
+!  ujm(0,1) = 0.923d0*uj
+!  ujm(1,0) = ujm(0,1)
+!  ujm(0,2) = 1.000d0*uj
+!  ujm(2,0) = ujm(0,2)
+!  ujm(1,2) = ujm(0,2)
+!  ujm(2,1) = ujm(0,2)
 
   do nu1 = 0, nb-1
      do nu2 = 0, nb-1

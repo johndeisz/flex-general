@@ -32,7 +32,7 @@
         enddo
       enddo
 
-      tij = cmplx(tin, 0.0d0)
+      tij = 0.1d0*dcmplx(tin, 0.0d0)
 
 
 !Use symmetries to fill out the hopping matrix
@@ -97,12 +97,13 @@
       lookup_r(5,5) = 5
       sym_factor(5,5) = 1
 
-      do ix = 0, 2
+      do ix = 1, 2
         do iy = 0, ix
           do ib = 1, nb
             do jb = ib, nb
-              tij(lookup_l(ib,jb), lookup_r(ib,jb),ix,-iy) =
-     $           float( sym_factor(ib,jb) ) * tij(ib,jb,ix,iy)
+              tij(ib, jb, ix, -iy) =
+     $           dfloat( sym_factor(ib,jb) ) *
+     $           tij(lookup_l(ib,jb), lookup_r(ib,jb), ix, iy)
             enddo
           enddo
         enddo
@@ -130,7 +131,7 @@
 
       sym_factor(5,5) = 1
 
-      do ix = 0, 2
+      do ix = 1, 2
         do iy = -ix, ix
           do ib = 1, nb
             do jb = ib, nb
@@ -178,9 +179,9 @@
 
       do ix = -2, 2
         do iy = -2, 2
-          do ib = 2, nb
-            do jb = 1, ib-1
-              tij(ib,jb,-ix,-iy) = tij(jb,ib,ix,iy)
+          do ib = 1, nb
+            do jb = ib, nb
+              tij(jb,ib,-ix,-iy) = tij(ib,jb,ix,iy)
             enddo
           enddo
         enddo

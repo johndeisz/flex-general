@@ -366,7 +366,9 @@ subroutine sigma_input(sigma_input_file, uu, sigma1, psi, sigma, mu, epsilon)
            enddo
         enddo
 
-        sigma1 = (uu / uu_1) * sigma1
+        if ( abs(uu_1) .gt. 1.0d-4 ) then
+          sigma1 = (uu / uu_1) * sigma1
+        endif 
 
      endif
 
