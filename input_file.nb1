@@ -1,5 +1,5 @@
 ------------Basic thermodynamic parameters -----------------------
-400.0d0            ! temperature (K) 
+500.0d0            ! temperature (K) 
 0.00d0              ! pair field strength - iterate to strongest pair channel 
 0.0d0 0.0d0 0.0d0             ! uniform magnetic field: hx, hy, hz
 0.85d0   1.0d-7    ! electron density, tolerance
