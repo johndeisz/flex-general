@@ -38,6 +38,10 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
   REAL alpha
   INTEGER alpha_scheme
 
+  REAL pi
+  REAL theta_flux
+  COMPLEX phi_flux
+
   ! MPI variables
   INTEGER rank
   INTEGER ierr
@@ -60,6 +64,8 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
 #else
   rank = 0
 #endif /* USE_MPI */
+
+  pi = acos(-1.0d0)
   
   if (rank .eq. 0) then
      write(6,*) 'lcx = ', lcx
@@ -274,11 +280,19 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
 !!$              k = mod(ix+llx,llx) + mod(iy+lly,lly)*llx + &
 !!$                   mod(iz+llz,llz)*llx*lly
 
+              theta_flux = 2.0d0*pi*(flux(1)*dfloat(ix)/dfloat(llx) + &
+                        flux(2)*dfloat(iy)/dfloat(lly) + &
+                        flux(3)*dfloat(iz)/dfloat(llz) )
+
+              phi_flux = cexp(cmplx(0.0d0,1.0d0)*theta_flux)
+
               do ib = 0, nb-1
                  do ibp = 0, nb-1
                     read(5,*) id, idp, tij(ib,ibp,ix,iy,iz)
                     write(6,300) ib, ibp, real(tij(ib,ibp,ix,iy,iz)), &
                          aimag(tij(ib,ibp,ix,iy,iz))
+
+                    tij(ib,ibp,ix,iy,iz) = tij(ib,ibp,ix,iy,iz)*phi_flux
                  enddo
               enddo
 
