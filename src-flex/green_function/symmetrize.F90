@@ -35,25 +35,49 @@ subroutine symmetrize(rank,g, g_mtau)
                     g(nua, nuap, l, ir) = A
                     g_mtau(nuapm, nuam, l, ir) = -A
 
-                 enddo
-              enddo
-           enddo
-        enddo
-     enddo
-  enddo
+!                 enddo
+!              enddo
+!           enddo
+!        enddo
+!     enddo
+!  enddo
 
-  do l = 0, mp1
-     do ir = 0, nc1
-        do ib = 0, nb-1
-           do is = 0, 1
-              do ibp = 0, nb-1
-                 do isp = 0, 1
+!  do l = 0, mp1
+!     do ir = 0, nc1
+!        do ib = 0, nb-1
+!           do is = 0, 1
+!              do ibp = 0, nb-1
+!                 do isp = 0, 1
 
                     nua = 4*ib+is+2
                     nuap = 4*ibp+isp
 
                     nuam = 4*ib+is
                     nuapm = 4*ibp+isp+2
+
+                    A = 0.5d0 * (g(nua, nuap, l, ir) - &
+                         g_mtau(nuapm,nuam, l, ir) )
+
+                    g(nua, nuap, l, ir) = A
+                    g_mtau(nuapm, nuam, l, ir) = -A
+
+                    nua = 4*ib+is
+                    nuap = 4*ibp+isp
+
+                    nuam = 4*ib+is+2
+                    nuapm = 4*ibp+isp+2
+
+                    A = 0.5d0 * (g(nua, nuap, l, ir) - &
+                         g_mtau(nuapm,nuam, l, ir) )
+
+                    g(nua, nuap, l, ir) = A
+                    g_mtau(nuapm, nuam, l, ir) = -A
+
+                    nua = 4*ib+is+2
+                    nuap = 4*ibp+isp+2
+
+                    nuam = 4*ib+is
+                    nuapm = 4*ibp+isp
 
                     A = 0.5d0 * (g(nua, nuap, l, ir) - &
                          g_mtau(nuapm,nuam, l, ir) )
