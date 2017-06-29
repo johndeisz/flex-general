@@ -459,11 +459,12 @@ c     Read pade coefficients
 
       if (itype .eq. 3) then
 
-        write(6,*) '1 - Gamma-M scan'
+        write(6,*) '1 - Gamma-Mx scan'
         write(6,*) '2 - Gamma-X scan'
         write(6,*) '3 - M-X scan'
         write(6,*) '4 - ky = 2*kx scan'
         write(6,*) '5 - Fixed ky scan'
+        write(6,*) '6 - Gamma-My scan'
         read(5,*) i_sc_type
         if (i_sc_type .eq. 5) then
           write(6,201) -lly/2, lly/2, lly/2
@@ -505,8 +506,12 @@ c     Read pade coefficients
           if ((2*mod(ikx, x_stretch) .ne. x_stretch) .or.
      $       lcx .eq. 1) then
 
-            icx = nint(float(ikx)/float(x_stretch))
-            icx = mod(icx,lcx)
+            if (i_sc_type .eq. 6) then
+              icx = 0
+            else
+              icx = nint(float(ikx)/float(x_stretch))
+              icx = mod(icx,lcx)
+            endif
            
             if (i_sc_type .eq. 1) then
               iky = 0
@@ -520,6 +525,9 @@ c     Read pade coefficients
             if (i_sc_type .eq. 4) then
               iky = 2*ikx
             endif
+            if (i_sc_type .eq. 6) then
+              iky = ikx
+            endif
 
             if ( (2*mod(iky, y_stretch) .ne. y_stretch) .or.
      $         lcy .eq. 1) then
@@ -527,7 +535,11 @@ c     Read pade coefficients
               icy = nint(float(iky)/float(y_stretch))
               icy = mod(icy,lcy)
 
-              ik = ikx + iky*llx 
+              if (i_sc_type .eq. 6) then
+                 ik = iky*llx
+              else
+                 ik = ikx + iky*llx 
+              endif
 
               h0k = h0(:,:,ik)
 
