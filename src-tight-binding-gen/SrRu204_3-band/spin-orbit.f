@@ -6,7 +6,7 @@ c ms = 0 -> spin up
 c ms = 1 -> spin down
 
       double complex hspin(0:9,0:9)
-      double complex psi(-2:2, 0:3)
+      double complex psi(-2:2, 0:2)
       double complex psi_spin(0:9,0:5)
 
       integer nus, nu, is, ml, ind, ms, ind1, ind2
@@ -64,7 +64,7 @@ c Orbital angular momentum raised, spin angular momentum lowered
             if (ms .eq. 0) then
 
               ind2 = 2*(ml+3) + 1 
-              hspin(ind2,ind1) = dsqrt(6.0d0 - dfloat(ml*(ml+1)))
+              hspin(ind2,ind1) = 0.5d0*dsqrt(6.0d0 - dfloat(ml*(ml+1)))
 
             endif
           endif 
@@ -74,7 +74,7 @@ c Orbital angular momentum lowered, spin angular momentum raised
             if (ms .eq. 1) then
 
               ind2 = 2*(ml+1) + 0
-              hspin(ind2,ind1) =dsqrt(6.0d0 - dfloat(ml*(ml-1)))
+              hspin(ind2,ind1) = 0.5d0*dsqrt(6.0d0 - dfloat(ml*(ml-1)))
 
             endif
           endif
