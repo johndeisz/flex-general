@@ -94,7 +94,7 @@ subroutine sigma_first(sigma1, sigma1_old, delta_sigma1, &
         sigma_converged = .false.
      endif
 
-     write(6,fmt=400,advance='NO') points
+     write(6,fmt=400,advance='NO') 100.0d0*dfloat(points)/dfloat(16*nb*nb)
         
      delta_sigma1 = sigma1 - sigma1_old
      sigma1 = alpha*sigma1 + (1.0d0 - alpha)*sigma1_old
@@ -109,7 +109,7 @@ subroutine sigma_first(sigma1, sigma1_old, delta_sigma1, &
   call MPI_Bcast(sigma_converged, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, ierr)
 #endif /* USE_MPI */
 
-400 format('       ',I4)
+400 format('       ', f8.4)
 
   return
 end subroutine sigma_first

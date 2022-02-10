@@ -68,7 +68,7 @@ subroutine convergence_test(convergence, rank, iteration, &
 
   if (rank .eq. 0) then
 
-     write(6,fmt=600,advance='no') converged_count
+     write(6,fmt=600,advance='no') 100.0d0*dfloat(converged_count)/dfloat(points)
 
      if (converged_count .eq. points) then 
         convergence = .true.
@@ -82,7 +82,7 @@ subroutine convergence_test(convergence, rank, iteration, &
   call MPI_Bcast(convergence, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, ierr)
 #endif /* USE_MPI */
   
-600 format(i10)
+600 format(f10.6)
 
   return
 end subroutine convergence_test

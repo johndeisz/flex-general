@@ -11,10 +11,10 @@ subroutine symmetrize(rank,g, g_mtau)
 
   INTEGER l, ir, irm, nua, nuap, nuam, nuapm
   INTEGER nua2, nua2p
-  INTEGER ib,is, ibp, isp
+  INTEGER ib,is, ibp, isp, ip, ipp
   INTEGER ix, iy, iz
 
-  COMPLEX A, S
+  COMPLEX A, S, B
 
   do l = 0, mp1
      do ir = 0, nc1
@@ -35,19 +35,19 @@ subroutine symmetrize(rank,g, g_mtau)
                     g(nua, nuap, l, ir) = A
                     g_mtau(nuapm, nuam, l, ir) = -A
 
-!                 enddo
-!              enddo
-!           enddo
-!        enddo
-!     enddo
-!  enddo
+                 enddo
+              enddo
+           enddo
+        enddo
+     enddo
+  enddo
 
-!  do l = 0, mp1
-!     do ir = 0, nc1
-!        do ib = 0, nb-1
-!           do is = 0, 1
-!              do ibp = 0, nb-1
-!                 do isp = 0, 1
+  do l = 0, mp1
+     do ir = 0, nc1
+        do ib = 0, nb-1
+           do is = 0, 1
+              do ibp = 0, nb-1
+                 do isp = 0, 1
 
                     nua = 4*ib+is+2
                     nuap = 4*ibp+isp
@@ -103,58 +103,40 @@ subroutine symmetrize(rank,g, g_mtau)
  
               do ib = 0, nb-1
                  do is = 0, 1
+                   do ip = 0, 1
                     do ibp = 0, nb-1
                        do isp = 0, 1
+                         do ipp = 0, 1
 
-                          nua = 4*ib+is
-                          nuap = 4*ibp+isp+2
+                          nua = 4*ib+2*ip+is
+                          nuap = 4*ibp+2*ipp+isp
 
-                          nuam = 4*ib+is+2
-                          nuapm = 4*ibp+isp
+                          nuam = 4*ib+2*mod(ip+1,2)+is
+                          nuapm = 4*ibp+2*mod(ipp+1,2)+isp
 
                           A = 0.5d0 * (g(nua, nuap, 0, ir) - &
                                g(nuapm,nuam, 0, irm) )
 
-                          g(nua, nuap, 0, ir) = A
-                          g(nuapm, nuam, 0, irm) = -A
+                          if (  (nua .eq. nuap) .and. (ir .eq. 0) ) then
+                            B = 0.5
+                          else
+                            B = 0.0
+                          endif
+
+                          g(nua, nuap, 0, ir) = A - B
+                          g(nuapm, nuam, 0, irm) = -A - B
 
                           A = 0.5d0 * (g_mtau(nua, nuap, 0, ir) - &
                                g_mtau(nuapm,nuam, 0, irm) )
 
-                          g_mtau(nua, nuap, 0, ir) = A
-                          g_mtau(nuapm, nuam, 0, irm) = -A
+                          g_mtau(nua, nuap, 0, ir) = A + B
+                          g_mtau(nuapm, nuam, 0, irm) = -A + B
 
                        enddo
                     enddo
                  enddo
               enddo
-
-              do ib = 0, nb-1
-                 do is = 0, 1
-                    do ibp = 0, nb-1
-                       do isp = 0, 1
-
-                          nua = 4*ib+is+2
-                          nuap = 4*ibp+isp
-
-                          nuam = 4*ib+is
-                          nuapm = 4*ibp+isp+2
-
-                          A = 0.5d0 * (g(nua, nuap, 0, ir) - &
-                               g(nuapm,nuam, 0, irm) )
-
-                          g(nua, nuap, 0, ir) = A
-                          g(nuapm, nuam, 0, irm) = -A
-
-                          A = 0.5d0 * (g_mtau(nua, nuap, 0, ir) - &
-                               g_mtau(nuapm,nuam, 0, irm) )
-
-                          g_mtau(nua, nuap, 0, ir) = A
-                          g_mtau(nuapm, nuam, 0, irm) = -A
-
-                       enddo
-                    enddo
-                 enddo
+              enddo
               enddo
 
            enddo
