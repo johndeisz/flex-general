@@ -38,7 +38,7 @@ subroutine fft_3D_lattice (mat, isignv)
               matx_in(j1) = mat(j1 + j2*llx + j3*llx*lly)
            enddo
 
-           call sfftw_execute(plan)
+           call sfftw_execute(plan,matx_in, matx_out)
 
            do j1 = 0, llx-1 
               mat(j1 + j2*llx + j3*llx*lly) = matx_out(j1)
@@ -63,7 +63,7 @@ subroutine fft_3D_lattice (mat, isignv)
               maty_in(j2) = mat(j1 + j2*llx + j3*llx*lly)
            enddo
 
-           call sfftw_execute(plan)
+           call sfftw_execute(plan,maty_in,maty_out)
            
            do j2 = 0, lly - 1
               mat(j1 + j2*llx + j3*llx*lly) = maty_out(j2)
@@ -88,7 +88,7 @@ subroutine fft_3D_lattice (mat, isignv)
               matz_in(j3) = mat(j1 + j2*llx + j3*llx*lly)
            enddo
 
-           call sfftw_execute(plan)
+           call sfftw_execute(plan,matz_in,matz_out)
 
            do j3 = 0, llz - 1
               mat(j1 + j2*llx + j3*llx*lly) = matz_out(j3)

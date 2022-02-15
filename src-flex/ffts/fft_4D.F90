@@ -38,7 +38,7 @@ subroutine fft_4D (myid, a, isignv)
 
      do j = 0, ncp1
         temp_t_in = temp_col(:,j)
-        call sfftw_execute(plan)
+        call sfftw_execute(plan,temp_t_in,temp_t_out)
         temp_col(:,j) = temp_t_out
      enddo
 
@@ -64,7 +64,7 @@ subroutine fft_4D (myid, a, isignv)
                  temp_x_in(j1) = a(l, j1+j2*lcx+j3*lcx*lcy)
               enddo
 
-              call sfftw_execute(plan)
+              call sfftw_execute(plan,temp_x_in, temp_x_out)
 
               do j1 = 0, lcx1
                  a(l, j1+j2*lcx+j3*lcx*lcy) = temp_x_out(j1)
@@ -92,7 +92,7 @@ subroutine fft_4D (myid, a, isignv)
               do j2 = 0, lcy1
                  temp_y_in(j2) = a(l,j1+j2*lcx+j3*lcx*lcy)
               enddo
-              call sfftw_execute(plan)
+              call sfftw_execute(plan,temp_y_in,temp_y_out)
 
               do j2 = 0, lcy1
                  a(l,j1+j2*lcx+j3*lcx*lcy) = temp_y_out(j2)
@@ -120,7 +120,7 @@ subroutine fft_4D (myid, a, isignv)
               do j3 = 0, lcz1
                  temp_z_in(j3) = a(l,j1+j2*lcx+j3*lcx*lcy)
               enddo
-              call sfftw_execute(plan)
+              call sfftw_execute(plan,temp_z_in,temp_z_out)
 
               do j3 = 0, lcz1
                  a(l,j1+j2*lcx+j3*lcx*lcy) = temp_z_out(j3)

@@ -39,7 +39,7 @@ subroutine fft_3D (mat, isignv)
               matx_in(j1) = mat(ind)
            enddo
             
-           call sfftw_execute(plan)
+           call sfftw_execute(plan,matx_in, matx_out)
 
            do j1 = 0, lcx-1
               ind = j1 + j2*lcx + j3*lcx*lcy            
@@ -65,7 +65,7 @@ subroutine fft_3D (mat, isignv)
               maty_in(j2) = mat(ind)
            enddo
 
-           call sfftw_execute(plan)
+           call sfftw_execute(plan,maty_in, maty_out)
            
            do j2 = 0, lcy-1
               ind = j1 + j2*lcx + j3*lcx*lcy           
@@ -91,7 +91,7 @@ subroutine fft_3D (mat, isignv)
               matz_in(j3) = mat(ind)
            enddo
 
-           call sfftw_execute(plan)
+           call sfftw_execute(plan,matz_in, matz_out)
 
            do j3 = 0, lcz-1
               ind = j1 + j2*lcx + j3*lcx*lcy
