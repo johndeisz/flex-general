@@ -2,7 +2,7 @@ SHELL=/bin/sh
 
 CC=gfortran -O3
 # MPICC=mpif90 -O3
-MPICC=/usr/lib64/mpich/bin/mpif90 -O3 -mcmodel=medium
+MPICC=/usr/lib64/mpich/bin/mpif90 -O3 -mcmodel=medium -fallow-argument-mismatch
 LIBRARIES= -lfftw3 -lblas -llapack 
 
 ifdef SYS
