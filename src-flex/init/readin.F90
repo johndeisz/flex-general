@@ -58,6 +58,8 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
   INTEGER ibs, ibsp
   LOGICAL so_flag
   REAL so_amp
+  REAL delta_strain
+  INTEGER ig
 
 #ifdef USE_MPI
   call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierr)
@@ -247,8 +249,11 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
   endif
 
   tij = 0.0d0
+  delta_strain = 0.000d0
   
   if (rank .eq. 0) then
+
+     write(6,*) "delta_strain = ", delta_strain
 
      if (llx .gt. 2) then
         max_x = 2
@@ -289,6 +294,21 @@ subroutine readin(t, flux, prfld, h, target_density, density_tol, mu, &
               do ib = 0, nb-1
                  do ibp = 0, nb-1
                     read(5,*) id, idp, tij(ib,ibp,ix,iy,iz)
+
+                    if ( (ib .eq. 2) .and. (ibp .eq. 2)) then
+                      
+                      ig = abs(ix) - abs(iy)
+                      if (ig .gt. 0) then
+                        tij(ib,ibp,ix,iy,iz) = tij(ib,ibp,ix,iy,iz)*(1.0+delta_strain)
+                      endif
+
+                      if (ig .lt. 0) then
+                        tij(ib,ibp,ix,iy,iz) = tij(ib,ibp,ix,iy,iz)*(1.0-delta_strain)
+                      endif 
+
+                     endif
+
+
                     write(6,300) ib, ibp, real(tij(ib,ibp,ix,iy,iz)), &
                          aimag(tij(ib,ibp,ix,iy,iz))
 
