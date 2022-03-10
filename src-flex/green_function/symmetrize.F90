@@ -15,6 +15,8 @@ subroutine symmetrize(rank,g, g_mtau)
   INTEGER ix, iy, iz
 
   COMPLEX A, S, B
+  INTEGER i,j,k
+  COMPLEX sum_test
 
   do l = 0, mp1
      do ir = 0, nc1
@@ -91,6 +93,38 @@ subroutine symmetrize(rank,g, g_mtau)
         enddo
      enddo
   enddo
+
+  do ix = 0, lcx1
+   do iy = 0, lcy1
+     do iz = 0, lcz1
+
+          ir = ix + iy*lcx + iz*lcy*lcx
+          irm = mod(lcx-ix,lcx) + mod(lcy-iy,lcy)*lcx + &
+                   mod(lcz-iz,lcz)*lcx*lcy
+ 
+         do l = 0, mp1
+           do nua = 0, 4*nb-1
+             do nuap = 0, 4*nb-1
+
+               A = 0.5d0 * ( g(nua,nuap, l, ir) + &
+                        conjg( g(nuap, nua, l, irm) ))
+
+               g(nua, nuap, l, ir) = A
+               g(nuap, nua, l, irm) = conjg(A)
+
+               A = 0.5d0 * ( g_mtau(nua,nuap, l, ir) + &
+                        conjg( g_mtau(nuap, nua, l, irm) ))
+
+               g_mtau(nua, nuap, l, ir) = A
+               g_mtau(nuap, nua, l, irm) = conjg(A)
+
+            enddo
+          enddo
+        enddo
+
+     enddo
+    enddo
+  enddo 
 
   if (rank .eq. 0) then
      do ix = 0, lcx1
@@ -142,7 +176,9 @@ subroutine symmetrize(rank,g, g_mtau)
            enddo
         enddo
      enddo
+
   endif
+
 
 !!$c Project out triplet symmetry
 !!$
