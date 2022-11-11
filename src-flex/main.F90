@@ -120,34 +120,14 @@ program multiband_flex_dca
 
         sigma_converged = .true.
 
-  if (rank .eq. 0) then
-     open(unit=9,file='my_error_file',status='old', access='append')
-     write(9,*) 'start iteration = ', iteration
-     close(unit=9)
-  endif
-
-
         call effective_field(iteration, v_pert, h, h_pert, prfld, & 
              prfld_pert, v_pert_eff, h_eff, prfld_eff)
-
-  if (rank .eq. 0) then
-     open(unit=9,file='my_error_file',status='old', access='append')
-     write(9,*) 'effective field'
-     close(unit=9)
-  endif
 
 
 #ifdef SECOND_ORDER
         call discontinuities(tij, ed, v_pert_eff, psi, h_eff, prfld_eff, &
              mu, sigma1, h_so, delta_g_r, delta_g_k, delta_gp_r, delta_gp_k)
 
-  if (rank .eq. 0) then
-     open(unit=9,file='my_error_file',status='old', access='append')
-     write(9,*) 'discontinuities'
-     close(unit=9)
-  endif
-
-          
         sigma_old = sigma
 
 ! Include these lines to supress off-diagonal terms
